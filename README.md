@@ -32,6 +32,8 @@ _TODO_
 
 ### Docker
 
+* start database with `docker-compose up`
+
 _TODO_
 
 # Design
