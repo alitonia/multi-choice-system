@@ -4,7 +4,7 @@ A multiple choice exam system on browser.
 
 # Install
 
-* `bash propagate_env.sh`
+* `bash cmd/propagate_env.sh`
 
 ### Frontend
 
