@@ -1,0 +1,18 @@
+version: "3"
+services:
+  mysql-mana:
+    image: mysql:latest
+    container_name: mysql-mana
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - ./docker_data/db-docker:/var/lib/mysql
+      - ./docker_data/db-config:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_USER: user
+      #      MYSQL_ROOT_PASSWORD: root
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_USER: alitonia
+      MYSQL_PASSWORD: 123456
+      MYSQL_DATABASE: mana

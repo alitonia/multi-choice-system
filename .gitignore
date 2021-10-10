@@ -5,3 +5,4 @@ yarn-error.log
 .idea/
 __pycache__
 .env
+docker_data/db-docker
