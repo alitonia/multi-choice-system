@@ -29,8 +29,10 @@ create table Account
     name          varchar(50)  NOT NULL,
     date_of_birth DATE         NOT NULL,
     phone_number  varchar(50),
+    enable        BOOLEAN      NOT NULL DEFAULT TRUE,
     role_id       int,
-    FOREIGN KEY (role_id) REFERENCES Role (role_id)
+    FOREIGN KEY (role_id) REFERENCES Role (role_id),
+    CHECK ( email REGEXP '^[a-zA-Z0-9][+a-zA-Z0-9._-]*@[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]*\\.[a-zA-Z]{2,4}$')
 );
 
 create table Admin
@@ -51,7 +53,7 @@ create table Examinee
     account_id  int NOT NULL,
     class       varchar(50),
     major       varchar(50),
-    examinee_id varchar(10),
+    examinee_id varchar(10), # this is just meta data
     FOREIGN KEY (account_id) REFERENCES Account (account_id)
 );
 
@@ -98,7 +100,7 @@ create table Question
     exam_id           int  NOT NULL,
     question_group_id int  NOT NULL,
     question_type_id  int  NOT NULL,
-    FOREIGN KEY (exam_id) REFERENCES Exam (exam_id),
+    FOREIGN KEY (exam_id) REFERENCES Exam (exam_id) on delete cascade on update cascade,
     FOREIGN KEY (question_group_id) REFERENCES Question_group (question_group_id),
     FOREIGN KEY (question_type_id) REFERENCES Question_type (question_type_id)
 );
@@ -106,29 +108,37 @@ create table Question
 create table Answer
 (
     answer_id   int AUTO_INCREMENT PRIMARY KEY,
-    content     TEXT NOT NULL,
-    is_correct  BOOLEAN DEFAULT FALSE,
-    question_id int  NOT NULL,
-    FOREIGN KEY (question_id) REFERENCES Question (question_id)
+    content     TEXT    NOT NULL,
+    is_correct  BOOLEAN NOT NULL DEFAULT FALSE,
+    question_id int     NOT NULL,
+    FOREIGN KEY (question_id) REFERENCES Question (question_id) on delete cascade on update cascade
 );
 
 create table Choice
 (
-    question_id int NOT NULL,
-    answer_id   int NOT NULL,
-    examinee_id int NOT NULL,
-    FOREIGN KEY (examinee_id) REFERENCES Examinee (examinee_id),
+    question_id         int NOT NULL,
+    answer_id           int NOT NULL,
+    examinee_account_id int NOT NULL,
+    FOREIGN KEY (examinee_account_id) REFERENCES Examinee (account_id),
     FOREIGN KEY (answer_id) REFERENCES Answer (answer_id),
     FOREIGN KEY (question_id) REFERENCES Question (question_id)
 );
 
 create table Exam_log
 (
-    log_id      int AUTO_INCREMENT PRIMARY KEY,
-    examinee_id int NOT NULL,
-    exam_id     int NOT NULL,
-    action      varchar(50),
-    time        TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (examinee_id) REFERENCES Examinee (examinee_id),
+    log_id              int AUTO_INCREMENT PRIMARY KEY,
+    examinee_account_id int         NOT NULL,
+    exam_id             int         NOT NULL,
+    action              varchar(50) NOT NULL,
+    time                TIMESTAMP   NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (examinee_account_id) REFERENCES Examinee (account_id),
     FOREIGN KEY (exam_id) REFERENCES Exam (exam_id)
+);
+
+create table Participant
+(
+    exam_id             int NOT NULL,
+    examinee_account_id int NOT NULL,
+    FOREIGN KEY (exam_id) REFERENCES Exam (exam_id) on delete cascade on update cascade,
+    FOREIGN KEY (examinee_account_id) REFERENCES Examinee (account_id)
 )
