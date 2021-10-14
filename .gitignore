@@ -6,3 +6,4 @@ yarn-error.log
 __pycache__
 .env
 docker_data/db-docker
+venv
