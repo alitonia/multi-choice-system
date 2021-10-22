@@ -2,7 +2,7 @@ version: "3"
 services:
   pg-mana:
     image: postgres:latest
-    container_name: mysql-mana
+    container_name: pg-mana
     ports:
       - "3306:3306"
 

@@ -24,15 +24,15 @@ create table Account
 (
     account_id    SERIAL PRIMARY KEY,
     email         varchar(256) NOT NULL UNIQUE,
-    hash_password bytea        NOT NULL,
-    salt          bytea        NOT NULL,
+    hash_password varchar(60)  NOT NULL,
+    salt          varchar(29)  NOT NULL,
     name          varchar(50)  NOT NULL,
     date_of_birth DATE         NOT NULL,
     phone_number  varchar(50),
     enable        BOOLEAN      NOT NULL DEFAULT TRUE,
     role_id       int,
     FOREIGN KEY (role_id) REFERENCES Role (role_id),
-    CHECK ( email SIMILAR TO '^[a-zA-Z0-9][+a-zA-Z0-9._-]*@[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]*\\.[a-zA-Z]{2,4}$')
+    CHECK ( email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[A-Za-z]+$')
 );
 
 create table Admin
