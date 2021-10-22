@@ -7,3 +7,4 @@ __pycache__
 .env
 docker_data/db-docker
 venv
+.vscode

@@ -1,1 +1,6 @@
-venv
+/nbproject
+*/vendor/
+__pycache__
+.env
+.devcontainer
+.vscode

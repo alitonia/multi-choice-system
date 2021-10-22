@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+  api:
+    build: ./src
+    volumes:
+      - ./src/:/app/
+      - ./wait:/wait
+    ports:
+      - 8088:80      
+    command: sh -c "/wait && /start-reload.sh"
+    environment:
+      # - WAIT_HOSTS=db:3306
+      - DATABASE_ECHO=1
+      - DATABASE_URL=${DATABASE_URL}
+  
