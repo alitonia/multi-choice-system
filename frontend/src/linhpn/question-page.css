@@ -1,0 +1,28 @@
+.question-page-default-header {
+  height: 15vh;
+  background-color: #fcddec;
+}
+.question-page-body {
+  height: 85vh;
+  width: 100%;
+  display: inline-flex;
+}
+.question-page-body-left {
+  width: 25%;
+  height: 100%;
+
+  background-color: #ef5da8;
+}
+.question-page-body-right {
+  width: 75%;
+  height: 100%;
+}
+.question-page-button-complete {
+  background-color: #ef5da8;
+  border-radius: 1px solid white;
+}
+
+.question-page-button-current {
+  font-weight: bolder;
+  color: chartreuse;
+}
