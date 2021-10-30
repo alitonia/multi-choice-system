@@ -1,11 +1,21 @@
-import {getEnvVar} from "./utils/getEnvVar";
+import {Route, Switch} from "react-router-dom";
+import {routes} from "./pages/routes";
 
 function App() {
-
     return (
         <div className="App">
-            <h1>Hello there 😀</h1>
-            <h1>{"Backend: " + getEnvVar('FRONTEND_URL')}</h1>
+            <Switch>
+                {
+                    routes.map((r, index) => {
+                        const Component = r.component
+                        return (
+                            <Route key={index.toString()} path={r.path} {...r.others}>
+                                <Component/>
+                            </Route>
+                        )
+                    })
+                }
+            </Switch>
         </div>
     );
 }
