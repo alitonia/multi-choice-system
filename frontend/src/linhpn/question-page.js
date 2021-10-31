@@ -42,6 +42,7 @@ const QuestionPage = ({
   const submitExam = () => {
     if (window.confirm("Do you want to submit?")) {
       console.log(answers);
+      localStorage.removeItem("default_exam");
     }
   };
 
@@ -112,28 +113,57 @@ const QuestionPage = ({
 };
 
 const DisplayPage = ({ answers, changeCurrent, currentQuestion }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  useEffect(() => {
+    setCurrentPage(Math.floor(currentQuestion / questionsPerPage) + 1);
+  }, [currentQuestion]);
+  const temp = new Array(
+    Math.floor(answers.length / questionsPerPage + 1)
+  ).fill("");
   return (
     <div className="question-page-body-left-pages">
       <div className="question-page-button-list">
-        {answers.map((item, index) => (
-          <button
-            key={item.questionID}
-            onClick={() => changeCurrent(index)}
-            className={
-              (index === currentQuestion
-                ? "question-page-button-current"
-                : "question-page-button") +
-              " " +
-              (item.studentAnswer === ""
-                ? "question-page-button-incomplete"
-                : "question-page-button-complete")
-            }
-          >
-            {index}
-          </button>
-        ))}
+        {answers.map((item, index) =>
+          index < currentPage * questionsPerPage &&
+          index >= (currentPage - 1) * questionsPerPage ? (
+            <button
+              key={item.questionID}
+              onClick={() => changeCurrent(index)}
+              className={
+                (index === currentQuestion
+                  ? "question-page-button-current"
+                  : "question-page-button") +
+                " " +
+                (item.studentAnswer === ""
+                  ? "question-page-button-incomplete"
+                  : "question-page-button-complete")
+              }
+            >
+              {index + 1}
+            </button>
+          ) : (
+            ""
+          )
+        )}
       </div>
-      <div>Pages: {Math.floor(answers.length / questionsPerPage + 1)}</div>
+      <div className="question-page-body-left-page-number">
+        Pages:
+        {temp.map((_, index) => {
+          return (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index + 1)}
+              className={
+                currentPage === index + 1
+                  ? "question-page-body-left-page-number-current-btn"
+                  : "question-page-body-left-page-number-btn"
+              }
+            >
+              {index + 1}
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 };
@@ -147,6 +177,7 @@ const DisplayQuestion = ({
   submitExam,
 }) => {
   const updateCheckedState = (index, value, checked, id) => {
+    // console.log(index, value, checked, id);
     for (var item in question.choices) {
       document.getElementById(
         "question-" + currentQuestion.toString() + "-" + item.toString()
@@ -157,14 +188,15 @@ const DisplayQuestion = ({
         "question-" + currentQuestion.toString() + "-" + index.toString()
       ).checked = true;
     }
-    changeAnswer(id, value);
+    if (checked === true) changeAnswer(id, value);
+    else changeAnswer(id, "");
   };
 
   return (
     <div>
       <div className="question-page-body-right-upper">
         <div className="question-page-body-right-upper-left">
-          {currentQuestion}.
+          {currentQuestion + 1}.
         </div>
         <div className="question-page-body-right-upper-right">
           {he.decode(question.question)}
