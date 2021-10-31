@@ -1,3 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=ABeeZee&display=swap");
+.question-page-root-container {
+  font-family: "ABeeZee", sans-serif;
+}
 .question-page-default-header {
   height: 15vh;
   background-color: #fcddec;
@@ -12,6 +16,12 @@
   height: 100%;
 
   background-color: #ef5da8;
+
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-around; */
+  align-items: center;
+  color: white;
 }
 .question-page-body-right {
   width: 75%;
@@ -29,4 +39,87 @@
 
 .question-page-body-left-page-number-current-btn {
   background-color: #ef5da8;
+}
+
+.question-page-body-right-wrapper {
+  color: #ef5da8;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  /* 
+  margin-top: 1.5rem;
+  margin-bottom: 1rem; */
+
+  overflow-y: scroll;
+}
+
+.question-page-body-right-wrapper::-webkit-scrollbar {
+  width: 20px;
+}
+.question-page-body-right-wrapper::-webkit-scrollbar-track {
+  /* background-color: #e5e5e5;
+  border-radius: 10px; */
+
+  box-shadow: inset 0 0 10px 10px#e5e5e5;
+  border: solid 5px transparent;
+  border-radius: 10px;
+}
+
+.question-page-body-right-wrapper::-webkit-scrollbar-thumb {
+  /* background-color: #ef5da8;
+  border-radius: 10px; */
+  box-shadow: inset 0 0 10px 10px#ef5da8;
+  border: solid 5px transparent;
+  border-radius: 10px;
+}
+
+.question-page-body-right-upper {
+  display: flex;
+  flex-direction: row;
+  padding: 2rem;
+  font-size: 1.25rem;
+
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  height: 100%;
+  flex-basis: 30%;
+}
+
+.question-page-body-right-lower {
+  flex-basis: 45%;
+  margin-bottom: 1rem;
+  margin-top: 1.5rem;
+}
+
+.question-page-body-right-bottom {
+  flex-basis: 5%;
+}
+
+.question-page-body-right-bottom-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.question-page-body-right-bottom button {
+  font-family: "ABeeZee", sans-serif;
+  font-size: 1.85rem;
+  border: none;
+  background: none;
+  color: #ef5da8;
+  /* margin: 0 1rem; */
+  margin-bottom: 0.5rem;
+}
+
+.question-page-body-right-bottom button:hover {
+  cursor: pointer;
+}
+
+.question-page-body-right-wrapper hr {
+  border: 1px solid #ef5da8;
+  width: 95%;
+}
+
+.question-page-body-right-upper-left {
+  margin-right: 1rem;
 }

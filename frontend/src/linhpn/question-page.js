@@ -74,7 +74,7 @@ const QuestionPage = ({
   }, []);
 
   return (
-    <div>
+    <div className="question-page-root-container">
       <div className="question-page-default-header">Default Header</div>
       {answers.length === 0 ? (
         <div>Loading Screen Plz</div>
@@ -193,7 +193,7 @@ const DisplayQuestion = ({
   };
 
   return (
-    <div>
+    <div className="question-page-body-right-wrapper">
       <div className="question-page-body-right-upper">
         <div className="question-page-body-right-upper-left">
           {currentQuestion + 1}.
@@ -202,6 +202,7 @@ const DisplayQuestion = ({
           {he.decode(question.question)}
         </div>
       </div>
+      <hr></hr>
 
       <div className="question-page-body-right-lower">
         {question.choices.map((item, index) => (
@@ -251,28 +252,30 @@ const DisplayQuestion = ({
       </div>
 
       <div className="question-page-body-right-bottom">
-        <button
-          className="question-page-body-right-bottom-back"
-          disabled={currentQuestion === 0}
-          onClick={() => changeCurrent(currentQuestion - 1)}
-        >
-          Back
-        </button>
-        {currentQuestion === questionListLength - 1 ? (
+        <div className="question-page-body-right-bottom-wrapper">
           <button
             className="question-page-body-right-bottom-back"
-            onClick={submitExam}
+            disabled={currentQuestion === 0}
+            onClick={() => changeCurrent(currentQuestion - 1)}
           >
-            Submit
+            &lt; Back
           </button>
-        ) : (
-          <button
-            className="question-page-body-right-bottom-back"
-            onClick={() => changeCurrent(currentQuestion + 1)}
-          >
-            Next
-          </button>
-        )}
+          {currentQuestion === questionListLength - 1 ? (
+            <button
+              className="question-page-body-right-bottom-next"
+              onClick={submitExam}
+            >
+              Submit &gt;
+            </button>
+          ) : (
+            <button
+              className="question-page-body-right-bottom-next"
+              onClick={() => changeCurrent(currentQuestion + 1)}
+            >
+              Next &gt;
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
