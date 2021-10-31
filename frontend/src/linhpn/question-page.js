@@ -243,8 +243,28 @@ const DisplayQuestion = ({
                 "-" +
                 index.toString()
               }
+              className={
+                item === question.studentAnswer
+                  ? "question-page-body-right-lower-checked"
+                  : "question-page-body-right-lower-unchecked"
+              }
             >
-              {he.decode(item)}
+              <div className="question-page-body-right-lower-choice-section">
+                <div className="question-page-body-right-lower-choice-index">
+                  <div className="question-page-body-right-lower-choice-index-content">
+                    {index === 0
+                      ? "A"
+                      : index === 1
+                      ? "B"
+                      : index === 2
+                      ? "C"
+                      : "D"}
+                  </div>
+                </div>
+                <div className="question-page-body-right-lower-choice-content">
+                  {he.decode(item)}
+                </div>
+              </div>
             </label>
             <br></br>
           </div>
