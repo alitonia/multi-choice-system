@@ -4,7 +4,7 @@ import "./question-page.css";
 import { useState, useEffect } from "react";
 import he from "he";
 
-const questionsPerPage = 40;
+const questionsPerPage = 30;
 const questionsPerRow = 5;
 
 const randomId = () => {
@@ -15,8 +15,9 @@ const randomId = () => {
 
 const QuestionPage = ({
   questionAPI = "https://opentdb.com/api.php?amount=50",
-  examName = "ITSS Mana",
-  teacherName = "Mr, Linhpn",
+  examName = "Exam Name",
+  subjectName = "Subject name",
+  teacherName = "Class of: Teacher",
   duration = 60,
 }) => {
   //   const [pageNumber, setPageNumber] = useState(0);
@@ -82,6 +83,7 @@ const QuestionPage = ({
         <div className="question-page-body">
           <div className="question-page-body-left">
             <div className="question-page-body-left-exam">{examName}</div>
+            <div className="question-page-body-left-subject">{subjectName}</div>
             <div className="question-page-body-left-teacher">{teacherName}</div>
             <div className="question-page-body-left-duration">
               {duration} minutes
@@ -126,43 +128,47 @@ const DisplayPage = ({ answers, changeCurrent, currentQuestion }) => {
         {answers.map((item, index) =>
           index < currentPage * questionsPerPage &&
           index >= (currentPage - 1) * questionsPerPage ? (
-            <button
-              key={item.questionID}
-              onClick={() => changeCurrent(index)}
-              className={
-                (index === currentQuestion
-                  ? "question-page-button-current"
-                  : "question-page-button") +
-                " " +
-                (item.studentAnswer === ""
-                  ? "question-page-button-incomplete"
-                  : "question-page-button-complete")
-              }
-            >
-              {index + 1}
-            </button>
+            <div className="question-page-button-content-wrapper">
+              <button
+                key={item.questionID}
+                onClick={() => changeCurrent(index)}
+                className={
+                  (index === currentQuestion
+                    ? "question-page-button-current"
+                    : "question-page-button") +
+                  " " +
+                  (item.studentAnswer === ""
+                    ? "question-page-button-incomplete"
+                    : "question-page-button-complete")
+                }
+              >
+                {index + 1}
+              </button>
+            </div>
           ) : (
             ""
           )
         )}
       </div>
       <div className="question-page-body-left-page-number">
-        Pages:
-        {temp.map((_, index) => {
-          return (
-            <button
-              key={index}
-              onClick={() => setCurrentPage(index + 1)}
-              className={
-                currentPage === index + 1
-                  ? "question-page-body-left-page-number-current-btn"
-                  : "question-page-body-left-page-number-btn"
-              }
-            >
-              {index + 1}
-            </button>
-          );
-        })}
+        <span>Pages:</span>
+        <div className="question-page-body-left-page-number-buttons">
+          {temp.map((_, index) => {
+            return (
+              <button
+                key={index}
+                onClick={() => setCurrentPage(index + 1)}
+                className={
+                  currentPage === index + 1
+                    ? "question-page-body-left-page-number-current-btn"
+                    : "question-page-body-left-page-number-btn"
+                }
+              >
+                {/* {index + 1} */}
+              </button>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
