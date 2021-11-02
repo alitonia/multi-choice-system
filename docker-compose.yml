@@ -19,7 +19,7 @@ services:
       - ./backend/src/:/app/
       - ./backend/src/wait:/wait
     ports:
-      - 8088:80
+      - "8088:80"
     command: sh -c  /start-reload.sh
     environment:
       # - WAIT_HOSTS=pg-mana:3306
