@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import routers
-from app.core import config
+from .api import routers
+from .core import config
 
-
+prefix = config.config("BACKEND_PREFIX", default='/api/v1')
 app = FastAPI(
     title="Multi-choice API",
     description="API for Multi-choices system",
@@ -12,8 +12,10 @@ app = FastAPI(
     docs_url=None if config.ENVIRONMENT == "production" else "/_api_"
 )
 
-app.include_router(routers.api_router)
+app.include_router(routers.api_router, prefix=prefix)
 
+# TODO: authenticate this
+app.include_router(routers.authenticated_router, prefix=prefix)
 
 app.add_middleware(
     CORSMiddleware,
