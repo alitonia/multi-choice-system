@@ -1,14 +1,14 @@
-import {Placeholder} from './Placeholder.js'
-import {HomePage} from "./Home/HomePage.js";
+import { Placeholder } from "./Placeholder.js";
+import { HomePage } from "./Home/HomePage.js";
 
 export const routes = [
     {
-        path: '/home',
+        path: "/home",
         others: {},
         component: HomePage
     },
     {
-        path: '/',
+        path: "/",
         others: {},
         component: Placeholder
     }
