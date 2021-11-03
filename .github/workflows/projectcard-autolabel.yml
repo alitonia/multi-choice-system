@@ -1,16 +1,12 @@
-name: ProjectCard Auto Labels
+name: Project Card Event
 
 on:
   project_card:
     types: [ created, moved ]
 
 jobs:
-  projectcardautolabel_job:
+  triage:
+    name: Auto card labeler
     runs-on: ubuntu-latest
     steps:
-      - name: Run ProjectCard AutoLabel
-        id: runprojectcardautolabel
-        uses: Matticusau/projectcard-autolabel@v1.0.0
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          autolabel-config: '[{"column":"TODO","add_labels":["fresh","confirmed"],"remove_labels":["doing","bug","reviewing","wont fix","pending merge"]},{"column":"In Progress","add_labels":["doing"],"remove_labels":["fresh","confirmed","bug","reviewing","wont fix","pending merge"]},{"column":"Bugfix","add_labels":["bug"],"remove_labels":["fresh","confirmed","doing","reviewing","wont fix","pending merge"]},{"column":"Review + Testing","add_labels":["reviewing"],"remove_labels":["fresh","confirmed","doing","bug","wont fix","pending merge"]},{"column":"Mergeable","add_labels":["pending merge"],"remove_labels":["fresh","confirmed","reviewing","doing","bug","wont fix"]},{"column":"Done","add_labels":[],"remove_labels":["fresh","confirmed","doing","bug","reviewing","wont fix","pending merge"]},{"column":"Backlog","add_labels":["wont fix"],"remove_labels":["fresh","confirmed","doing","bug","reviewing","pending merge"]}]'
+      - uses: technote-space/auto-card-labeler@v1

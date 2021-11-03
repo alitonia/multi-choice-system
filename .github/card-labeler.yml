@@ -1,0 +1,14 @@
+'Online Multi-choice Exam Web App':
+  'TODO':
+    - 'fresh'
+    - 'confirmed'
+  'In Progress':
+    - 'doing'
+  'Bugfix':
+    - 'bug'
+  'Review + Testing':
+    - 'reviewing'
+  'Mergeable':
+    - 'pending merge'
+  'Backlog':
+    - 'maybe later'
