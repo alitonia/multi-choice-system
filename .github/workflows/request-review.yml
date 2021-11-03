@@ -1,0 +1,17 @@
+name: Add Reviewers
+
+on:
+  pull_request:
+    types: [ opened,  reopened ]
+    branches: [ main ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add Reviewers
+        uses: madrapps/add-reviewers@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          reviewers: alitonia
+          re-request-when-approved: true
+          re-request-when-changes-requested: true
