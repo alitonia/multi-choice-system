@@ -18,6 +18,6 @@ jobs:
           {"column":"In Progress", "add_labels":["doing"], "remove_labels":["fresh", "confirmed","bug", "reviewing", "wont fix"]},
           {"column":"Bugfix", "add_labels":["bug"], "remove_labels":["fresh", "confirmed","doing","reviewing", "wont fix"]},
           {"column":"Review + Testing", "add_labels":["reviewing"], "remove_labels":["fresh", "confirmed","doing","bug","wont fix"]},
-          {"column":"Done", "add_labels":[], "remove_labels":["fresh", "confirmed","doing","bug", "reviewing", "wont fix"]}],
+          {"column":"Done", "add_labels":[], "remove_labels":["fresh", "confirmed","doing","bug", "reviewing", "wont fix"]},
           {"column":"Backlog", "add_labels":["wont fix"], "remove_labels":["fresh", "confirmed","doing","bug", "reviewing"]}]
           '
