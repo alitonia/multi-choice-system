@@ -2,7 +2,7 @@ import logging
 from starlette.config import Config
 
 
-config = Config(".env")
+config = Config("../../.env")
 
 ENVIRONMENT                     = config("ENVIRONMENT", default="local")
 LOG_LEVEL                       = config("LOG_LEVEL", default=logging.WARNING)

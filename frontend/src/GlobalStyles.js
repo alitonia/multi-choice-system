@@ -1,4 +1,4 @@
-import { createGlobalStyle} from 'styled-components';
+import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
     :root {
@@ -11,4 +11,4 @@ export const GlobalStyle = createGlobalStyle`
         --fontMed: 1.2rem;
         --fontSmall: 1rem;
     }
-`
+`;

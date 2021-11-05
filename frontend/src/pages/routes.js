@@ -4,7 +4,7 @@ import LoginPage from "./LoginPage"
 
 export const routes = [
     {
-        path: '/home',
+        path: "/home",
         others: {},
         component: HomePage
     },
