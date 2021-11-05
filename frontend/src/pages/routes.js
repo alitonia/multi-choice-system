@@ -1,11 +1,11 @@
 import { Placeholder } from "./Placeholder.js";
-import { HomePage } from "./Home/HomePage.js";
+import Dashboard from "./Dashboard";
 
 export const routes = [
     {
-        path: "/home",
+        path: "/dashboard",
         others: {},
-        component: HomePage
+        component: Dashboard
     },
     {
         path: "/",
