@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const MainViewWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 0 16px 16px;
+    padding: 0 24px 16px;
 `;
 
 export const MainViewHeader = styled.div`
@@ -111,7 +111,7 @@ export const MainViewBody = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    padding: 0 20px;
+    padding: 0 24px;
 
     & > * {
         margin-bottom: 16px;
@@ -128,6 +128,7 @@ export const ExamListWrapper = styled.div`
 
 export const ExamList = styled.div`
     display: grid;
-    gap: 40px;
+    row-gap: 40px;
+    column-gap: 40px;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
 `;
