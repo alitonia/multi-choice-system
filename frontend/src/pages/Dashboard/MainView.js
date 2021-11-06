@@ -211,9 +211,10 @@ export default function MainView() {
         <MainViewWrapper>
             <MainViewHeader>
                 <ExamSearch onExamSearch={onExamSearch} />
-                <div className="user-welcome">Welcome back, {name}</div>
+                <div className="user-welcome">
+                    <span>Welcome back, {name}</span>
+                </div>
             </MainViewHeader>
-            <hr className="separator" />
             <MainViewBody>
                 <div className="create-exam-btn">
                     {role_id === 1 ? <button>Create New Exam</button> : null}

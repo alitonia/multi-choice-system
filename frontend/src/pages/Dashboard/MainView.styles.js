@@ -3,22 +3,19 @@ import styled from "styled-components";
 export const MainViewWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    padding: 12px 16px;
-
-    .separator {
-        display: block;
-        border: 0;
-        border-top: 2px solid #334257;
-        margin: 16px 0;
-        padding: 0;
-        flex: 1 0;
-    }
+    padding: 0 16px 16px;
 `;
 
 export const MainViewHeader = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background-color: #ffffff;
+    padding: 16px 0;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #334257;
 
     .user-welcome {
         display: flex;
@@ -27,6 +24,7 @@ export const MainViewHeader = styled.div`
         box-sizing: border-box;
         border: 2px solid #334257;
         border-radius: 16px;
+        padding: 8px;
         width: 30%;
         color: #334257;
     }
