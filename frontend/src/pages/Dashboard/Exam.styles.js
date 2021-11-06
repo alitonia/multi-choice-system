@@ -14,7 +14,7 @@ export const StyledExam = styled.div`
     line-height: 16px;
 
     .exam-name {
-        font-size: 18px;
+        font-size: 24px;
         line-height: 21px;
     }
 
@@ -25,6 +25,10 @@ export const StyledExam = styled.div`
         &:hover {
             text-decoration: underline;
         }
+    }
+
+    & > div {
+        margin-bottom: 8px;
     }
 
     &::before {

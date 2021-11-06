@@ -213,12 +213,14 @@ export default function MainView() {
                 <ExamSearch onExamSearch={onExamSearch} />
                 <div className="user-welcome">
                     <span>Welcome back, {name}</span>
+                    <div className="toolbox">
+                        {role_id === 1 ? (
+                            <button className="create-exam-btn">Create New Exam</button>
+                        ) : null}
+                    </div>
                 </div>
             </MainViewHeader>
             <MainViewBody>
-                <div className="create-exam-btn">
-                    {role_id === 1 ? <button>Create New Exam</button> : null}
-                </div>
                 <RecentExamList />
                 <AllExamList />
             </MainViewBody>

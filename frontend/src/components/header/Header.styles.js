@@ -14,6 +14,7 @@ export const HeaderContent = styled.div`
     }
     .login-user {
         align-self: flex-end;
+        font-size: 20px;
     }
     .login-user .username {
         color: #ffffff;
