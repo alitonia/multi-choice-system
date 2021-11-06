@@ -1,87 +1,69 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  background: #334257;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #334257;
 `;
 
 export const Content = styled.div`
-  position: relative;
-  width: 1080px;
-  height: 720px;
-  margin-left: 15%;
-  /* Primary */
+    display: flex;
+    flex-direction: row;
+    flex: 1 0;
+    padding: 40px 64px;
+    justify-content: space-between;
 `;
 
 export const Header = styled.div`
-  position: absolute;
-  width: 100vw;
-  height: 256px;
-  left: 0px;
-  top: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 256px;
 
-  /* Secondary */
-
-  background: #548ca8;
+    background: #548ca8;
 `;
 
 export const HeaderLogo = styled.div`
-  /* Logo */
-  position: absolute;
-  width: 138px;
-  height: 85px;
-  margin-left: 43%;
-  margin-top: 5%;
-
+    width: 138px;
+    height: 85px;
 `;
 
 export const Logo = styled.div`
-  /* Title */
-  font-family: ABeeZee;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 72px;
-  line-height: 85px;
-  text-align: center;
+    font-family: ABeeZee;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 72px;
+    line-height: 85px;
+    text-align: center;
 
-  color: #eeeeee;
+    color: #eeeeee;
 `;
 
-export const LoginText = styled.div`
-  /* Login */
+export const LoginTextArea = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
 
-  position: absolute;
-  width: 244px;
-  height: 113px;
-  left: 96px;
-  top: 360px;
+    color: #ffffff;
+    /* padding: 30px; */
 
-  font-family: ABeeZee;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 96px;
-  line-height: 113px;
+    span {
+        font-family: ABeeZee;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 96px;
+        line-height: 113px;
+    }
 
-  /* White */
+    p {
+        font-family: ABeeZee;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 18px;
+        line-height: 21px;
 
-  color: #ffffff;
-`;
-
-export const LoginSubText = styled.div`
-  /* Log in to use our services. Make sure your account has been created by your instructor */
-
-  position: absolute;
-  width: 385px;
-  height: 42px;
-  left: 103px;
-  top: 499px;
-
-  font-family: ABeeZee;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
-
-  /* White */
-
-  color: #ffffff;
+        margin-top: 30px;
+    }
 `;

@@ -1,246 +1,73 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  /* Form */
+    background: #ffffff;
+    border-radius: 32px;
+    padding: 20px 40px;
+    display: flex;
+    flex-direction: column;
+    width: 480px;
 
-  position: absolute;
-  width: 476px;
-  height: 357px;
-  left: 540px;
-  top: 294px;
+    .forgot-password-text {
+        margin-bottom: 10px;
+        font-family: Roboto;
+        font-size: 16px;
+        line-height: 19px;
 
-  /* White */
-
-  background: #ffffff;
-  border-radius: 32px;
+        color: #334257;
+    }
 `;
 
-export const UsernameInput = styled.div`
-  margin-top: 22px;
-  margin-left: 42px;
+export const InputWrapper = styled.div`
+    width: 100%;
 
-  input {
-    /* Rectangle 5 */
+    input {
+        width: 100%;
+        margin-bottom: 20px;
 
-    position: relative;
-    width: 393px;
-    height: 32px;
-    /* left: 581px; */
-    /* top: 316px; */
+        border: 2px solid #b5b2b2;
+        box-sizing: border-box;
+        border-radius: 8px;
 
-    /* Grey */
+        padding: 8px 10px;
+    }
 
-    border: 2px solid #b5b2b2;
-    box-sizing: border-box;
+    input::placeholder {
+        font-family: ABeeZee;
+        font-size: 18px;
+        line-height: 21px;
+        color: #b5b2b2;
+    }
+`;
+
+export const ButtonWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1 0;
+
+    & > * {
+        width: 100%;
+    }
+
+    span {
+        text-align: center;
+        color: #334257;
+        margin: 20px 0;
+    }
+`;
+
+export const StyledButton = styled.button`
+    padding: 6px 0;
+    background: ${props => props.bgcolor || "#FFFFFF"};
+    color: ${props => props.color || "#000000"};
     border-radius: 8px;
-  }
-
-  input::placeholder {
-    font-family: ABeeZee;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: 21px;
-
-    /* Grey */
-
-    color: #b5b2b2;
-  }
+    font-size: 20px;
 `;
 
-export const PasswordInput = styled.div`
-  margin-top: 24px;
-  margin-left: 41px;
-  input {
-    position: relative;
-    width: 393px;
-    height: 32px;
-    /* left: 581px; */
-    /* top: 372px; */
-
-    /* Grey */
-
-    border: 2px solid #b5b2b2;
-    box-sizing: border-box;
-    border-radius: 8px;
-  }
-
-  input::placeholder {
-    font-family: ABeeZee;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 18px;
-    line-height: 21px;
-
-    /* Grey */
-
-    color: #b5b2b2;
-  }
-`;
-
-export const Content = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-`;
-
-export const ForgotPasswordText = styled.div`
-  /* Forgot your password? */
-
-  position: relative;
-  width: 151px;
-  height: 17px;
-  /* left: 581px; */
-  /* top: 416px; */
-
-  margin-top: 12px;
-  margin-left: 41px;
-
-  font-family: ABeeZee;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 17px;
-  /* identical to box height */
-
-  text-decoration-line: underline;
-
-  /* Primary */
-
-  color: #334257;
-`;
-
-export const LoginButton = styled.div`
-  margin-top: 12px;
-  margin-left: 41px;
-
-  button {
-    position: relative;
-    width: 393px;
-    height: 32px;
-    /* left: 581px; */
-    /* top: 445px; */
-
-    /* Primary */
-
-    background: #334257;
-    border-radius: 8px;
-  }
-`;
-
-export const LoginButtonText = styled.div`
-  /* Log in */
-
-  position: relative;
-  width: 52px;
-  height: 21px;
-  /* left: 752px; */
-  /* top: 450px; */
-  margin: 5px;
-  margin-left: 171px;
-
-  font-family: ABeeZee;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
-  text-align: center;
-
-  /* White */
-
-  color: #ffffff;
-`;
-
-export const OrText = styled.div`
-  /* or */
-
-  position: relative;
-  width: 14px;
-  height: 17px;
-  /* left: 771px; */
-  /* top: 501px; */
-
-  margin-top: 24px;
-  margin-left: 231px;
-
-  font-family: ABeeZee;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 17px;
-  line-height: 17px;
-  /* identical to box height */
-
-  text-align: center;
-
-  /* Primary */
-
-  color: #334257;
-`;
-
-export const GoogleButton = styled.div`
-  margin-top: 24px;
-  margin-left: 41px;
-  button {
-    position: relative;
-    width: 393px;
-    height: 32px;
-
-    /* border: 1px solid #000000; */
-    border-radius: 8px;
-  }
-`;
-
-export const GoogleButtonText = styled.div`
-  margin-top: 5px;
-  margin-left: 106px;
-  position: relative;
-  width: 183px;
-  height: 21px;
-  /* left: 687px; */
-  /* top: 547px; */
-
-  font-family: ABeeZee;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
-  text-align: center;
-
-  /* Black */
-
-  color: #000000;
-`;
-
-export const OutlookButton = styled.div`
-  margin-top: 24px;
-  margin-left: 41px;
-  button {
-    position: relative;
-    width: 393px;
-    height: 32px;
-
-    background: #000000;
-    border-radius: 8px;
-  }
-`;
-
-export const OutlookButtonText = styled.div`
-  margin-top: 5px;
-  margin-left: 102px;
-  position: relative;
-  width: 191px;
-  height: 21px;
-  /* left: 683px; */
-  /* top: 603px; */
-
-  font-family: ABeeZee;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 21px;
-  text-align: center;
-
-  /* White */
-
-  color: #ffffff;
+export const ExternalLogin = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 0;
 `;
