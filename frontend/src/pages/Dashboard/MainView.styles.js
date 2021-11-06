@@ -19,6 +19,17 @@ export const MainViewHeader = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    .user-welcome {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        border: 2px solid #334257;
+        border-radius: 16px;
+        width: 30%;
+        color: #334257;
+    }
 `;
 
 export const StyledExamSearch = styled.div`
@@ -73,17 +84,6 @@ export const StyledExamSearch = styled.div`
     }
 `;
 
-export const UserWelcoming = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-sizing: border-box;
-    border: 2px solid #334257;
-    border-radius: 16px;
-    width: 30%;
-    color: #334257;
-`;
-
 export const MainViewBody = styled.div`
     display: flex;
     flex-direction: column;
@@ -120,7 +120,12 @@ export const ExamListWrapper = styled.div`
     .title {
         font-size: 24px;
         color: #334257;
+        margin-bottom: 16px;
     }
 `;
 
-export const ExamList = styled.div``;
+export const ExamList = styled.div`
+    display: grid;
+    gap: 40px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+`;

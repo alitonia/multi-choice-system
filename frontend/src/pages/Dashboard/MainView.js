@@ -6,9 +6,9 @@ import {
     MainViewBody,
     MainViewHeader,
     MainViewWrapper,
-    StyledExamSearch,
-    UserWelcoming
+    StyledExamSearch
 } from "./MainView.styles";
+import Exam from "./Exam";
 
 ExamSearch.propTypes = {
     onExamSearch: PropTypes.func
@@ -42,27 +42,166 @@ function RecentExamList() {
     return (
         <ExamListWrapper>
             <div className="title">RECENT</div>
-            <ExamList></ExamList>
+            <ExamList>
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+            </ExamList>
         </ExamListWrapper>
     );
 }
 
 function AllExamList() {
-    // get exam list from redux state
-    const examList = [];
-
     return (
         <ExamListWrapper>
             <div className="title">ALL</div>
-            <ExamList></ExamList>
+            <ExamList>
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+                <Exam
+                    name="He"
+                    creator="He"
+                    subject="He"
+                    duration="120"
+                    startTime="2021-11-06T06:25:49.742Z"
+                />
+            </ExamList>
         </ExamListWrapper>
     );
 }
 
 export default function MainView() {
     // get user from redux state
-    const username = "he";
-    const userType = 1;
+    const name = "he";
+    const role_id = 1;
 
     const onExamSearch = exam => {
         console.log(exam);
@@ -72,12 +211,12 @@ export default function MainView() {
         <MainViewWrapper>
             <MainViewHeader>
                 <ExamSearch onExamSearch={onExamSearch} />
-                <UserWelcoming>Welcome back, {username}</UserWelcoming>
+                <div className="user-welcome">Welcome back, {name}</div>
             </MainViewHeader>
             <hr className="separator" />
             <MainViewBody>
                 <div className="create-exam-btn">
-                    {userType === 1 ? <button>Create New Exam</button> : null}
+                    {role_id === 1 ? <button>Create New Exam</button> : null}
                 </div>
                 <RecentExamList />
                 <AllExamList />
