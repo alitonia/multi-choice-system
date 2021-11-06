@@ -1,19 +1,18 @@
 import { Placeholder } from "./Placeholder.js";
-import { HomePage } from "./Home/HomePage.js";
 import LoginPage from "./LoginPage";
+import Dashboard from "./Dashboard";
 
 export const routes = [
     {
-        path: "/home",
+        path: "/dashboard",
         others: {},
-        component: HomePage
+        component: Dashboard
     },
     {
         path: "/login",
         others: {},
         component: LoginPage
     },
-
     {
         path: "/",
         others: {},
