@@ -1,0 +1,39 @@
+@font-face {
+  font-family: Roboto;
+  src: url(./assets/fonts/Roboto/Roboto-Regular.ttf);
+}
+
+.text-small {
+  font-family: Roboto;
+  font-size: 0.88rem;
+}
+
+.text-base {
+  font-family: Roboto;
+  font-size: 1rem;
+}
+
+.text-large {
+  font-family: Roboto;
+  font-size: 1.25rem;
+}
+
+.text-title {
+  font-family: Roboto;
+  font-size: 1.5rem;
+}
+
+.text-heading {
+  font-family: Roboto;
+  font-size: 2rem;
+}
+
+.text-xl {
+  font-family: Roboto;
+  font-size: 3rem;
+}
+
+.text-2xl {
+  font-family: Roboto;
+  font-size: 6rem;
+}
