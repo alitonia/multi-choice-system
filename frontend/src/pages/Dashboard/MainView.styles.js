@@ -28,7 +28,6 @@ export const MainViewHeader = styled.div`
         padding: 8px;
         width: 30%;
         color: #334257;
-        font-size: 20px;
 
         .toolbox {
             display: flex;
@@ -58,11 +57,7 @@ export const MainViewHeader = styled.div`
 export const StyledExamSearch = styled.div`
     display: flex;
     flex-direction: column;
-
-    .title {
-        font-size: 32px;
-        color: #334257;
-    }
+    color: #334257;
 
     .input-wrapper {
         display: flex;
@@ -77,7 +72,6 @@ export const StyledExamSearch = styled.div`
             border-radius: 8px;
             box-sizing: border-box;
             outline: none;
-            font-size: 16px;
             padding: 6px 10px;
             width: 360px;
 
@@ -93,7 +87,6 @@ export const StyledExamSearch = styled.div`
             border: none;
             outline: none;
             cursor: pointer;
-            font-size: 16px;
             transition: background-color 0.3s ease;
 
             &:hover {
@@ -120,7 +113,6 @@ export const MainViewBody = styled.div`
 
 export const ExamListWrapper = styled.div`
     .title {
-        font-size: 32px;
         color: #334257;
         margin-bottom: 16px;
     }
