@@ -10,11 +10,9 @@ export const StyledExam = styled.div`
     border-radius: 16px;
     box-sizing: border-box;
     padding: 8px;
-    font-size: 14px;
     line-height: 16px;
 
     .exam-name {
-        font-size: 24px;
         line-height: 21px;
     }
 

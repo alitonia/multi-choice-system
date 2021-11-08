@@ -8,8 +8,8 @@ export default function Header() {
     return (
         <HeaderWrapper>
             <HeaderContent>
-                <div className="logo">logo</div>
-                <div className="login-user">
+                <div className="logo text-2xl">logo</div>
+                <div className="login-user text-large">
                     Currently logged in as&nbsp;
                     <a className="username" href="/settings">
                         {username}

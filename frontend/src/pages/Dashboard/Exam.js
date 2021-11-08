@@ -13,8 +13,8 @@ Exam.propTypes = {
 export default function Exam(props) {
     const { name, subject, creator, startTime, duration } = props;
     return (
-        <StyledExam>
-            <div className="exam-name">{name}</div>
+        <StyledExam className="text-small">
+            <div className="exam-name text-title">{name}</div>
             <div className="subject">{subject}</div>
             <div className="class">
                 Class of: <span className="teacher">{creator}</span>
