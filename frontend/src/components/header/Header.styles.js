@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 export const HeaderWrapper = styled.header`
-    background-color: #548ca8;
-    color: #ffffff;
+    background-color: var(--secondary);
+    color: var(--white);
     padding: 12px 24px;
 `;
 
@@ -14,6 +14,6 @@ export const HeaderContent = styled.div`
         align-self: flex-end;
     }
     .login-user .username {
-        color: #ffffff;
+        color: var(--white);
     }
 `;
