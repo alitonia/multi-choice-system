@@ -11,8 +11,9 @@ export const Content = styled.div`
     display: flex;
     flex-direction: row;
     flex: 1 0;
-    padding: 40px 64px;
+    padding: 40px 200px;
     justify-content: space-between;
+    align-items: center;
 `;
 
 export const Header = styled.div`

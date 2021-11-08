@@ -6,8 +6,8 @@ export const Wrapper = styled.div`
     padding: 20px 40px;
     display: flex;
     flex-direction: column;
-    width: 476px;
-    height: 357px;
+    width: 500px;
+    height: 380px;
 
     .forgot-password-text {
         margin-bottom: 10px;
@@ -24,7 +24,8 @@ export const InputWrapper = styled.div`
 
     input {
         width: 100%;
-        margin-bottom: 34px;
+        margin-bottom: 24px;
+        line-height: 24px;
 
         border: 2px solid #b5b2b2;
         box-sizing: border-box;
@@ -35,8 +36,8 @@ export const InputWrapper = styled.div`
 
     input::placeholder {
         font-family: ABeeZee;
-        font-size: 18px;
-        line-height: 21px;
+        font-size: 20px;
+        line-height: 20px;
         color: #b5b2b2;
     }
 `;
