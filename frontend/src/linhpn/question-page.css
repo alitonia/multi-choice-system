@@ -1,10 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=ABeeZee&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 .question-page-root-container {
   --question-page-header: #548ca8;
   --question-page-main-color: #334257;
   --question-page-scroll-bar-bg: #e5e5e5;
-  font-family: "ABeeZee", sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 .question-page-default-header {
   height: 15vh;
@@ -139,7 +139,7 @@
   border-radius: 50%;
 }
 .question-page-body-right-lower-choice-index-content {
-  padding-top: 1.5px;
+  /* padding-top: 1.5px; */
 }
 .question-page-body-right-lower-checked
   > .question-page-body-right-lower-choice-section

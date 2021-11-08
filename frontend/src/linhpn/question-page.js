@@ -47,6 +47,10 @@ const QuestionPage = ({
     }
   };
 
+  const forceSubmitExam = () => {
+    console.log("Force Submit");
+  };
+
   useEffect(() => {
     if (localStorage.getItem("default_exam") === null) {
       fetch(questionAPI)
@@ -86,7 +90,11 @@ const QuestionPage = ({
             <div className="question-page-body-left-subject">{subjectName}</div>
             <div className="question-page-body-left-teacher">{teacherName}</div>
             <div className="question-page-body-left-duration">
-              {duration} minutes
+              <DisplayTime
+                duration={duration}
+                startTime={Date.now()}
+                endExamHandler={forceSubmitExam}
+              />
             </div>
             {/* <div className="question-page-body-left-pages"> */}
             {/* {Math.floor(answers.length / questionsPerPage + 1)} - */}
@@ -128,7 +136,7 @@ const DisplayPage = ({ answers, changeCurrent, currentQuestion }) => {
         {answers.map((item, index) =>
           index < currentPage * questionsPerPage &&
           index >= (currentPage - 1) * questionsPerPage ? (
-            <div className="question-page-button-content-wrapper">
+            <div className="question-page-button-content-wrapper" key={index}>
               <button
                 key={item.questionID}
                 onClick={() => changeCurrent(index)}
@@ -306,4 +314,48 @@ const DisplayQuestion = ({
     </div>
   );
 };
+
+const DisplayTime = ({ duration, startTime, endExamHandler }) => {
+  const formatNumber2Digits = (number) => {
+    return (number < 10 ? "0" : "") + number.toString();
+  };
+
+  // time left in second
+  const [timeLeft, setTimeLeft] = useState(duration * 60);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (timeLeft > 0) {
+        const hour = Math.floor((timeLeft - 1) / 3600);
+        const minute = Math.floor((timeLeft - 1 - hour * 60) / 60);
+        const second = (timeLeft - 1) % 60;
+        setTimeLeft(timeLeft - 1);
+        setRemainingTime({
+          hours: hour,
+          minutes: minute,
+          seconds: second,
+        });
+      } else {
+        endExamHandler();
+        clearInterval(intervalId);
+      }
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, [timeLeft]);
+
+  const [remainingTime, setRemainingTime] = useState({
+    hours: Math.floor(duration / 60),
+    minutes: duration % 60,
+    seconds: 0,
+  });
+
+  return (
+    <div>
+      Time left: {formatNumber2Digits(remainingTime.hours)}:
+      {formatNumber2Digits(remainingTime.minutes)}:
+      {formatNumber2Digits(remainingTime.seconds)}
+    </div>
+  );
+};
+
 export default QuestionPage;
