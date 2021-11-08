@@ -12,10 +12,10 @@ export const MainViewHeader = styled.div`
     justify-content: space-between;
     position: sticky;
     top: 0;
-    background-color: #ffffff;
+    background-color: var(--white);
     padding: 16px 0;
     margin-bottom: 16px;
-    border-bottom: 2px solid #334257;
+    border-bottom: 2px solid var(--primary);
 
     .user-welcome {
         display: flex;
@@ -23,11 +23,11 @@ export const MainViewHeader = styled.div`
         justify-content: center;
         align-items: center;
         box-sizing: border-box;
-        border: 2px solid #334257;
+        border: 2px solid var(--primary);
         border-radius: 16px;
         padding: 8px;
         width: 30%;
-        color: #334257;
+        color: var(--primary);
 
         .toolbox {
             display: flex;
@@ -36,8 +36,8 @@ export const MainViewHeader = styled.div`
 
             button {
                 padding: 6px 10px;
-                background-color: #334257;
-                color: #ffffff;
+                background-color: var(--primary);
+                color: var(--white);
                 border-radius: 8px;
                 border: none;
                 outline: none;
@@ -47,7 +47,7 @@ export const MainViewHeader = styled.div`
                 margin: 0 4px;
 
                 &:hover {
-                    background-color: #3f5068;
+                    background-color: var(--primary-hover);
                 }
             }
         }
@@ -57,7 +57,7 @@ export const MainViewHeader = styled.div`
 export const StyledExamSearch = styled.div`
     display: flex;
     flex-direction: column;
-    color: #334257;
+    color: var(--primary);
 
     .input-wrapper {
         display: flex;
@@ -68,7 +68,7 @@ export const StyledExamSearch = styled.div`
         }
 
         input {
-            border: 2px solid #b5b2b2;
+            border: 2px solid var(--grey);
             border-radius: 8px;
             box-sizing: border-box;
             outline: none;
@@ -76,13 +76,13 @@ export const StyledExamSearch = styled.div`
             width: 360px;
 
             &::placeholder {
-                color: #b5b2b2;
+                color: var(--grey);
             }
         }
 
         button {
-            background-color: #334257;
-            color: #ffffff;
+            background-color: var(--primary);
+            color: var(--white);
             border-radius: 8px;
             border: none;
             outline: none;
@@ -90,7 +90,7 @@ export const StyledExamSearch = styled.div`
             transition: background-color 0.3s ease;
 
             &:hover {
-                background-color: #3f5068;
+                background-color: var(--primary-hover);
             }
         }
     }
@@ -113,7 +113,7 @@ export const MainViewBody = styled.div`
 
 export const ExamListWrapper = styled.div`
     .title {
-        color: #334257;
+        color: var(--primary);
         margin-bottom: 16px;
     }
 `;
