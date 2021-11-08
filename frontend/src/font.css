@@ -28,5 +28,9 @@
 }
 
 .text-2xl {
+  font-size: 4rem;
+}
+
+.text-3xl {
   font-size: 6rem;
 }
