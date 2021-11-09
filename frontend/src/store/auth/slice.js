@@ -1,13 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const defaultState = {
+    token: null,
+    user: null,
+    errors: null,
+    inProgress: false
+};
+
 export const authSlice = createSlice({
     name: "auth",
-    initialState: {
-        token: undefined,
-        user: undefined,
-        errors: undefined,
-        inProgress: false
-    },
+    initialState: defaultState,
     reducers: {},
     extraReducers: {}
 });
