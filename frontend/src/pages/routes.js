@@ -1,6 +1,7 @@
 import { Placeholder } from "./Placeholder.js";
 import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
+import ExamPage from "./ExamPage";
 
 export const routes = [
     {
@@ -12,6 +13,11 @@ export const routes = [
         path: "/login",
         others: {},
         component: LoginPage
+    },
+    {
+        path: "/examPage",
+        others: {},
+        component: ExamPage
     },
     {
         path: "/",
