@@ -6,7 +6,8 @@ export const Wrapper = styled.div`
     padding: 20px 40px;
     display: flex;
     flex-direction: column;
-    width: 480px;
+    width: 476px;
+    height: 357px;
 
     .forgot-password-text {
         margin-bottom: 10px;
@@ -23,7 +24,7 @@ export const InputWrapper = styled.div`
 
     input {
         width: 100%;
-        margin-bottom: 20px;
+        margin-bottom: 34px;
 
         border: 2px solid #b5b2b2;
         box-sizing: border-box;

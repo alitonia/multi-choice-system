@@ -2,13 +2,15 @@ import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
     :root {
-        --white: #fff;
-        --lightGrey: #eee;
-        --medGrey: #353535;
-        --darkGrey: #1c1c1c;
-        --fontSuperBig: 2.5rem;
-        --fontBig: 1.5rem;
-        --fontMed: 1.2rem;
-        --fontSmall: 1rem;
+        --primary: #334257;
+        --primary-hover: #3F5068;
+        --secondary: #548CA8;
+        --grey: #B5B2B2;
+        --muted: #EEEEEE;
+        --white: #FFFFFF;
+        --alert: #FE3B3B;
+        --blue: #5D5FEF;
+        --purple: #CC00FF;
+        --black: #000000;
     }
 `;

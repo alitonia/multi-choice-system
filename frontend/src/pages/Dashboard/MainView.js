@@ -25,14 +25,17 @@ function ExamSearch(props) {
 
     return (
         <StyledExamSearch>
-            <div className="title">YOUR EXAMS</div>
+            <div className="title text-heading">YOUR EXAMS</div>
             <div className="input-wrapper">
                 <input
+                    className="text-base"
                     type="text"
                     placeholder="Search for an exam..."
                     onChange={handleExamChange}
                 />
-                <button onClick={handleClickSearch}>Search</button>
+                <button className="text-base" onClick={handleClickSearch}>
+                    Search
+                </button>
             </div>
         </StyledExamSearch>
     );
@@ -41,7 +44,7 @@ function ExamSearch(props) {
 function RecentExamList() {
     return (
         <ExamListWrapper>
-            <div className="title">RECENT</div>
+            <div className="title text-heading">RECENT</div>
             <ExamList>
                 <Exam
                     name="He"
@@ -121,7 +124,7 @@ function RecentExamList() {
 function AllExamList() {
     return (
         <ExamListWrapper>
-            <div className="title">ALL</div>
+            <div className="title text-heading">ALL</div>
             <ExamList>
                 <Exam
                     name="He"
@@ -211,11 +214,11 @@ export default function MainView() {
         <MainViewWrapper>
             <MainViewHeader>
                 <ExamSearch onExamSearch={onExamSearch} />
-                <div className="user-welcome">
+                <div className="user-welcome text-large">
                     <span>Welcome back, {name}</span>
                     <div className="toolbox">
                         {role_id === 1 ? (
-                            <button className="create-exam-btn">Create New Exam</button>
+                            <button className="create-exam-btn text-base">Create New Exam</button>
                         ) : null}
                     </div>
                 </div>
