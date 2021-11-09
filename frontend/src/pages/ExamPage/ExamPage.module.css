@@ -1,0 +1,25 @@
+.content {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #334257;
+    font-family: Roboto;
+    line-height: 28px;
+}
+
+.content h1 {
+    font-size: 32px;
+}
+
+.content p {
+    font-size: 24px;
+}
+
+.beginButton {
+    background: #334257;
+    border-radius: 8px;
+    color: white;
+    font-size: 24px;
+    width: 256px;
+    height: 40px;
+}
