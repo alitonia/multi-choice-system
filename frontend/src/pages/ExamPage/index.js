@@ -1,5 +1,4 @@
 import React from "react";
-import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import styles from "./ExamPage.module.css";
 
@@ -12,12 +11,11 @@ const ExamPage = () => {
                 <h1>Exam Name</h1>
                 <p>Subject name</p>
                 <p>Class of: Teacher</p>
-                <p>Starts on: hh:mm AM,MM/DD/YYYY</p>
+                <p>Starts on: hh:mm AM, MM/DD/YYYY</p>
                 <p>You will have t minutes to finish the exam.</p>
-                <p>Once you begin, you cannot retart the exam.</p>
+                <p>Once you begin, you cannot retart the exam. Ready?</p>
                 <button className={styles.beginButton}>Begin the exam</button>
             </div>
-            {/* <Footer /> */}
         </div>
     );
 };
