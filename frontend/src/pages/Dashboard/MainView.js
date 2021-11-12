@@ -42,160 +42,68 @@ function ExamSearch(props) {
 }
 
 function RecentExamList() {
+    const arr = [];
+    arr.fill(
+        {
+            name: "He",
+            creator: "He",
+            subject: "He",
+            duration: "120",
+            startTime: "2021-11-06T06:25:49.742Z"
+        },
+        0,
+        9
+    );
     return (
         <ExamListWrapper>
             <div className="title text-heading">RECENT</div>
             <ExamList>
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
+                {arr.map((exam, index) => {
+                    return (
+                        <Exam
+                            key={index.toString()}
+                            name={exam.name}
+                            creator={exam.creator}
+                            subject={exam.subject}
+                            duration={exam.duration}
+                            startTime={exam.startTime}
+                        />
+                    );
+                })}
             </ExamList>
         </ExamListWrapper>
     );
 }
 
 function AllExamList() {
+    const arr = [];
+    arr.fill(
+        {
+            name: "He",
+            creator: "He",
+            subject: "He",
+            duration: "120",
+            startTime: "2021-11-06T06:25:49.742Z"
+        },
+        0,
+        9
+    );
     return (
         <ExamListWrapper>
             <div className="title text-heading">ALL</div>
             <ExamList>
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
-                <Exam
-                    name="He"
-                    creator="He"
-                    subject="He"
-                    duration="120"
-                    startTime="2021-11-06T06:25:49.742Z"
-                />
+                {arr.map((exam, index) => {
+                    return (
+                        <Exam
+                            key={index.toString()}
+                            name={exam.name}
+                            creator={exam.creator}
+                            subject={exam.subject}
+                            duration={exam.duration}
+                            startTime={exam.startTime}
+                        />
+                    );
+                })}
             </ExamList>
         </ExamListWrapper>
     );
