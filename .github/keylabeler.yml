@@ -1,0 +1,12 @@
+matchTitle: true
+
+matchBody: false
+
+caseSensitive: false
+
+labelMappings:
+  "Frontend Design:": design
+  "Frontend:": frontend
+  "Backend:": backend
+  "documentation": doc
+  "docs": doc

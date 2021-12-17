@@ -25,6 +25,11 @@ A multiple choice exam system on browser.
   pip install -r requirement.txt
   deactivate
   ```
+* or just use `docker-compose`:
+  * from root of repo: docker-compose up
+  * then check port 0.0.0.0:8088/api/v1/pings ;/
+
+* note: api is served in /api/v1
 
 ### Test
 
@@ -32,9 +37,8 @@ _TODO_
 
 ### Docker
 
-* start database with `docker-compose up`
+* start database and backend with `docker-compose up`
 
-_TODO_
 
 # Design
 
