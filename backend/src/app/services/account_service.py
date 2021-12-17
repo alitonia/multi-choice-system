@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.account import Account
@@ -46,11 +46,30 @@ class Account_Service:
             return None
 
     # GET accounts
-    async def get_accounts_no_pass(self):
-        result_arbit_data = await self.session.execute(
-            select(Account, Role).join(Role, Account.role_id == Role.role_id)
-                .limit(15)
+    async def get_accounts_no_pass(
+            self,
+            skip: int = 0,
+            limit: int = 15,
+            email: Optional[str] = None,
+            role: Optional[str] = None,
+    ):
+        q = (
+            select(Account, Role)
+                .join(Role, Account.role_id == Role.role_id)
+                .limit(limit)
         )
+        if email is not None:
+            print(email)
+            q = q.filter(Account.email == email)
+
+        if role is not None:
+            q = q.filter(Role.name == role)
+
+        # skip after filter
+        q = q.offset(skip)
+
+        result_arbit_data = await self.session.execute(q)
+
         result_list = [x for x in result_arbit_data]
         # first entry is account, second is role
         for entry in result_list:

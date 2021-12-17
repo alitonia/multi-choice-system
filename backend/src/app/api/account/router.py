@@ -3,7 +3,7 @@ from app.core.db import get_session
 from app.services.account_service import Account_Service
 
 from sqlalchemy.orm import Session
-from typing import List, Union
+from typing import List, Union, Optional
 from app.schemas.account import (
     Account_Schema_Base,
     Account_Schema_Input_New,
@@ -21,9 +21,15 @@ async def show_account(account_id: int, s: Session = Depends(get_session)) -> Un
 
 
 @router.get("/accounts")
-async def show_accounts(s: Session = Depends(get_session)) -> List[Account_Schema_Output]:
+async def show_accounts(
+        skip: int = 0,
+        limit: int = 15,
+        email: Optional[str] = None,
+        role: Optional[str] = None,
+        s: Session = Depends(get_session)
+) -> List[Account_Schema_Output]:
     qs = Account_Service(s)
-    accounts = qs.get_accounts_no_pass()
+    accounts = qs.get_accounts_no_pass(skip, limit, email, role)
     return await accounts
 
 #
