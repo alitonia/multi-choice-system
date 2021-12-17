@@ -1,7 +1,7 @@
 // @flow
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as assert from "assert";
-import { hintDict } from "./hitnDict";
+import { hintDict } from "./hintDict";
 
 const BASE_DELAY = 2000;
 
