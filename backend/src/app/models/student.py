@@ -2,6 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Text, DateT
 from .base import Base, TimeStampMixin
 
 
+# legacy
 class StudentModel(Base, TimeStampMixin):
     __tablename__ = "academy_student"
     id = Column(Integer, autoincrement=True, primary_key=True, index=True)
