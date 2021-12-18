@@ -5,8 +5,8 @@ const _dataAccount = id => ({
     phone_number: "0123456788",
     enable: id % 3 === 0 ? "FALSE" : "TRUE",
     role: {
-        role_id: id,
-        name: 'Hello ' + id
+        role_id: (id % 2) + 1,
+        name: id === 2 ? 'examiner' : 'examinee'
     }
 });
 
