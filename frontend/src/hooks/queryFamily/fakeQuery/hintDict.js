@@ -1,7 +1,7 @@
 const _dataAccount = id => ({
     email: `test_admin${id}@mana.itss`,
     name: `fluffy_admin_${id}`,
-    date_of_birth: "1999-06-06",
+    date_of_birth: "1999-06-20",
     phone_number: "0123456788",
     enable: id % 3 === 0 ? "FALSE" : "TRUE",
     role: {
