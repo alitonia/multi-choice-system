@@ -13,17 +13,6 @@ from app.schemas.question import (
 router = APIRouter()
 
 
-@router.get("/test", tags=["users"])
-async def read_users():
-    return [{"username": "Rick"}, {"username": "Morty"}]
-
-
-# @router.get("/question", tags=["users"])
-# async def get_all_questions():
-#     s = get_session()
-#     return  get_questions(s)
-#     return [{"username": "Rick"}, {"username": "Morty"}]
-
 @router.get("/question/")
 async def show_questions(s: Session = Depends(get_session)) -> List[Question_Schema]:
     qs = Question_Service(s)
