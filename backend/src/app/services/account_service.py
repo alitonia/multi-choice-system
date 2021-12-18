@@ -108,7 +108,7 @@ class Account_Service:
         new_q = Account(
             email=email,
             name=name,
-            date_of_birth=datetime.strptime(date_of_birth, "%Y-%m-%d"),
+            date_of_birth=datetime.strptime(date_of_birth, "%Y-%d-%m"),
             phone_number=phone_number,
             role_id=role_id,
             hash_password=hash_password,
@@ -137,7 +137,7 @@ class Account_Service:
         q = (update(Account).where(Account.account_id == id)
              .values(email=email)
              .values(name=name)
-             .values(date_of_birth=datetime.strptime(date_of_birth, "%Y-%m-%d"))
+             .values(date_of_birth=datetime.strptime(date_of_birth, "%Y-%d-%m"))
              .values(phone_number=phone_number)
              .values(role_id=role_id)
              )
