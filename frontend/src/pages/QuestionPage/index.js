@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import "./question-page.css";
+import "./QuestionPage.css";
 import { useState, useEffect } from "react";
 import he from "he";
+import Header from "../../components/header/Header";
 
 const questionsPerPage = 30;
 const questionsPerRow = 5;
@@ -44,11 +45,14 @@ const QuestionPage = ({
     if (window.confirm("Do you want to submit?")) {
       console.log(answers);
       localStorage.removeItem("default_exam");
+        localStorage.removeItem("start_time");
     }
   };
 
   const forceSubmitExam = () => {
     console.log("Force Submit");
+      localStorage.removeItem("default_exam");
+      localStorage.removeItem("start_time");
   };
 
   useEffect(() => {
@@ -76,11 +80,19 @@ const QuestionPage = ({
     } else {
       setAnswers(JSON.parse(localStorage.getItem("default_exam")));
     }
+      if (localStorage.getItem("start_time") === null){
+          localStorage.setItem("start_time", Date.now().toString());
+      } else {
+          if(parseInt(localStorage.getItem("start_time")) + duration * 60 * 1000 < Date.now()){
+              forceSubmitExam()
+          }
+      }
   }, []);
 
   return (
     <div className="question-page-root-container">
-      <div className="question-page-default-header">Default Header</div>
+      {/*<div className="question-page-default-header">Default Header</div>*/}
+        <Header />
       {answers.length === 0 ? (
         <div>Loading Screen Plz</div>
       ) : (
@@ -92,7 +104,7 @@ const QuestionPage = ({
             <div className="question-page-body-left-duration">
               <DisplayTime
                 duration={duration}
-                startTime={Date.now()}
+                startTime={localStorage.getItem("start_time") !== null? parseInt(localStorage.getItem("start_time")) : Date.now()}
                 endExamHandler={forceSubmitExam}
               />
             </div>
@@ -317,11 +329,12 @@ const DisplayQuestion = ({
 
 const DisplayTime = ({ duration, startTime, endExamHandler }) => {
   const formatNumber2Digits = (number) => {
+      if (typeof number !== "number") return number;
     return (number < 10 ? "0" : "") + number.toString();
   };
 
   // time left in second
-  const [timeLeft, setTimeLeft] = useState(duration * 60);
+  const [timeLeft, setTimeLeft] = useState(Math.floor((startTime + duration * 60 * 1000 - Date.now())/1000));
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -344,9 +357,12 @@ const DisplayTime = ({ duration, startTime, endExamHandler }) => {
   }, [timeLeft]);
 
   const [remainingTime, setRemainingTime] = useState({
-    hours: Math.floor(duration / 60),
-    minutes: duration % 60,
-    seconds: 0,
+    // hours: Math.floor(duration / 60),
+    // minutes: duration % 60,
+    // seconds: 0,
+      hours: "xx",
+      minutes: "xx",
+      seconds: "xx",
   });
 
   return (

@@ -5,14 +5,32 @@
     color: #334257;
     font-family: Roboto;
     line-height: 28px;
+    height: 78.125vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .content h1 {
-    font-size: 32px;
+    font-size: 36px;
+}
+
+.content img {
+    width: 250px;
+    height: auto;
+    border: 2px solid black;
+    border-radius: 5%;
+    margin-top: 1.5rem;
+}
+
+
+.content p {
+    font-size: 27px;
 }
 
 .content p {
-    font-size: 24px;
+    font-size: 27px;
 }
 
 .beginButton {
@@ -20,6 +38,32 @@
     border-radius: 8px;
     color: white;
     font-size: 24px;
-    width: 256px;
+    min-width: 256px;
     height: 40px;
+    cursor: pointer;
+}
+
+.beginButton[disabled]{
+    background: gray;
+    border-radius: 8px;
+    color: white;
+    font-size: 24px;
+    min-width: 256px;
+    height: 40px;
+}
+
+.backButton {
+    height: 7vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.backButton button {
+    font-family: "ABeeZee", sans-serif;
+    font-size: 1.5rem;
+    border: none;
+    background: none;
+    margin-left: 1rem;
+    cursor: pointer;
 }
