@@ -4,7 +4,10 @@ const _dataAccount = id => ({
     date_of_birth: "1999-06-06",
     phone_number: "0123456788",
     enable: id % 3 === 0 ? "FALSE" : "TRUE",
-    role_id: id
+    role: {
+        role_id: id,
+        name: 'Hello ' + id
+    }
 });
 
 const _dataAccounts = [...Array(15).keys()].map(id => {
@@ -50,7 +53,7 @@ const _dataQuestion = id => ({
     question_id: `43${id}`,
     question_content: `content for ${id}`,
     exam_id: `${211}`,
-    question_group: [{ question_group_id: 1, description: "TEST_QT_1" }],
+    question_group: [{question_group_id: 1, description: "TEST_QT_1"}],
     question_type: [
         {
             question_type_id: (id % 2) + 1,
@@ -74,7 +77,7 @@ const _dataQuestions = [...Array(30).keys()].map(id => {
 
 const _dataQuestionsExaminee = _dataQuestions.map(x => ({
     ...x,
-    choice: { answer_id: x.question_id === 431 ? 1 : null }
+    choice: {answer_id: x.question_id === 431 ? 1 : null}
 }));
 
 const _dataLogs = [...Array(50).keys()].map(id => ({
@@ -106,4 +109,4 @@ const hintDict = {
 
 Object.freeze(hintDict);
 
-export { hintDict };
+export {hintDict};
