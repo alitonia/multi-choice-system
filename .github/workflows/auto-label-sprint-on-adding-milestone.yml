@@ -28,5 +28,3 @@ jobs:
               issue_number: issue_number,
               labels: [milestone_title]
             })
-            
-            console.log(addLabels)
