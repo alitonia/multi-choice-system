@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship
 
 class Account_Schema_Base(BaseModel):
     email: str
-    name: int
+    name: str
     date_of_birth: str
     phone_number: str
     role_id: int
