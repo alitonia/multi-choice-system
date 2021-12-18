@@ -25,7 +25,7 @@ jobs:
             const addLabels = await github.request('PUT /repos/{owner}/{repo}/issues/{issue_number}/labels', {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: issue_number
+              issue_number: issue_number,
               labels: [milestone_title]
             })
             
