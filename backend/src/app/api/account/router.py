@@ -16,8 +16,8 @@ router = APIRouter()
 @router.get("/account/{account_id}")
 async def show_account(account_id: int, s: Session = Depends(get_session)) -> Union[Account_Schema_Output, None]:
     qs = Account_Service(s)
-    account = qs.get_one_account_no_pass(account_id)
-    return await account
+    account = await qs.get_one_account_no_pass(account_id)
+    return account
 
 
 @router.get("/accounts")
@@ -29,8 +29,8 @@ async def show_accounts(
         s: Session = Depends(get_session)
 ) -> List[Account_Schema_Output]:
     qs = Account_Service(s)
-    accounts = qs.get_accounts_no_pass(skip, limit, email, role)
-    return await accounts
+    accounts = await qs.get_accounts_no_pass(skip, limit, email, role)
+    return accounts
 
 #
 # @router.post("/question/")
