@@ -14,8 +14,9 @@ jobs:
           script: |
             console.log(context)
             console.log(context.github)
-            console.log(context.github.event)
-            console.log(github)
+            console.log(context.payload)
+            console.log(context.payload.event)
+
             const issues = context.github.event.issues
             console.log(issues)
             
