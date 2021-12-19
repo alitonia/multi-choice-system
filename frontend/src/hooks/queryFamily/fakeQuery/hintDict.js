@@ -1,7 +1,7 @@
 const _dataAccount = id => ({
     email: `test_admin${id}@mana.itss`,
     name: `fluffy_admin_${id}`,
-    date_of_birth: "1999-06-20",
+    date_of_birth: "20-06-1999",
     phone_number: "0123456788",
     enable: id % 3 === 0 ? "FALSE" : "TRUE",
     role: {
@@ -30,8 +30,8 @@ const _dataExam = id => ({
     exam_id: `21${id}`,
     exam_name: `exam_name_${id}`,
     subject: `subject_${id}`,
-    start_time: "2020-12-29 20:11:33-07",
-    duration: "2:30:45"
+    start_time: Date.now(),
+    duration: 190
 });
 
 const _dataExams = [...Array(15).keys()].map(id => {
