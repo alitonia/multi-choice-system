@@ -30,6 +30,11 @@ const _dataExam = id => ({
     exam_id: `21${id}`,
     exam_name: `exam_name_${id}`,
     subject: `subject_${id}`,
+    creator: {
+        id: 1,
+        department: 'defence against the dark art',
+        name: `alitonia_${id}`
+    },
     start_time: Date.now(),
     duration: 190
 });
