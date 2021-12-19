@@ -70,7 +70,7 @@ const ExamPage = () => {
                     <p>Class of: {info.teacher}</p>
                     <p>Starts on: {startTimeString(info.startTime)}</p>
                     <p>You will have {info.duration} minutes to finish the exam.</p>
-                    <p>Once you begin, you cannot retart the exam. Ready?</p>
+                    <p>Once you begin, you cannot restart the exam. Ready?</p>
                 </div>
                 <button
                     className={styles.beginButton}
