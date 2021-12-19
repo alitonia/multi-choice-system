@@ -3,6 +3,7 @@ import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
 import AdminDashboard from "./admin/Dashboard";
+import CreateAccount from "./admin/CreateAccount";
 
 export const routes = [
     {
@@ -24,6 +25,11 @@ export const routes = [
         path: "/admin/dashboard",
         others: {},
         component: AdminDashboard
+    },
+    {
+        path: "/admin/createAccount",
+        others: {},
+        component: CreateAccount
     },
     {
         path: "/",
