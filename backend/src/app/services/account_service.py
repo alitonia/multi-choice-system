@@ -5,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.account import Account
 from app.models.role import Role
 from sqlalchemy import update, delete, select, join
-import bcrypt
 from datetime import datetime
 from app.utils.decrypt_encrypt_service import DecryptAndEnCrypt
 
@@ -29,7 +28,15 @@ class Account_Service:
     def __init__(self, session):
         self.session = session
 
-    async def get_one_account(self, account_id):
+    # get 1 role object
+    async def get_role(self, role_id: int):
+        result_arbit_data = await self.session.execute(
+            select(Role).where(Role.role_id == role_id)
+        )
+        result_list = result_arbit_data.scalars().all()
+        return result_list[0] if len(result_list) > 0 else None
+
+    async def get_one_account(self, account_id: int):
         result_arbit_data = await self.session.execute(
             select(Account, Role).where(Account.account_id == account_id)
                 .join(Role, Account.role_id == Role.role_id)
@@ -94,17 +101,13 @@ class Account_Service:
             role_id: int,
             password: str
     ):
-        (hash_password, salt_encoded) = de.encrypt(password)
+        role = await self.get_role(role_id)
 
-        result_arbit_data = await self.session.execute(
-            select(Role).where(Role.role_id == role_id)
-        )
-        result_arbit_data_list = [x for x in result_arbit_data]
-
-        if len(result_arbit_data_list) == 0:
+        if role is None:
             raise ArgumentError(None, "Invalid role_id value")
 
-        role = result_arbit_data_list.pop(0)
+        (hash_password, salt_encoded) = de.encrypt(password)
+
         new_q = Account(
             email=email,
             name=name,
@@ -117,11 +120,10 @@ class Account_Service:
 
         self.session.add(new_q)
         await self.session.flush()
-        await self.session.commit()  # might not need
 
         new_account = get_account_no_pass_filter(new_q)
 
-        new_account.role = role.Role  # don't know why, but it works 😇
+        new_account.role = role
         return new_account
 
     # PUT
@@ -132,14 +134,12 @@ class Account_Service:
             name: str,
             date_of_birth: str,
             phone_number: str,
-            role_id: int,
     ):
         q = (update(Account).where(Account.account_id == id)
              .values(email=email)
              .values(name=name)
              .values(date_of_birth=datetime.strptime(date_of_birth, "%Y-%m-%d"))
              .values(phone_number=phone_number)
-             .values(role_id=role_id)
              )
         q.execution_options(synchronize_session="fetch")
 

@@ -69,7 +69,6 @@ async def update_account(
         item.name,
         item.date_of_birth,
         item.phone_number,
-        item.role_id,
     )
 
     return status
@@ -87,6 +86,7 @@ async def enable_account(
     )
 
     return status
+
 
 @router.post("/account/disable/{account_id}")
 async def enable_account(
