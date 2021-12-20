@@ -7,7 +7,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import { RadioGroup, Radio } from "react-radio-group";
 
 const CreateAccount = () => {
-    const name = "He_admin0000000";
+    // get currentUser from redux store/fetch
+    const currentUser = {
+        email: 'test_admin1@mana.itss',
+        name: 'fluffy_admin_1',
+        date_of_birth: '20-06-1999',
+        phone_number: '0123456788',
+        enable: 'TRUE',
+        role: 'admin',
+        jwt_token: 'jwt_token_123456'
+    };
     const [accountInfo, setAccountInfo] = useState({
         email: "",
         name: "",
@@ -57,12 +66,12 @@ const CreateAccount = () => {
                     <div>
                         Welcome back,{" "}
                         <a className="username" href="/settings">
-                            {name}
+                            {currentUser.name}
                         </a>
                     </div>
                 </div>
             </div>
-            <hr style={{ margin: "0.2rem 0.5rem" }} />
+            <hr style={{ margin: "0.2rem 0.5rem",  height: "1px", backgroundColor: "black"  }} />
             <div style={{ height: "1rem" }}></div>
             <div className={styles.createAccountBody}>
                 <table id="account_info">

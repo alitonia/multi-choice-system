@@ -4,8 +4,16 @@ import styles from "./style.module.css";
 import Footer from "../../../components/footer/Footer";
 
 const AdminDashboard = () => {
-    // get name from redux state
-    const name = "He_admin0000000";
+    // get currentUser from redux store/fetch
+    const currentUser = {
+        email: 'test_admin1@mana.itss',
+        name: 'fluffy_admin_1',
+        date_of_birth: '20-06-1999',
+        phone_number: '0123456788',
+        enable: 'TRUE',
+        role: 'admin',
+        jwt_token: 'jwt_token_123456'
+    };
     const [data, setData] = useState([]);
     useEffect(() => {
         setData([
@@ -167,7 +175,7 @@ const AdminDashboard = () => {
                     <div>
                         Welcome back,{" "}
                         <a className="username" href="/settings">
-                            {name}
+                            {currentUser.name}
                         </a>
                     </div>
                     <div>
@@ -179,7 +187,7 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </div>
-            <hr style={{ margin: "0.2rem 0.5rem" }} />
+            <hr style={{ margin: "0.2rem 0.5rem",  height: "1px", backgroundColor: "black"  }} />
             <div style={{ height: "3rem" }}></div>
             <div className={styles.adminPageLower}>
                 <div>For more details on each account, click Edit</div>

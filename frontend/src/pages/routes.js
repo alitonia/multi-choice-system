@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
 import AdminDashboard from "./admin/Dashboard";
 import CreateAccount from "./admin/CreateAccount";
+import EditAccount from "./account/EditAccount";
 
 export const routes = [
     {
@@ -30,6 +31,11 @@ export const routes = [
         path: "/admin/createAccount",
         others: {},
         component: CreateAccount
+    },
+    {
+        path: "/account/editAccount/:id",
+        others: {},
+        component: EditAccount
     },
     {
         path: "/",
