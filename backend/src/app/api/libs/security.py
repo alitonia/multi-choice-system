@@ -19,7 +19,7 @@ def get_current_user(*, creds: HTTPAuthorizationCredentials = Depends(jwt_header
     )
     token = creds.credentials
     try:
-        data = jwt.decode(token)
+        data = jwt.decode(token, key=JWT_SECRET_KEY)
 
         if data['exp'] < time.time():
             raise HTTPException(

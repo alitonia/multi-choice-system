@@ -11,6 +11,7 @@ from app.api.libs import security
 api_router = APIRouter()
 authenticated_router = APIRouter()
 
+api_router.include_router(auth.router, tags=["auth"])
 authenticated_router.include_router(test_router, tags=["test"])
 
 authenticated_router.include_router(question_router, tags=["questions"])

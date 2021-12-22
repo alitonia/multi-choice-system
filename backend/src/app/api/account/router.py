@@ -108,19 +108,6 @@ async def enable_account(
     return status
 
 
-@router.post("/account/login", response_model=Account_Schema_Login_Output, summary="Login using email and password", operation_id="login")
-async def login(
-        item: Account_Schema_Login,
-        s: Session = Depends(get_session)
-):
-    qs = Account_Service(s)
-    account = await qs.login(email=item.email, password=item.password)
-    if not account:
-        raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
-            f"Email or password is invalid"))
-    return {"access_token": generate_token(account_id=account.account_id)}
-
-
 @router.get("/account/current", response_model=Account_Schema_Output)
 async def show_account(
         s: Session = Depends(get_session),
