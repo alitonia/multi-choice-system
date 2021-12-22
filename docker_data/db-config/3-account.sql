@@ -3082,7 +3082,7 @@
 
 
     --  Accounts examiner
-    INSERT INTO Examinee(account_id, class, major, examinee_id)
+    INSERT INTO Examinee(account_id, classname, major, examinee_id)
     VALUES
     (3, 'cl-EW6EEOBPKD7VSEIFZR2O', 'mj-5NKCH8W', '0000000000'),
 (4, 'cl-PVS9EQ304HNV1RYO6XCT', 'mj-IXECSDY', '0000000001'),

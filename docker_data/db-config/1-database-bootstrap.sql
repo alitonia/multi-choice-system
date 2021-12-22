@@ -51,7 +51,7 @@ create table Examiner
 create table Examinee
 (
     account_id  int UNIQUE NOT NULL,
-    class       varchar(50),
+    classname       varchar(50),
     major       varchar(50),
     examinee_id varchar(10),
     FOREIGN KEY (account_id) REFERENCES Account (account_id)
