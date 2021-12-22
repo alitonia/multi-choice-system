@@ -21,7 +21,7 @@ export const routes = [
         component: ExamPage
     },
     {
-        path: "/questionPage",
+        path: "/questionPage/:id",
         others: {},
         component: QuestionPage
     },

@@ -4,6 +4,7 @@ import "./QuestionPage.css";
 import { useState, useEffect } from "react";
 import he from "he";
 import Header from "../../components/header/Header";
+import {useParams} from "react-router-dom";
 
 const questionsPerPage = 30;
 const questionsPerRow = 5;
@@ -14,15 +15,19 @@ const randomId = () => {
 
 const QuestionPage = ({
     questionAPI = "https://opentdb.com/api.php?amount=50",
-    examName = "Exam Name",
-    subjectName = "Subject name",
-    teacherName = "Class of: Teacher",
-    duration = 60
 }) => {
     //   const [pageNumber, setPageNumber] = useState(0);
     const [answers, setAnswers] = useState([]);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-
+    const [examInfo, setExamInfo] = useState({
+        exam_id: '',
+        exam_name: '',
+        subject: '',
+        creator: {name: ""},
+        start_time: Date.now(),
+        duration: 0,
+    });
+    const { id } = useParams();
     const updateAnswer = (id, answer) => {
         // console.log(id, answer);
         for (var item in answers) {
@@ -31,7 +36,7 @@ const QuestionPage = ({
             }
         }
         const newAnswers = Array.from(answers);
-        localStorage.setItem("default_exam", JSON.stringify(newAnswers));
+        // localStorage.setItem("default_exam", JSON.stringify(newAnswers));
         setAnswers(newAnswers);
     };
 
@@ -42,18 +47,30 @@ const QuestionPage = ({
     const submitExam = () => {
         if (window.confirm("Do you want to submit?")) {
             console.log(answers);
-            localStorage.removeItem("default_exam");
-            localStorage.removeItem("start_time");
+            // localStorage.removeItem("default_exam");
+            // localStorage.removeItem("start_time");
         }
     };
 
     const forceSubmitExam = () => {
         console.log("Force Submit");
-        localStorage.removeItem("default_exam");
-        localStorage.removeItem("start_time");
+        // localStorage.removeItem("default_exam");
+        // localStorage.removeItem("start_time");
     };
 
     useEffect(() => {
+        setExamInfo({
+            exam_id: '2110',
+            exam_name: 'exam_name_10',
+            subject: 'subject_10',
+            creator: {
+                id: 1,
+                department: 'defence against the dark art',
+                name: 'alitonia_10'
+            },
+            start_time: 1640186007857,
+            duration: 800
+        });
         if (localStorage.getItem("default_exam") === null) {
             fetch(questionAPI)
                 .then(response => {
@@ -78,13 +95,13 @@ const QuestionPage = ({
         } else {
             setAnswers(JSON.parse(localStorage.getItem("default_exam")));
         }
-        if (localStorage.getItem("start_time") === null) {
-            localStorage.setItem("start_time", Date.now().toString());
-        } else {
-            if (parseInt(localStorage.getItem("start_time")) + duration * 60 * 1000 < Date.now()) {
-                forceSubmitExam();
-            }
-        }
+        // if (localStorage.getItem("start_time") === null) {
+        //     localStorage.setItem("start_time", Date.now().toString());
+        // } else {
+        //     if (parseInt(localStorage.getItem("start_time")) + duration * 60 * 1000 < Date.now()) {
+        //         forceSubmitExam();
+        //     }
+        // }
     }, []);
 
     return (
@@ -96,16 +113,16 @@ const QuestionPage = ({
             ) : (
                 <div className="question-page-body">
                     <div className="question-page-body-left">
-                        <div className="question-page-body-left-exam">{examName}</div>
-                        <div className="question-page-body-left-subject">{subjectName}</div>
-                        <div className="question-page-body-left-teacher">{teacherName}</div>
+                        <div className="question-page-body-left-exam">{examInfo.exam_name}</div>
+                        <div className="question-page-body-left-subject">Subject: {examInfo.subject}</div>
+                        <div className="question-page-body-left-teacher">Teacher: {examInfo.creator.name}</div>
                         <div className="question-page-body-left-duration">
                             <DisplayTime
-                                duration={duration}
+                                duration={examInfo.duration}
                                 startTime={
-                                    localStorage.getItem("start_time") !== null
-                                        ? parseInt(localStorage.getItem("start_time"))
-                                        : Date.now()
+                                    // localStorage.getItem("start_time") !== null
+                                    //     ? parseInt(localStorage.getItem("start_time")) :
+                                        examInfo.start_time
                                 }
                                 endExamHandler={forceSubmitExam}
                             />
@@ -323,7 +340,7 @@ const DisplayTime = ({ duration, startTime, endExamHandler }) => {
         const intervalId = setInterval(() => {
             if (timeLeft > 0) {
                 const hour = Math.floor((timeLeft - 1) / 3600);
-                const minute = Math.floor((timeLeft - 1 - hour * 60) / 60);
+                const minute = Math.floor((timeLeft - 1 - hour * 3600) / 60);
                 const second = (timeLeft - 1) % 60;
                 setTimeLeft(timeLeft - 1);
                 setRemainingTime({
