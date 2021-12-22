@@ -192,13 +192,11 @@ class Account_Service:
     async def edit_account(
             self,
             id: int,
-            email: str,
             name: str,
             date_of_birth: str,
             phone_number: str,
     ):
         q = (update(Account).where(Account.account_id == id)
-             .values(email=email)
              .values(name=name)
              .values(date_of_birth=datetime.strptime(date_of_birth, self.date_format))
              .values(phone_number=phone_number)
