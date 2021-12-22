@@ -7,19 +7,7 @@ from app.models.role import Role
 from sqlalchemy import update, delete, select, join
 from datetime import datetime
 from app.utils.decrypt_encrypt_service import DecryptAndEnCrypt
-
-
-def get_account_no_pass_filter(account):
-    return Account(
-        account_id=account.account_id,
-        email=account.email,
-        name=account.name,
-        date_of_birth=account.date_of_birth,
-        phone_number=account.phone_number,
-        # role_id=account.role_id,
-        role=account.role
-    )
-
+from fastapi.encoders import jsonable_encoder
 
 de = DecryptAndEnCrypt()
 
@@ -27,6 +15,33 @@ de = DecryptAndEnCrypt()
 class Account_Service:
     def __init__(self, session):
         self.session = session
+        self.date_format = "%d-%m-%Y"
+        self.original_date_format = "%Y-%m-%d"
+
+    def convert_datetime_str_to_dmy_str(self, datetime_str):
+        return (
+            datetime.strptime(datetime_str, self.original_date_format)
+                .strftime(self.date_format)
+        )
+
+    def get_account_no_pass_filter(self, account):
+        filtered_account = Account(
+            account_id=account.account_id,
+            email=account.email,
+            name=account.name,
+            date_of_birth=account.date_of_birth,
+            phone_number=account.phone_number,
+            # role_id=account.role_id,
+            role=account.role
+        )
+        # manually change date format
+
+        json_account = jsonable_encoder(filtered_account)
+        json_account["date_of_birth"] = self.convert_datetime_str_to_dmy_str(
+            json_account["date_of_birth"]
+        )
+
+        return json_account
 
     # get 1 role object
     async def get_role(self, role_id: int):
@@ -56,7 +71,7 @@ class Account_Service:
     async def get_one_account_no_pass(self, account_id):
         result = await self.get_one_account(account_id)
         if result is not None:
-            return get_account_no_pass_filter(result)
+            return self.get_account_no_pass_filter(result)
         else:
             return None
 
@@ -89,7 +104,7 @@ class Account_Service:
         # first entry is account, second is role
         for entry in result_list:
             entry[0].role = entry[1]
-        return [get_account_no_pass_filter(x[0]) for x in result_list]
+        return [self.get_account_no_pass_filter(x[0]) for x in result_list]
 
     # POST
     async def add_account(
@@ -111,7 +126,7 @@ class Account_Service:
         new_q = Account(
             email=email,
             name=name,
-            date_of_birth=datetime.strptime(date_of_birth, "%Y-%m-%d"),
+            date_of_birth=datetime.strptime(date_of_birth, self.date_format),
             phone_number=phone_number,
             role_id=role_id,
             hash_password=hash_password,
@@ -121,7 +136,7 @@ class Account_Service:
         self.session.add(new_q)
         await self.session.flush()
 
-        new_account = get_account_no_pass_filter(new_q)
+        new_account = self.get_account_no_pass_filter(new_q)
 
         new_account.role = role
         return new_account
@@ -138,14 +153,16 @@ class Account_Service:
         q = (update(Account).where(Account.account_id == id)
              .values(email=email)
              .values(name=name)
-             .values(date_of_birth=datetime.strptime(date_of_birth, "%Y-%m-%d"))
+             .values(date_of_birth=datetime.strptime(date_of_birth, self.date_format))
              .values(phone_number=phone_number)
              )
         q.execution_options(synchronize_session="fetch")
 
         await self.session.execute(q)
         await self.session.commit()
-        return await self.get_one_account_no_pass(id)
+        pure_account = await self.get_one_account_no_pass(id)
+
+        return pure_account
 
     # DELETE
     async def delete_question(self, account_id):
