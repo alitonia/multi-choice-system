@@ -1,23 +1,32 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import styles from "./ExamPage.module.css";
+import {useParams} from "react-router-dom";
 
 const ExamPage = () => {
     const [info, setInfo] = useState({
-        examName: "",
-        subjName: "",
-        teacher: "",
-        startTime: Date.now(),
-        duration: 0
+        exam_id: '',
+        exam_name: '',
+        subject: '',
+        creator: {name: ""},
+        start_time: Date.now(),
+        duration: 0,
     });
+    const { id } = useParams();
     useEffect(() => {
+        console.log(id)
         // we fetch data here
         setInfo({
-            examName: "Thi cuối kì",
-            subjName: "Lý 2",
-            teacher: "Lê Tuấn",
-            startTime: 1639760400000,
-            duration: 60
+            exam_id: '2110',
+            exam_name: 'exam_name_10',
+            subject: 'subject_10',
+            creator: {
+                id: 1,
+                department: 'defence against the dark art',
+                name: 'alitonia_10'
+            },
+            start_time: 1640186007857,
+            duration: 190
         });
     }, []);
     const startTimeString = startTime => {
@@ -59,16 +68,21 @@ const ExamPage = () => {
             year.toString()
         );
     };
+
+    function moveToExam() {
+        window.location.href="../questionPage/"+id.toString()
+    }
+
     return (
         <div>
             <Header />
             <div className={styles.content}>
                 <div>
-                    <img src="logo192.png" alt="placeholder" />
-                    <h1>{info.examName}</h1>
-                    <p>{info.subjName}</p>
-                    <p>Class of: {info.teacher}</p>
-                    <p>Starts on: {startTimeString(info.startTime)}</p>
+                    <img src="https://yt3.ggpht.com/ytc/AKedOLRKkvGBaNzKlDVVL7RGRQtDyNJr6GAP8Oh8Uggi=s900-c-k-c0x00ffffff-no-rj" alt="placeholder" />
+                    <h1>{info.exam_name}</h1>
+                    <p>{info.subject}</p>
+                    <p>Class of: {info.creator.name}</p>
+                    <p>Starts on: {startTimeString(info.start_time)}</p>
                     <p>You will have {info.duration} minutes to finish the exam.</p>
                     <p>Once you begin, you cannot restart the exam. Ready?</p>
                 </div>
@@ -76,16 +90,17 @@ const ExamPage = () => {
                     className={styles.beginButton}
                     // disabled={info.startTime + info.duration*60*1000<Date.now()||info.startTime>Date.now()}
                     disabled={false}
+                    onClick={moveToExam}
                 >
-                    {info.startTime + info.duration * 60 * 1000 < Date.now()
+                    {info.start_time + info.duration * 60 * 1000 < Date.now()
                         ? "The exam has been expired"
-                        : info.startTime > Date.now()
+                        : info.start_time > Date.now()
                         ? "Not the time yet"
                         : "Begin the exam"}
                 </button>
             </div>
             <div className={styles.backButton}>
-                <button>&lt; Back</button>
+                <a href={"/dashboard"}><button>&lt; Back</button></a>
             </div>
         </div>
     );
