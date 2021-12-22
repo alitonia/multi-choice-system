@@ -28,7 +28,7 @@ WHERE email IN ('test_examinee_1@mana.itss', 'test_examinee_2@mana.itss', 'test_
 
 
 INSERT INTO Exam(creator, exam_name, subject, start_time, duration)
-SELECT account_id, 'First alitonia test', 'DB', CURRENT_TIMESTAMP, '04:05'
+SELECT account_id, 'First alitonia test', 'DB', CURRENT_TIMESTAMP + interval '10 minutes', '04:05'
 FROM Account
 WHERE email = 'test_examiner_1@mana.itss';
 
