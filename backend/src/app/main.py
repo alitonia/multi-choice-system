@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+import uvicorn
 from .api import routers
 from .core import config
 
@@ -9,7 +11,7 @@ app = FastAPI(
     description="API for Multi-choices system",
     version="0.0.1",
     redoc_url=None,
-    docs_url=None if config.ENVIRONMENT == "production" else "/_api_"
+    docs_url=None if config.ENVIRONMENT == "production" else "/_api_",
 )
 
 app.include_router(routers.api_router, prefix=prefix)
@@ -31,4 +33,4 @@ async def health_check():
     """
     Service health checking endpoint
     """
-    return {"status": "covid 19 - 2nd"}
+    return {"hello": "there"}

@@ -1,8 +1,8 @@
 import time
 from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Text, DateTime
-from app.core.db import Base
 
 
+# legacy
 class TimeStampMixin(object):
     """ Timestamping mixin"""
 

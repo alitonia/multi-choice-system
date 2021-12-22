@@ -1,0 +1,30 @@
+name: Add Label Milestone Event
+
+on:
+  issues:
+    types: [ milestoned ]
+
+jobs:
+  triage:
+    name: Adding label to milestoned issue
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v4
+        with:
+          script: |
+            const payload = context.payload
+            const issue = payload.issue
+            const milestone = payload.milestone
+            const milestone_title = milestone.title
+            
+            const issue_number = issue.number
+            console.log(milestone_title, issue_number)
+            
+            console.log(context.repo)
+
+            const addLabels = await github.request('POST /repos/{owner}/{repo}/issues/{issue_number}/labels', {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number,
+              labels: [milestone_title]
+            })
