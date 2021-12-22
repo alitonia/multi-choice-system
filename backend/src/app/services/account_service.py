@@ -21,7 +21,7 @@ class Account_Service:
     def convert_datetime_str_to_dmy_str(self, datetime_str):
         return (
             datetime.strptime(datetime_str, self.original_date_format)
-                .strftime(self.date_format)
+            .strftime(self.date_format)
         )
 
     def get_account_no_pass_filter(self, account):
@@ -54,7 +54,7 @@ class Account_Service:
     async def get_one_account(self, account_id: int):
         result_arbit_data = await self.session.execute(
             select(Account, Role).where(Account.account_id == account_id)
-                .join(Role, Account.role_id == Role.role_id)
+            .join(Role, Account.role_id == Role.role_id)
         )
         result_list = [x for x in result_arbit_data]
 
@@ -67,7 +67,18 @@ class Account_Service:
         account.role = role
         return account
 
+    async def get_account_by_email(self, email: str) -> Optional[Account]:
+        result = await self.session.execute(select(Account).where(Account.email == email))
+        return result.scalar().first()
+
+    async def login(self, email: str, password: str) -> Optional[Account]:
+        account = await self.get_account_by_email(email)
+        if de.match_password(password, account.hash_password):
+            return account
+        return None
+
     # GET one account
+
     async def get_one_account_no_pass(self, account_id):
         result = await self.get_one_account(account_id)
         if result is not None:
@@ -85,8 +96,8 @@ class Account_Service:
     ):
         q = (
             select(Account, Role)
-                .join(Role, Account.role_id == Role.role_id)
-                .limit(limit)
+            .join(Role, Account.role_id == Role.role_id)
+            .limit(limit)
         )
         if email is not None:
             print(email)
@@ -175,7 +186,7 @@ class Account_Service:
     async def change_account_visibility(self, account_id, visibility):
         q = (
             update(Account).where(Account.account_id == account_id)
-                .values(enable=visibility)
+            .values(enable=visibility)
         )
         q.execution_options(synchronize_session="fetch")
 

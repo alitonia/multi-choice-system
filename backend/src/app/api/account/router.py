@@ -1,5 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from app.api.libs import security
 from app.core.db import get_session
+from app.core import errors
+from app.core.principal import Principal
 from app.services.account_service import Account_Service
 
 from sqlalchemy.orm import Session
@@ -8,9 +11,12 @@ from typing import List, Union, Optional, Dict
 from app.schemas.account import (
     Account_Schema_Base,
     Account_Schema_Input_New,
+    Account_Schema_Login,
     Account_Schema_Output,
     Account_Schema_Input_Edit
 )
+from backend.src.app.api.libs.security import generate_token
+from backend.src.app.schemas.account import Account_Schema_Login_Output
 
 router = APIRouter()
 
@@ -100,3 +106,27 @@ async def enable_account(
     )
 
     return status
+
+
+@router.post("/account/login", response_model=Account_Schema_Login_Output, summary="Login using email and password", operation_id="login")
+async def login(
+        item: Account_Schema_Login,
+        s: Session = Depends(get_session)
+):
+    qs = Account_Service(s)
+    account = await qs.login(email=item.email, password=item.password)
+    if not account:
+        raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
+            f"Email or password is invalid"))
+    return {"access_token": generate_token(account_id=account.account_id)}
+
+
+@router.get("/account/current", response_model=Account_Schema_Output)
+async def show_account(
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+) -> Union[Account_Schema_Output, None]:
+    qs = Account_Service(s)
+    account_id = principal.account_id
+    account = await qs.get_one_account_no_pass(account_id)
+    return account
