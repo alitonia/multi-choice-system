@@ -18,124 +18,139 @@ const AdminDashboard = () => {
     useEffect(() => {
         setData([
             {
-                email: "test_admin1@mana.itss",
-                name: "fluffy_admin_1",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 2, name: "examinee" }
+                account_id: 1,
+                email: 'test_admin1@mana.itss',
+                name: 'fluffy_admin_1',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 2, name: 'examinee' }
             },
             {
-                email: "test_admin2@mana.itss",
-                name: "fluffy_admin_2",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 1, name: "examiner" }
+                account_id: 2,
+                email: 'test_admin2@mana.itss',
+                name: 'fluffy_admin_2',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 1, name: 'examiner' }
             },
             {
-                email: "test_admin3@mana.itss",
-                name: "fluffy_admin_3",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "FALSE",
-                role: { role_id: 2, name: "examinee" }
+                account_id: 3,
+                email: 'test_admin3@mana.itss',
+                name: 'fluffy_admin_3',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'FALSE',
+                role: { role_id: 2, name: 'examinee' }
             },
             {
-                email: "test_admin4@mana.itss",
-                name: "fluffy_admin_4",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 1, name: "examinee" }
+                account_id: 4,
+                email: 'test_admin4@mana.itss',
+                name: 'fluffy_admin_4',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 1, name: 'examinee' }
             },
             {
-                email: "test_admin5@mana.itss",
-                name: "fluffy_admin_5",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 2, name: "examinee" }
+                account_id: 5,
+                email: 'test_admin5@mana.itss',
+                name: 'fluffy_admin_5',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 2, name: 'examinee' }
             },
             {
-                email: "test_admin6@mana.itss",
-                name: "fluffy_admin_6",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "FALSE",
-                role: { role_id: 1, name: "examinee" }
+                account_id: 6,
+                email: 'test_admin6@mana.itss',
+                name: 'fluffy_admin_6',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'FALSE',
+                role: { role_id: 1, name: 'examinee' }
             },
             {
-                email: "test_admin7@mana.itss",
-                name: "fluffy_admin_7",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 2, name: "examinee" }
+                account_id: 7,
+                email: 'test_admin7@mana.itss',
+                name: 'fluffy_admin_7',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 2, name: 'examinee' }
             },
             {
-                email: "test_admin8@mana.itss",
-                name: "fluffy_admin_8",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 1, name: "examinee" }
+                account_id: 8,
+                email: 'test_admin8@mana.itss',
+                name: 'fluffy_admin_8',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 1, name: 'examinee' }
             },
             {
-                email: "test_admin9@mana.itss",
-                name: "fluffy_admin_9",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "FALSE",
-                role: { role_id: 2, name: "examinee" }
+                account_id: 9,
+                email: 'test_admin9@mana.itss',
+                name: 'fluffy_admin_9',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'FALSE',
+                role: { role_id: 2, name: 'examinee' }
             },
             {
-                email: "test_admin10@mana.itss",
-                name: "fluffy_admin_10",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 1, name: "examinee" }
+                account_id: 10,
+                email: 'test_admin10@mana.itss',
+                name: 'fluffy_admin_10',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 1, name: 'examinee' }
             },
             {
-                email: "test_admin11@mana.itss",
-                name: "fluffy_admin_11",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 2, name: "examinee" }
+                account_id: 11,
+                email: 'test_admin11@mana.itss',
+                name: 'fluffy_admin_11',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 2, name: 'examinee' }
             },
             {
-                email: "test_admin12@mana.itss",
-                name: "fluffy_admin_12",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "FALSE",
-                role: { role_id: 1, name: "examinee" }
+                account_id: 12,
+                email: 'test_admin12@mana.itss',
+                name: 'fluffy_admin_12',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'FALSE',
+                role: { role_id: 1, name: 'examinee' }
             },
             {
-                email: "test_admin13@mana.itss",
-                name: "fluffy_admin_13",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 2, name: "examinee" }
+                account_id: 13,
+                email: 'test_admin13@mana.itss',
+                name: 'fluffy_admin_13',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 2, name: 'examinee' }
             },
             {
-                email: "test_admin14@mana.itss",
-                name: "fluffy_admin_14",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "TRUE",
-                role: { role_id: 1, name: "examinee" }
+                account_id: 14,
+                email: 'test_admin14@mana.itss',
+                name: 'fluffy_admin_14',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'TRUE',
+                role: { role_id: 1, name: 'examinee' }
             },
             {
-                email: "test_admin15@mana.itss",
-                name: "fluffy_admin_15",
-                date_of_birth: "20-06-1999",
-                phone_number: "0123456788",
-                enable: "FALSE",
-                role: { role_id: 2, name: "examinee" }
+                account_id: 15,
+                email: 'test_admin15@mana.itss',
+                name: 'fluffy_admin_15',
+                date_of_birth: '20-06-1999',
+                phone_number: '0123456788',
+                enable: 'FALSE',
+                role: { role_id: 2, name: 'examinee' }
             }
         ]);
     }, []);
@@ -223,7 +238,7 @@ const AdminDashboard = () => {
                                     {item.role.name}
                                 </td>
                                 <td>
-                                    <a href={"/admin/editAccount/" + index}>
+                                    <a href={"/account/editAccount/" + item.account_id.toString()}>
                                         <button>Edit</button>
                                     </a>
                                 </td>
