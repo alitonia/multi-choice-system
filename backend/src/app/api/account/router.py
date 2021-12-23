@@ -112,7 +112,7 @@ async def enable_account(
 async def show_account(
         s: Session = Depends(get_session),
         principal: Principal = Depends(security.get_current_user)
-) -> Union[Account_Schema_Output, None]:
+):
     qs = Account_Service(s)
     account_id = principal.account_id
     account = await qs.get_one_account_no_pass(account_id)

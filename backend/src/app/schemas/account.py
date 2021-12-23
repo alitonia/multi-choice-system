@@ -8,7 +8,7 @@ class Account_Schema_Base(BaseModel):
     date_of_birth: str
     phone_number: str
     role_id: int
-    role = relationship("Role", back_populates="role")
+    # role = relationship("Role", back_populates="role")
 
     class Config:
         arbitrary_types_allowed = True
