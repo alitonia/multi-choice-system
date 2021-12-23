@@ -15,8 +15,8 @@ from app.schemas.account import (
     Account_Schema_Output,
     Account_Schema_Input_Edit
 )
-from backend.src.app.api.libs.security import generate_token
-from backend.src.app.schemas.account import Account_Schema_Login_Output
+from app.api.libs.security import generate_token
+from app.schemas.account import Account_Schema_Login_Output
 
 router = APIRouter()
 

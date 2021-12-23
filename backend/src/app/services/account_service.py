@@ -69,7 +69,7 @@ class Account_Service:
 
     async def get_account_by_email(self, email: str) -> Optional[Account]:
         result = await self.session.execute(select(Account).where(Account.email == email))
-        return result.scalar().first()
+        return result.scalar()
 
     async def login(self, email: str, password: str) -> Optional[Account]:
         account = await self.get_account_by_email(email)

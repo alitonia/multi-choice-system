@@ -7,7 +7,7 @@ from starlette.requests import Request
 from starlette.status import HTTP_401_UNAUTHORIZED
 
 from app.core.principal import Principal
-from backend.src.app.core.config import JWT_SECRET_KEY
+from app.core.config import JWT_SECRET_KEY
 
 
 jwt_header = HTTPBearer()
