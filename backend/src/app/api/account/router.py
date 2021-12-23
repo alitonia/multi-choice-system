@@ -21,6 +21,19 @@ from app.schemas.account import Account_Schema_Login_Output
 router = APIRouter()
 
 
+# more specific route should be in front of account/{id}
+@router.get("/account/current")
+async def show_account(
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = Account_Service(s)
+    account_id = principal.account_id
+    account = await qs.get_one_account_no_pass(account_id)
+    return account
+
+
+
 @router.get("/account/{account_id}")
 async def show_account(
         account_id: int,
@@ -106,14 +119,3 @@ async def enable_account(
     )
 
     return status
-
-
-@router.get("/account/current", response_model=Account_Schema_Output)
-async def show_account(
-        s: Session = Depends(get_session),
-        principal: Principal = Depends(security.get_current_user)
-):
-    qs = Account_Service(s)
-    account_id = principal.account_id
-    account = await qs.get_one_account_no_pass(account_id)
-    return account

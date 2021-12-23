@@ -100,7 +100,6 @@ class Account_Service:
             .limit(limit)
         )
         if email is not None:
-            print(email)
             q = q.filter(Account.email == email)
 
         if role is not None:
