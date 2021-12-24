@@ -94,7 +94,7 @@ def gen_examiner():
 def gen_examinee():
     data = f"""
     --  Accounts examiner
-    INSERT INTO Examinee(account_id, class, major, examinee_id)
+    INSERT INTO Examinee(account_id, classname, major, examinee_id)
     VALUES 
     """
 
