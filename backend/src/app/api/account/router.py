@@ -33,7 +33,6 @@ async def show_account(
     return account
 
 
-
 @router.get("/account/{account_id}")
 async def show_account(
         account_id: int,
@@ -77,7 +76,7 @@ async def create_account(
 
 @router.put("/account/edit")
 async def update_account(
-        item,
+        item: Account_Schema_Input_Edit,
         s: Session = Depends(get_session)
 ) -> Union[Account_Schema_Output, None]:
     qs = Account_Service(s)
