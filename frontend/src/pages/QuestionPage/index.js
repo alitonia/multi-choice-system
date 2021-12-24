@@ -42,7 +42,7 @@ const QuestionPage = ({
     const updateChoice = (question_id, answer_id) => {
         // using current user token as well
         // send update choice to server
-        console.log("Choose: quesion_id " + question_id.toString() + " anwser_id " + answer_id.toString())
+        // console.log("Choose: quesion_id " + question_id.toString() + " anwser_id " + answer_id.toString())
         // update setQuestionInfo
         for (let item in questionInfo) {
             if (questionInfo[item].question_id === question_id) {
@@ -65,7 +65,7 @@ const QuestionPage = ({
     const updateUnchoose = (question_id, answer_id) => {
         // using current user token as well
         // send unchoice to server
-        console.log("Unchoose: quesion_id " + question_id.toString() + " anwser_id " + answer_id.toString())
+        // console.log("Unchoose: quesion_id " + question_id.toString() + " anwser_id " + answer_id.toString())
         // update setQuestionInfo
         for (let item in questionInfo) {
             if (questionInfo[item].question_id === question_id) {
@@ -84,7 +84,11 @@ const QuestionPage = ({
         setQuestionInfo(newQuestion)
     }
 
-    const updateCurrent = index => {
+    const updateCurrent = (index, oldIndex) => {
+        if(index === oldIndex) return
+        // console.log(index, oldIndex)
+        // send old index question to server
+        console.log("send to server question_id "+questionInfo[oldIndex].question_id+ " choice " + JSON.stringify(questionInfo[oldIndex].choice))
         setCurrentQuestion(index);
     };
 
@@ -104,6 +108,7 @@ const QuestionPage = ({
 
     useEffect(() => {
         // fetch data here using id
+        // console.log(data)
         setQuestionInfo(data)
         setExamInfo({
             exam_id: '2110',
@@ -235,7 +240,7 @@ const ShowQuestion = ({
     }
 
     const updateAnswer = (answer_id, checked) => {
-        console.log("update answer", answer_id, checked)
+        // console.log("update answer", answer_id, checked)
         if (currentQuestionInfo.question_type[0].question_type_id === 1) {
             if (currentQuestionInfo.choice.answer_id === answer_id) {
                 updateUnchoose(currentQuestionInfo.question_id, answer_id)
@@ -308,7 +313,7 @@ const ShowQuestion = ({
                 <button
                     className="question-page-body-right-bottom-back"
                     disabled={currentQuestionIndex === 0}
-                    onClick={() => changeCurrent(currentQuestionIndex - 1)}
+                    onClick={() => changeCurrent(currentQuestionIndex - 1, currentQuestionIndex)}
                 >
                     &lt; Back
                 </button>
@@ -322,7 +327,7 @@ const ShowQuestion = ({
                 ) : (
                     <button
                         className="question-page-body-right-bottom-next"
-                        onClick={() => changeCurrent(currentQuestionIndex + 1)}
+                        onClick={() => changeCurrent(currentQuestionIndex + 1, currentQuestionIndex)}
                     >
                         Next &gt;
                     </button>
@@ -510,7 +515,7 @@ const DisplayPage = ({answers, changeCurrent, currentQuestion}) => {
                         <div className="question-page-button-content-wrapper" key={index}>
                             <button
                                 key={item.question_id}
-                                onClick={() => changeCurrent(index)}
+                                onClick={() => changeCurrent(index, currentQuestion)}
                                 className={
                                     (index === currentQuestion
                                         ? "question-page-button-current"
