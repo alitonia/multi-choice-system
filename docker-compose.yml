@@ -13,16 +13,18 @@ services:
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_DBSPACE}
+
   api:
     build: ./backend/src
+    depends_on:
+      - pg-mana
     volumes:
       - ./backend/src/:/app/
       - ./backend/src/wait:/wait
     ports:
-      - "8080:8080"
+      - "${UVICORN_PORT}:${UVICORN_PORT}"
     command: sh -c  /start-reload.sh
     environment:
-      # - WAIT_HOSTS=pg-mana:3306
       - DATABASE_ECHO=1
       - DATABASE_URL=${DATABASE_URL}
-      - PORT=8080
+      - PORT=${UVICORN_PORT}
