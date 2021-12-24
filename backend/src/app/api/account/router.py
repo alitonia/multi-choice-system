@@ -1,5 +1,8 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from app.api.libs import security
 from app.core.db import get_session
+from app.core import errors
+from app.core.principal import Principal
 from app.services.account_service import Account_Service
 
 from sqlalchemy.orm import Session
@@ -8,11 +11,27 @@ from typing import List, Union, Optional, Dict
 from app.schemas.account import (
     Account_Schema_Base,
     Account_Schema_Input_New,
+    Account_Schema_Login,
     Account_Schema_Output,
     Account_Schema_Input_Edit
 )
+from app.api.libs.security import generate_token
+from app.schemas.account import Account_Schema_Login_Output
 
 router = APIRouter()
+
+
+# more specific route should be in front of account/{id}
+@router.get("/account/current")
+async def show_account(
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = Account_Service(s)
+    account_id = principal.account_id
+    account = await qs.get_one_account_no_pass(account_id)
+    return account
+
 
 
 @router.get("/account/{account_id}")
