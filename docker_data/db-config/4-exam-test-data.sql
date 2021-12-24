@@ -37,19 +37,39 @@ WHERE email IN (
 
 
 INSERT INTO Exam(creator, exam_name, subject, start_time, duration)
-SELECT account_id, 'First alitonia test', 'DB', '2021-11-21 04:05:06', '04:05'
+SELECT account_id, 'First alitonia test', 'DB', '2021-12-31 12:05:06', '04:05'
 FROM Account
 WHERE email = 'test_examiner_1@mana.itss';
 
 INSERT INTO Exam(creator, exam_name, subject, start_time, duration)
-SELECT account_id, 'Second alitonia test', 'DB', '2021-12-31 12:05:06', '02:35'
+SELECT account_id, 'Second alitonia test', 'DB', '2021-12-01 12:05:06', '02:35'
 FROM Account
 WHERE email = 'test_examiner_2@mana.itss';
 
 
 WITH temp_content as (
     SELECT *
-    FROM unnest(ARRAY ['test_content_1', 'test_content_2'])
+    FROM unnest(ARRAY [
+        'test_content_1',
+        'test_content_2',
+        'test_content_3',
+        'test_content_4',
+        'test_content_5',
+        'test_content_6',
+        'test_content_7',
+        'test_content_8',
+        'test_content_9'
+        --         'test_content_10',
+--         'test_content_11',
+--         'test_content_12',
+--         'test_content_13',
+--         'test_content_14',
+--         'test_content_15',
+--         'test_content_16',
+--         'test_content_17',
+--         'test_content_18',
+--         'test_content_19'
+        ])
 )
 
 INSERT
@@ -63,4 +83,41 @@ WHERE Exam.exam_name = 'First alitonia test'
   and Question_group.description = 'TEST_QT_1'
   and Question_type.description = 'single_answer';
 
+UPDATE Question
+set question_type_id = 2
+where question_content like '%2'
+   or question_content like '%4';
+;
+
+INSERT INTO Answer(content, is_correct, question_id)
+select 'answer_1', FALSE, question_id
+FROM Question;
+
+INSERT INTO Answer(content, is_correct, question_id)
+select 'answer_2', FALSE, question_id
+FROM Question;
+
+INSERT INTO Answer(content, is_correct, question_id)
+select 'answer_3', TRUE, question_id
+FROM Question;
+
+INSERT INTO Answer(content, is_correct, question_id)
+select 'answer_4', FALSE, question_id
+FROM Question
+where question_content not like '%2';
+
+-- 2 correct answer
+INSERT INTO Answer(content, is_correct, question_id)
+select 'answer_5', TRUE, question_id
+FROM Question
+where question_content like '%2'
+   or question_content like '%4';
+;
+
+-- 5 answer
+INSERT INTO Answer(content, is_correct, question_id)
+select 'answer_6', FALSE, question_id
+FROM Question
+where question_content like '%3';
+;
 COMMIT;
