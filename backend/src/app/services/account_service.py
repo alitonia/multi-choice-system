@@ -142,7 +142,7 @@ class Account_Service:
             .limit(limit)
         )
         if email is not None:
-            q = q.filter(Account.email == email)
+            q = q.filter(Account.email.ilike(f"%{email}%"))
 
         if role is not None:
             q = q.filter(Role.name == role)
