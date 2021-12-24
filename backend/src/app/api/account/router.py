@@ -84,7 +84,6 @@ async def update_account(
 
     status = await qs.edit_account(
         item.id,
-        item.email,
         item.name,
         item.date_of_birth,
         item.phone_number,

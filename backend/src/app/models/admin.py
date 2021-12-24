@@ -1,12 +1,12 @@
 from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Text, DateTime, Time
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
+from .account import Account
 
 Base = declarative_base()
 
 
-class Question_Group(Base):
-    __tablename__ = 'Question_group'
+class Admin(Base):
+    __tablename__ = 'Admin'
     __table_args__ = {'quote': False}  # Prevent query using double quote in query
-    question_group_id = Column(Integer, primary_key=True)
-    description = Column(String(50), nullable=False)
+    account_id = Column(Integer, ForeignKey(Account.account_id), primary_key=True)
