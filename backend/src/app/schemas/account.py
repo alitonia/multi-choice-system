@@ -8,7 +8,7 @@ class Account_Schema_Base(BaseModel):
     date_of_birth: str
     phone_number: str
     role_id: int
-    role = relationship("Role", back_populates="role")
+    # role = relationship("Role", back_populates="role")
 
     class Config:
         arbitrary_types_allowed = True
@@ -38,3 +38,12 @@ class Account_Schema_Input_Edit(BaseModel):
 
 class Account_Schema_Status(BaseModel):
     enable: bool
+
+
+class Account_Schema_Login(BaseModel):
+    email: str
+    password: str
+
+
+class Account_Schema_Login_Output(BaseModel):
+    access_token: str
