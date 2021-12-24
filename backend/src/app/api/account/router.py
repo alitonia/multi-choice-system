@@ -77,7 +77,7 @@ async def create_account(
 
 @router.put("/account/edit")
 async def update_account(
-        item: Account_Schema_Input_Edit,
+        item,
         s: Session = Depends(get_session)
 ) -> Union[Account_Schema_Output, None]:
     qs = Account_Service(s)
