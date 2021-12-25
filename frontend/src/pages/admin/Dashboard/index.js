@@ -5,165 +5,99 @@ import Footer from "../../../components/footer/Footer";
 
 const AdminDashboard = () => {
     // get currentUser from redux store/fetch
-    const currentUser = {
-        email: 'test_admin1@mana.itss',
-        name: 'fluffy_admin_1',
-        date_of_birth: '20-06-1999',
-        phone_number: '0123456788',
-        enable: 'TRUE',
-        role: 'admin',
-        jwt_token: 'jwt_token_123456'
-    };
+    let jwtToken =
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ1NjMyNC4xMTQzOTkyfQ.2fzKr1V5YutdB9e78LoKurgHDLqfwOMs_iB9usctfVM";
+    // const currentUser = {
+    //     email: 'test_admin1@mana.itss',
+    //     name: 'fluffy_admin_1',
+    //     date_of_birth: '20-06-1999',
+    //     phone_number: '0123456788',
+    //     enable: 'TRUE',
+    //     role: 'admin',
+    //     jwt_token: 'jwt_token_123456'
+    // };
+    const [currentUser, setCurrentUser] = useState({});
     const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
     useEffect(() => {
-        setData([
-            {
-                account_id: 1,
-                email: 'test_admin1@mana.itss',
-                name: 'fluffy_admin_1',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 2, name: 'examinee' }
-            },
-            {
-                account_id: 2,
-                email: 'test_admin2@mana.itss',
-                name: 'fluffy_admin_2',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 1, name: 'examiner' }
-            },
-            {
-                account_id: 3,
-                email: 'test_admin3@mana.itss',
-                name: 'fluffy_admin_3',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'FALSE',
-                role: { role_id: 2, name: 'examinee' }
-            },
-            {
-                account_id: 4,
-                email: 'test_admin4@mana.itss',
-                name: 'fluffy_admin_4',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 1, name: 'examinee' }
-            },
-            {
-                account_id: 5,
-                email: 'test_admin5@mana.itss',
-                name: 'fluffy_admin_5',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 2, name: 'examinee' }
-            },
-            {
-                account_id: 6,
-                email: 'test_admin6@mana.itss',
-                name: 'fluffy_admin_6',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'FALSE',
-                role: { role_id: 1, name: 'examinee' }
-            },
-            {
-                account_id: 7,
-                email: 'test_admin7@mana.itss',
-                name: 'fluffy_admin_7',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 2, name: 'examinee' }
-            },
-            {
-                account_id: 8,
-                email: 'test_admin8@mana.itss',
-                name: 'fluffy_admin_8',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 1, name: 'examinee' }
-            },
-            {
-                account_id: 9,
-                email: 'test_admin9@mana.itss',
-                name: 'fluffy_admin_9',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'FALSE',
-                role: { role_id: 2, name: 'examinee' }
-            },
-            {
-                account_id: 10,
-                email: 'test_admin10@mana.itss',
-                name: 'fluffy_admin_10',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 1, name: 'examinee' }
-            },
-            {
-                account_id: 11,
-                email: 'test_admin11@mana.itss',
-                name: 'fluffy_admin_11',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 2, name: 'examinee' }
-            },
-            {
-                account_id: 12,
-                email: 'test_admin12@mana.itss',
-                name: 'fluffy_admin_12',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'FALSE',
-                role: { role_id: 1, name: 'examinee' }
-            },
-            {
-                account_id: 13,
-                email: 'test_admin13@mana.itss',
-                name: 'fluffy_admin_13',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 2, name: 'examinee' }
-            },
-            {
-                account_id: 14,
-                email: 'test_admin14@mana.itss',
-                name: 'fluffy_admin_14',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'TRUE',
-                role: { role_id: 1, name: 'examinee' }
-            },
-            {
-                account_id: 15,
-                email: 'test_admin15@mana.itss',
-                name: 'fluffy_admin_15',
-                date_of_birth: '20-06-1999',
-                phone_number: '0123456788',
-                enable: 'FALSE',
-                role: { role_id: 2, name: 'examinee' }
-            }
-        ]);
+        // axios
+        //     .get(process.env.REACT_APP_BACKEND_URL + "account/current", {
+        //         headers: {
+        //             Authorization: jwtToken
+        //         }
+        //     })
+        //     .then(function (response) {
+        //         console.log(JSON.stringify(response.data));
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
+        let newHeader = new Headers();
+        newHeader.append("Authorization", jwtToken);
+        fetch("http://" + process.env.REACT_APP_BACKEND_URL + "account/current", {
+            method: "GET",
+            headers: newHeader,
+            redirect: "follow"
+        })
+            .then(response => response.json())
+            .then(result => {
+                setCurrentUser(result);
+            })
+            .catch(error => console.log("error", error));
+
+        fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts?limit=5000", {
+            method: "GET",
+            headers: newHeader,
+            redirect: "follow"
+        })
+            .then(response => response.json())
+            .then(result => {
+                setLoading(false);
+                setData(result);
+            })
+            .catch(error => console.log("error", error));
     }, []);
     const [keyword, setKeyword] = useState("");
     const submitSearch = event => {
         let currentKeyword = document.getElementById("searchInput").value;
-        //fetch new list, then setData
-        // if (currentKeyword.trim() === "") {
-        //     console.log("empty search");
-        // } else
         if (currentKeyword.trim() !== keyword) {
+            setData([]);
+            setLoading(true);
             setKeyword(currentKeyword.trim());
             console.log("search with keyword " + currentKeyword.trim());
+            let newHeader = new Headers();
+            newHeader.append("Authorization", jwtToken);
+            if (currentKeyword.trim() === "") {
+                fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts?limit=5000", {
+                    method: "GET",
+                    headers: newHeader,
+                    redirect: "follow"
+                })
+                    .then(response => response.json())
+                    .then(result => {
+                        setLoading(false);
+                        setData(result);
+                    })
+                    .catch(error => console.log("error", error));
+            } else {
+                fetch(
+                    "http://" +
+                        process.env.REACT_APP_BACKEND_URL +
+                        "accounts?limit=5000&email=" +
+                        currentKeyword.trim(),
+                    {
+                        method: "GET",
+                        headers: newHeader,
+                        redirect: "follow"
+                    }
+                )
+                    .then(response => response.json())
+                    .then(result => {
+                        setLoading(false);
+                        setData(result);
+                    })
+                    .catch(error => console.log("error", error));
+            }
         } else {
             console.log("old search");
         }
@@ -179,7 +113,7 @@ const AdminDashboard = () => {
                         <form onSubmit={submitSearch}>
                             <input
                                 type="text"
-                                placeholder="Search for an account..."
+                                placeholder="Search for an account by email..."
                                 id="searchInput"
                             />
                             <button type="submit">Search</button>
@@ -189,7 +123,10 @@ const AdminDashboard = () => {
                 <div className={styles.adminPageUpperRight}>
                     <div>
                         Welcome back,{" "}
-                        <a className="username" href="/settings">
+                        <a
+                            className="username"
+                            href={"/account/editAccount/" + currentUser.account_id}
+                        >
                             {currentUser.name}
                         </a>
                     </div>
@@ -202,7 +139,7 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </div>
-            <hr style={{ margin: "0.2rem 0.5rem",  height: "1px", backgroundColor: "black"  }} />
+            <hr style={{ margin: "0.2rem 0.5rem", height: "1px", backgroundColor: "black" }} />
             <div style={{ height: "3rem" }}></div>
             <div className={styles.adminPageLower}>
                 <div>For more details on each account, click Edit</div>
@@ -218,6 +155,17 @@ const AdminDashboard = () => {
                         </tr>
                     </thead>
                     <tbody>
+                        {data.length === 0 || loading ? (
+                            <tr>
+                                <td
+                                    colSpan={6}
+                                    style={{ textAlign: "center" }}
+                                    className={styles.customTd}
+                                >
+                                    {loading ? "Loading" : "No record"}
+                                </td>
+                            </tr>
+                        ) : null}
                         {data.map((item, index) => (
                             <tr key={index}>
                                 <td>{item.email}</td>

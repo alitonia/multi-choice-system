@@ -147,3 +147,7 @@ Footer{
     padding: 0.25rem 0.5rem;
     cursor: pointer;
 }
+
+.customTd {
+    border-radius: 0 0 10px 10px!important;
+}
