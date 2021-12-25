@@ -166,7 +166,7 @@ const AdminDashboard = () => {
                                 </td>
                             </tr>
                         ) : null}
-                        {data.map((item, index) => (
+                        {data.slice(0).reverse().map((item, index) => (
                             <tr key={index}>
                                 <td>{item.email}</td>
                                 <td>{item.name}</td>
