@@ -3,6 +3,7 @@ import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
 import EditExam from "./CRUDExam/EditExam.js";
+import CreateExam from "./CRUDExam/CreateExam.js";
 
 export const routes = [
     {
@@ -19,6 +20,11 @@ export const routes = [
         path: "/editExam",
         others: {},
         component: EditExam
+    },
+    {
+        path: "/createExam",
+        others: {},
+        component: CreateExam
     },
     {
         path: "/examPage",

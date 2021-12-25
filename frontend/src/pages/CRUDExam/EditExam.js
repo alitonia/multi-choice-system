@@ -1,7 +1,11 @@
 import React from "react";
 import Header from "../../components/header/Header";
 import styles from "./EditExam.module.scss";
+import Grid from "@mui/material/Grid";
 import CRUDHeader from "./CRUDHeader";
+import CRUDTable from "./CRUDTable";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import Footer from "../../components/footer/Footer";
 
 const handleSubmit = () => {
     alert("Hello");
@@ -12,109 +16,34 @@ const EditExam = () => {
             <Header />
             <div className={styles.wrapper}>
                 <CRUDHeader headerType="EDIT"></CRUDHeader>
-                <div className={styles.wrapperTable}>
-                    <table>
-                        <tbody>
-                            <tr>
-                                <table className={styles.innerTable}>
-                                    <tbody>
-                                        <tr>
-                                            <td
-                                                style={{ textAlign: "right", paddingRight: "15px" }}
-                                            >
-                                                Exam name
-                                            </td>
-                                            <td style={{ textAlign: "left", paddingLeft: "15px" }}>
-                                                Exam Name
-                                            </td>
-                                            <td
-                                                style={{
-                                                    textAlign: "center"
-                                                }}
-                                            >
-                                                <input
-                                                    type="text"
-                                                    placeholder="Change exam name ..."
-                                                    className={styles.inputField}
-                                                ></input>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td
-                                                style={{ textAlign: "right", paddingRight: "15px" }}
-                                            >
-                                                Subject name
-                                            </td>
-                                            <td style={{ textAlign: "left", paddingLeft: "15px" }}>
-                                                Subject Name
-                                            </td>
-                                            <td
-                                                style={{
-                                                    textAlign: "center"
-                                                }}
-                                            >
-                                                <input
-                                                    type="text"
-                                                    placeholder="Change subject name ..."
-                                                    className={styles.inputField}
-                                                ></input>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td
-                                                style={{ textAlign: "right", paddingRight: "15px" }}
-                                            >
-                                                Start time
-                                            </td>
-                                            <td style={{ textAlign: "left", paddingLeft: "15px" }}>
-                                                hh:mm, DD/MM/YYYY
-                                            </td>
-                                            <td
-                                                style={{
-                                                    textAlign: "center"
-                                                }}
-                                            >
-                                                <input
-                                                    type="datetime-local"
-                                                    className={styles.inputField}
-                                                ></input>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td
-                                                style={{ textAlign: "right", paddingRight: "15px" }}
-                                            >
-                                                Duration
-                                            </td>
-                                            <td style={{ textAlign: "left", paddingLeft: "15px" }}>
-                                                t minutes
-                                            </td>
-                                            <td
-                                                style={{
-                                                    textAlign: "center"
-                                                }}
-                                            >
-                                                <input
-                                                    type="text"
-                                                    placeholder="Change duration in minutes ..."
-                                                    className={styles.inputField}
-                                                ></input>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </tr>
-                            <tr>
-                                <td style={{ textAlign: "center" }}>
-                                    <button className={styles.submitButton} onClick={handleSubmit}>
-                                        Save change
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                <CRUDTable handleSubmit={handleSubmit}></CRUDTable>
+
+                <Grid container spacing={4}>
+                    <Grid item xs={6}>
+                        <div className={styles.CRUDHeader}>EXAMINEES</div>
+                        <button className={styles.editButton}>Edit Examinees</button>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <div className={styles.CRUDHeader}>QUESTION</div>
+                        <button className={styles.editButton}>Edit Question</button>
+                    </Grid>
+                </Grid>
+                <div className={styles.centerText}>
+                    <p style={{ color: "red" }}>
+                        The exam is in progress. You may not change examninees nor question
+                    </p>
+                    <p>or</p>
+                    <p style={{ color: "red", textDecoration: "underline" }} onClick={handleSubmit}>
+                        Delete this exam
+                    </p>
+                </div>
+                <div className={styles.backArrow}>
+                    <ArrowBackIcon
+                        style={{ color: "white", paddingTop: "5px", paddingLeft: "5px" }}
+                    />
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

@@ -81,3 +81,30 @@ td {
     border-radius: 10px;
     font-size: 20px;
 }
+
+.editButton {
+    width: 100%;
+    background-color: #b5b2b2;
+    border: none;
+    color: white;
+    height: 30px;
+    border-radius: 10px;
+    font-size: 20px;
+}
+
+.centerText {
+    text-align: center;
+}
+
+.centerText p {
+    padding-top: 50px;
+}
+
+.backArrow {
+    background-color: #334257;
+    position: sticky;
+    bottom: 0;
+    left: 20;
+    width: 40px;
+    border-radius: 5px;
+}
