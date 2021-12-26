@@ -14,15 +14,15 @@ from sqlalchemy import update, delete
 
 
 class Question_Service:
-    def __init__(self, session):
+    def __init__(self, session: AsyncSession):
         self.session = session
 
     def get_generic_questions_query(self):
         return (
             select(Question, Question_Group, Question_Type, Answer)
-                .join(Question_Group, Question.question_group_id == Question_Group.question_group_id)
-                .join(Question_Type, Question.question_type_id == Question_Type.question_type_id)
-                .join(Answer, Answer.question_id == Question.question_id)
+            .join(Question_Group, Question.question_group_id == Question_Group.question_group_id)
+            .join(Question_Type, Question.question_type_id == Question_Type.question_type_id)
+            .join(Answer, Answer.question_id == Question.question_id)
         )
 
     # GET
@@ -60,7 +60,8 @@ class Question_Service:
         question_group_dict = DictList(unique=True)
         question_type_dict = DictList(unique=True)
         answer_dict = DictList(unique=True)
-        uniq_questions = unique([q for (q, _, _, _) in resultList])[skip:skip + limit]
+        uniq_questions = unique([q for (q, _, _, _) in resultList])[
+            skip:skip + limit]
 
         for (q, question_group, question_type, answer) in resultList:
             question_group_dict.add(q.question_id, question_group)
@@ -101,3 +102,11 @@ class Question_Service:
         q = delete(Question).where(Question.question_id == question_id)
         await self.session.execute(q)
         await self.session.commit()
+
+    async def get_exam_questions(self, exam_id: int) -> List[Question]:
+        result = await self.session.execute(select(Question).where(Question.exam_id == exam_id))
+        return result.scalars().all()
+
+    async def get_question_answers(self, question_id: int) -> List[Answer]:
+        result = await self.session.execute(select(Answer).where(Answer.question_id == question_id))
+        return result.scalars().all()
