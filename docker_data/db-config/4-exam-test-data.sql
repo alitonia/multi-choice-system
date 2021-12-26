@@ -36,6 +36,7 @@ WHERE email IN (
     );
 
 
+
 INSERT INTO Exam(creator, exam_name, subject, start_time, duration)
 SELECT account_id, 'First alitonia test', 'DB', '2021-12-31 12:05:06', '04:05'
 FROM Account
@@ -46,6 +47,25 @@ SELECT account_id, 'Second alitonia test', 'DB', '2021-12-01 12:05:06', '02:35'
 FROM Account
 WHERE email = 'test_examiner_2@mana.itss';
 
+
+INSERT INTO Participant
+SELECT Exam.exam_id, account_id
+FROM Account,
+     Exam
+WHERE email IN (
+                'test_examinee_1@mana.itss', 'test_examinee_2@mana.itss'
+    )
+  and Exam.exam_name = 'Second alitonia test';
+
+INSERT INTO Participant
+SELECT Exam.exam_id, account_id
+FROM Account,
+     Exam
+WHERE email IN (
+                'test_examinee_1@mana.itss', 'test_examinee_2@mana.itss',
+                'test_examinee_3@mana.itss', 'test_examinee_4@mana.itss'
+    )
+  and Exam.exam_name = 'First alitonia test';
 
 WITH temp_content as (
     SELECT *
