@@ -45,9 +45,4 @@ _TODO_
 _Doing_
 
 # Documentation
-1. Feasibility Report
-https://docs.google.com/document/d/1VT9y-X6eKpjdUpR0zedK1TY7sKEvC-VuaprmIu7D9FI/edit?usp=sharing
-2. Work Breakdown Structure
-https://drive.google.com/file/d/1VPGHuMnUXlsrq1DHA_kIq5Ak9kaRDmCS/view?usp=sharing
-3. Risk Management
-https://docs.google.com/document/d/1PNsBOK7fGuS2F5KneTkGNvHo3qNqT6UzxBCvelK87sA/edit?usp=sharing
+https://drive.google.com/drive/folders/1XV3F5jSV621eYT657jwBvsW-TYCzXCmw?usp=sharing
