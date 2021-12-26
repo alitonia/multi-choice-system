@@ -57,14 +57,11 @@ class ExamAnalyticService:
             Answer.answer_id,
             count(DISTINCT Choice.examinee_account_id)
             FROM Exam
-            inner join Question on Exam.exam_id = Question.exam_id
-            inner join Answer on Question.question_id = Answer.question_id
-            left outer join  
-            ( 
-                Choice        
-                inner join Account on Account.account_id = Choice.examinee_account_id
-            ) on Choice.answer_id = Answer.answer_id   
-            where Exam.exam_id = {exam_id} and Exam.creator = {account_id}
+            inner join Question     on Exam.exam_id = Question.exam_id
+            inner join Answer       on Question.question_id = Answer.question_id
+            left outer join Choice  on Choice.answer_id = Answer.answer_id   
+            where Exam.exam_id = {exam_id} 
+                and Exam.creator = {account_id}
             
             group by (
                 Question.question_id,
