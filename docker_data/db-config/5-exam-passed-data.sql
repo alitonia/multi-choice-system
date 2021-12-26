@@ -63,7 +63,7 @@ VALUES (20, 'test_content_1', 4, 1, 1),
        (24, 'test_content_5', 4, 1, 1);
 
 INSERT INTO Answer(answer_id, content, is_correct, question_id)
-VALUES (80, 'test_content_1', FALSE, 20),
+VALUES (80, 'test_content_1', TRUE, 20),
        (81, 'test_content_1', TRUE, 21),
        (82, 'test_content_1', FALSE, 21),
 
@@ -84,9 +84,9 @@ VALUES (80, 'test_content_1', FALSE, 20),
 INSERT INTO Choice(question_id, answer_id, examinee_account_id)
 VALUES (20, 80, 4998),
        (21, 81, 4998),
-       (22, 83, 4998),
-       (23, 86, 4998),
-       (24, 90, 4998),
+       (22, 84, 4998),
+       (23, 87, 4998),
+       (24, 91, 4998),
 
        (20, 80, 4999),
 --        (21, 82, 4999),
