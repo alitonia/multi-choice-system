@@ -8,7 +8,7 @@ from app.models.question import Question
 from app.models.participant import Participant
 
 from sqlalchemy.future import select
-from sqlalchemy import update, delete, text
+from sqlalchemy import update, delete, text, desc, asc
 
 import datetime
 from dateutil import parser
@@ -62,6 +62,7 @@ class Exam_Service:
             account,
             skip: int = 0,
             limit: int = 15,
+            sort: str = None
     ):
         # Will need to check jwt to differentiate users
         q = select(Exam).limit(limit).offset(skip)
@@ -74,7 +75,10 @@ class Exam_Service:
                 q.join(Participant, Participant.exam_id == Exam.exam_id)
                     .where(Participant.examinee_account_id == account["account_id"])
             )
-        print()
+        if sort == 'name':
+            q = q.order_by(asc(Exam.exam_name))
+        elif sort == 'recent':
+            q = q.order_by(desc(Exam.start_time))
 
         result = await self.session.execute(q)
         return result.scalars().all()
