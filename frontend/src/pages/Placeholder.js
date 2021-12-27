@@ -12,7 +12,6 @@ export const Placeholder = props => {
                 "Content-Type": "application/json; charset=utf-8",
                 "Authorization": `bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ1NDkyMS4zMTg5NDV9.3S8MJYXtkO4LyBkvezzuC7x11AXh5uiDhs6SnkSn6Zw`
             },
-            mode: "no-cors",
         }
     }, [])
 
