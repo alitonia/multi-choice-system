@@ -65,7 +65,7 @@ class Question_Service:
         question_group_dict = DictList(unique=True)
         question_type_dict = DictList(unique=True)
         answer_dict = DictList(unique=True)
-        uniq_questions = unique([q for (q, _, _, _) in resultList])[skip:skip + limit]
+        uniq_questions = unique([q for (q, _, _, _) in resultList])
 
         for (q, question_group, question_type, answer) in resultList:
             question_group_dict.add(q.question_id, question_group)
