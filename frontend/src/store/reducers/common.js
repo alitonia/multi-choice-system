@@ -12,8 +12,8 @@ export default function commonReducer(state = inititalState, action) {
         case APP_LOADED:
             return {
                 ...state,
-                token: action?.token,
-                user: action?.user,
+                token: action.token,
+                user: action.user,
                 inProgress: false
             };
 
@@ -21,7 +21,6 @@ export default function commonReducer(state = inititalState, action) {
             return {
                 ...state,
                 token: action.token,
-                user: action.user,
                 inProgress: false
             };
 

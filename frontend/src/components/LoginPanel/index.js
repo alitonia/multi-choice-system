@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { LOGIN } from "../../store/actions";
 import {
     Wrapper,
     InputWrapper,
@@ -11,6 +13,7 @@ import {
 
 const LoginPanel = () => {
     const history = useHistory();
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -38,6 +41,7 @@ const LoginPanel = () => {
                 throw new Error(data.detail.message);
             }
             localStorage.setItem("access_token", data.access_token);
+            dispatch({ type: LOGIN, token: data.access_token });
             history.push("/dashboard");
         } catch (error) {
             setError(error.message);
