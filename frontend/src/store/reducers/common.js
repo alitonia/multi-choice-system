@@ -1,4 +1,4 @@
-import { APP_LOADED, LOADING, LOGIN, LOGOUT, REDIRECT } from "../action";
+import { APP_LOADED, LOADING, LOGIN, LOGOUT, REDIRECT } from "../actions";
 
 const inititalState = {
     inProgress: false
