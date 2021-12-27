@@ -36,7 +36,7 @@ function App() {
         if (data) {
             console.log(data);
             dispatch({ type: APP_LOADED, token, user: data });
-            history.push("/dashboard");
+            // history.push("/dashboard");
         }
 
         if (error) {
