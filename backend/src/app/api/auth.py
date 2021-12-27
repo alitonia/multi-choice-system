@@ -10,11 +10,10 @@ from app.schemas.account import Account_Schema_Login
 from app.services.account_service import Account_Service
 from app.schemas.account import Account_Schema_Login_Output
 
-
 router = APIRouter()
 
 
-@router.post("/account/login", response_model=Account_Schema_Login_Output, summary="Login using email and password", operation_id="login")
+@router.post("/account/login", summary="Login using email and password", operation_id="login")
 async def login(
         item: Account_Schema_Login,
         s: AsyncSession = Depends(get_session)
@@ -24,4 +23,7 @@ async def login(
     if not account:
         raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
             f"Email or password is invalid"))
-    return {"access_token": generate_token(account_id=account.account_id)}
+    return {
+        "access_token": generate_token(account_id=account["account_id"]),
+        "account": account
+    }
