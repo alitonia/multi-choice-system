@@ -41,8 +41,16 @@ const LoginPanel = () => {
                 throw new Error(data.detail.message);
             }
             localStorage.setItem("access_token", data.access_token);
-            dispatch({ type: LOGIN, token: data.access_token });
-            history.push("/dashboard");
+            dispatch({
+                type: LOGIN,
+                token: data.access_token,
+                user: data.account
+            });
+            if (data.account.role.name === "admin") {
+                history.push("/admin/dashboard");
+            } else {
+                history.push("/dashboard");
+            }
         } catch (error) {
             setError(error.message);
         }

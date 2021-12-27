@@ -21,6 +21,7 @@ export default function commonReducer(state = inititalState, action) {
             return {
                 ...state,
                 token: action.token,
+                user: action.user,
                 inProgress: false
             };
 
