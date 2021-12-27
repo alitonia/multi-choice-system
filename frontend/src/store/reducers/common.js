@@ -1,4 +1,4 @@
-import { APP_LOADED, LOADING, LOGIN, LOGOUT, REDIRECT } from "../actions";
+import { APP_LOADED, LOADING, LOGIN, LOGOUT } from "../actions";
 
 const inititalState = {
     inProgress: false
@@ -12,15 +12,14 @@ export default function commonReducer(state = inititalState, action) {
         case APP_LOADED:
             return {
                 ...state,
-                redirectTo: !action.token ? "/login" : null,
-                user: action.user,
+                token: action?.token,
+                user: action?.user,
                 inProgress: false
             };
 
         case LOGIN:
             return {
                 ...state,
-                redirectTo: "/dashboard",
                 token: action.token,
                 user: action.user,
                 inProgress: false
@@ -29,13 +28,9 @@ export default function commonReducer(state = inititalState, action) {
         case LOGOUT:
             return {
                 ...state,
-                redirectTo: "/login",
                 token: null,
                 user: null
             };
-
-        case REDIRECT:
-            return { ...state, redirectTo: null };
 
         default:
             return state;
