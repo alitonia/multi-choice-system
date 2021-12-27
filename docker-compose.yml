@@ -23,7 +23,7 @@ services:
       - ./backend/src/wait:/wait
     ports:
       - "${UVICORN_PORT}:${UVICORN_PORT}"
-    command: sh -c  /start-reload.sh
+    command: sh -c  "pip install -r /app/requirements.txt && /start-reload.sh"
     environment:
       - DATABASE_ECHO=1
       - DATABASE_URL=${DATABASE_URL}
