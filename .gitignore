@@ -6,5 +6,7 @@ yarn-error.log
 __pycache__
 .env
 docker_data/db-docker
+docker_data/data-gen/data
+!docker_data/data-gen/data/.gitkeep
 venv
 .vscode

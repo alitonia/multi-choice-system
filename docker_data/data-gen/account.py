@@ -7,7 +7,7 @@ import bcrypt
 from print_nice_bin import print_nice_bin
 from get_random_string import get_random_string
 
-CUSTOMER_LIMIT = 30000
+CUSTOMER_LIMIT = 3000
 OFFSET = 4
 
 fake = Faker()
@@ -16,20 +16,22 @@ fake.add_provider(lorem)
 fake.add_provider(address)
 
 test_salt = bcrypt.gensalt()
+hashed_pwd = bcrypt.hashpw('123456'.encode('utf-8'), test_salt).decode("utf-8")
+fsalt = test_salt.decode("utf-8")
 
 test_account_1 = (
     'test_admin@mana.itss',
-    bcrypt.hashpw('123456'.encode('utf-8'), test_salt).decode("utf-8"), test_salt.decode("utf-8"),
+    hashed_pwd, fsalt,
     'fluffy_admin', '1999-06-06', '0123456788', 'TRUE', 1)
 
 test_account_2 = (
     'test_examiner@mana.itss',
-    bcrypt.hashpw('123456'.encode('utf-8'), test_salt).decode("utf-8"), test_salt.decode("utf-8"),
+    hashed_pwd, fsalt,
     'mushy_examiner', '1999-06-06', '0123456788', 'TRUE', 2)
 
 test_account_3 = (
     'test_examinee@mana.itss',
-    bcrypt.hashpw('123456'.encode('utf-8'), test_salt).decode("utf-8"), test_salt.decode("utf-8"),
+    hashed_pwd, fsalt,
     'rusty_examinee', '1999-06-06', '0123456788', 'TRUE', 3)
 
 role_map = {
@@ -94,7 +96,7 @@ def gen_examiner():
 def gen_examinee():
     data = f"""
     --  Accounts examiner
-    INSERT INTO Examinee(account_id, class, major, examinee_id)
+    INSERT INTO Examinee(account_id, classname, major, examinee_id)
     VALUES 
     """
 
@@ -130,8 +132,8 @@ def gen_accounts():
     {test_account_3},
     """
     _password = 'default_password'
-    salt = bcrypt.gensalt().decode("utf-8")
-    password_hash = bcrypt.hashpw(_password.encode("utf-8"), salt.encode("utf-8"))
+    salt = fsalt
+    password_hash = hashed_pwd
 
     for i in range(CUSTOMER_LIMIT):
         if i % 10 == 0:
@@ -143,7 +145,7 @@ def gen_accounts():
         phone_number = '0123456788'
         enable = 'TRUE'
         role_id = get_random_element([i for i in role_map.values()] + [role_map["examinee"] for _ in range(49)])
-        data += f"('{email}', '{print_nice_bin(password_hash)}', '{print_nice_bin(salt)}',  '{name}', '{date_of_birth}', '{phone_number}', {enable}, {role_id})"
+        data += f"('{email}', '{password_hash}', '{salt}',  '{name}', '{date_of_birth}', '{phone_number}', {enable}, {role_id})"
 
         if role_id == role_map["examinee"]:
             account_map["examinee"].append(i + OFFSET)

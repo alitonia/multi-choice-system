@@ -28,6 +28,6 @@ export const routes = [
     {
         path: "/",
         others: {},
-        component: Placeholder
+        component: LoginPage
     }
 ].filter(r => !!r && !!r.path && !!r.component);
