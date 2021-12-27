@@ -8,7 +8,7 @@ import {
     MainViewWrapper,
     StyledExamSearch
 } from "./MainView.styles";
-import Exam from "./Exam";
+import ExamCard from "./ExamCard";
 
 ExamSearch.propTypes = {
     onExamSearch: PropTypes.func
@@ -60,7 +60,7 @@ function RecentExamList() {
             <ExamList>
                 {arr.map((exam, index) => {
                     return (
-                        <Exam
+                        <ExamCard
                             key={index.toString()}
                             name={exam.name}
                             creator={exam.creator}
@@ -94,7 +94,7 @@ function AllExamList() {
             <ExamList>
                 {arr.map((exam, index) => {
                     return (
-                        <Exam
+                        <ExamCard
                             key={index.toString()}
                             name={exam.name}
                             creator={exam.creator}

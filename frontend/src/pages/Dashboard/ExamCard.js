@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { StyledExam } from "./Exam.styles";
+import { StyledExamCard } from "./ExamCard.styles";
 
-Exam.propTypes = {
+ExamCard.propTypes = {
     name: PropTypes.string,
     subject: PropTypes.string,
     creator: PropTypes.string,
@@ -10,10 +10,10 @@ Exam.propTypes = {
     duration: PropTypes.string
 };
 
-export default function Exam(props) {
+export default function ExamCard(props) {
     const { name, subject, creator, startTime, duration } = props;
     return (
-        <StyledExam className="text-small">
+        <StyledExamCard className="text-small">
             <div className="exam-name text-title">{name}</div>
             <div className="subject">{subject}</div>
             <div className="class">
@@ -21,6 +21,6 @@ export default function Exam(props) {
             </div>
             <div className="start-time">{new Date(startTime).toLocaleString()}</div>
             <div className="duration">{duration} minutes</div>
-        </StyledExam>
+        </StyledExamCard>
     );
 }
