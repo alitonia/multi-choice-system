@@ -2,12 +2,23 @@ import { Placeholder } from "./Placeholder.js";
 import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
+import ManageExaminees from "./ManageExaminees/index.js";
 
 export const routes = [
     {
         path: "/dashboard",
         others: {},
         component: Dashboard
+    },
+    {
+        path: "/dashboard",
+        others: {},
+        component: Dashboard
+    },
+    {
+        path: "/manageExaminees",
+        others: {},
+        component: ManageExaminees
     },
     {
         path: "/login",
