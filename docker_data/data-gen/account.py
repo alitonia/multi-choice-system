@@ -7,7 +7,7 @@ import bcrypt
 from print_nice_bin import print_nice_bin
 from get_random_string import get_random_string
 
-CUSTOMER_LIMIT = 30000
+CUSTOMER_LIMIT = 3000
 OFFSET = 4
 
 fake = Faker()
@@ -94,7 +94,7 @@ def gen_examiner():
 def gen_examinee():
     data = f"""
     --  Accounts examiner
-    INSERT INTO Examinee(account_id, class, major, examinee_id)
+    INSERT INTO Examinee(account_id, classname, major, examinee_id)
     VALUES 
     """
 
