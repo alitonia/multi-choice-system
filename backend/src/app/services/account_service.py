@@ -112,6 +112,8 @@ class Account_Service:
 
     async def login(self, email: str, password: str) -> Optional[Account]:
         account = await self.get_account_by_email(email)
+        print(account)
+        print(password, account.hash_password)
         if de.match_password(password, account.hash_password):
             return account
         return None
