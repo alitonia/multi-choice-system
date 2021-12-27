@@ -38,6 +38,7 @@ async def show_exams(
         skip: int = 0,
         limit: int = 15,
         s: Session = Depends(get_session),
+        sort: str = None,
         principal: Principal = Depends(security.get_current_user)
 ):
     qs = Exam_Service(s)
@@ -46,7 +47,7 @@ async def show_exams(
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
 
-    exams = await qs.get_exams(account, skip, limit)
+    exams = await qs.get_exams(account, skip, limit, sort)
     return exams
 
 
