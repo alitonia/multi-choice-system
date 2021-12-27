@@ -15,7 +15,7 @@ export const routes = [
         component: LoginPage
     },
     {
-        path: "/examPage",
+        path: "/exam",
         others: {},
         component: ExamPage
     },
