@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.form`
     background: #ffffff;
     border-radius: 1rem;
     padding: 32px 40px;
