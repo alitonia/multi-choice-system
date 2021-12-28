@@ -33,7 +33,6 @@ async def show_account(
     return account
 
 
-
 @router.get("/account/{account_id}")
 async def show_account(
         account_id: int,
