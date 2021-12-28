@@ -33,7 +33,7 @@ export const routes = [
         component: CreateAccount
     },
     {
-        path: "/account/editAccount/:id",
+        path: "/account/edit/:id",
         others: {},
         component: EditAccount
     },

@@ -125,7 +125,7 @@ const AdminDashboard = () => {
                         Welcome back,{" "}
                         <a
                             className="username"
-                            href={"/account/editAccount/" + currentUser.account_id}
+                            href={"/account/edit/" + currentUser.account_id}
                         >
                             {currentUser.name}
                         </a>
@@ -186,7 +186,7 @@ const AdminDashboard = () => {
                                     {item.role.name}
                                 </td>
                                 <td>
-                                    <a href={"/account/editAccount/" + item.account_id.toString()}>
+                                    <a href={"/account/edit/" + item.account_id.toString()}>
                                         <button>Edit</button>
                                     </a>
                                 </td>

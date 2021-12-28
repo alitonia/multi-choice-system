@@ -137,7 +137,7 @@ const CreateAccount = () => {
                         Welcome back,{" "}
                         <a
                             className="username"
-                            href={"/account/editAccount/" + currentUser.account_id}
+                            href={"/account/edit/" + currentUser.account_id}
                         >
                             {currentUser.name}
                         </a>
