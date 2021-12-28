@@ -27,6 +27,7 @@ export const MainViewHeader = styled.div`
         border-radius: 16px;
         padding: 8px;
         width: 30%;
+        min-width: 360px;
         color: var(--primary);
 
         .toolbox {
@@ -118,7 +119,7 @@ export const ExamListWrapper = styled.div`
     }
 `;
 
-export const ExamList = styled.div`
+export const GridList = styled.div`
     display: grid;
     row-gap: 40px;
     column-gap: 40px;
