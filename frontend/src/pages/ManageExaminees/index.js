@@ -19,6 +19,8 @@ const ManageExaminees = () => {
     const [inputEmail, setInputEmail] = useState();
     const [inputSearch, setInputSearch] = useState();
 
+    const token ='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ5OTcsImV4cCI6MTY0MDcxOTk2NS41MzE3OTl9.TbxhMxciP-dyLB8gmD8BQ-n9ZrdXu2NMQNkwoFn1Hfk'
+
     useEffect(() => {
         getData();
     }, []);
@@ -27,7 +29,7 @@ const ManageExaminees = () => {
         var myHeaders = new Headers();
         myHeaders.append(
             "Authorization",
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
+            `Bearer ${token}`
         );
 
         var requestOptions = {
@@ -75,7 +77,7 @@ const ManageExaminees = () => {
         var myHeaders = new Headers();
         myHeaders.append(
             "Authorization",
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
+            `Bearer ${token}`
         );
         myHeaders.append("Content-Type", "application/json");
 
@@ -102,7 +104,7 @@ const ManageExaminees = () => {
         var myHeaders = new Headers();
         myHeaders.append(
             "Authorization",
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
+            `Bearer ${token}`
         );
         myHeaders.append("Content-Type", "application/json");
 
