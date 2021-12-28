@@ -29,15 +29,16 @@ class Exam_Service:
                 .join(Question, Question.exam_id == Exam.exam_id, isouter=True)
         )
 
-        role_name = account["role"]["name"]
+        if account is not None:
+            role_name = account["role"]["name"]
 
-        if role_name == 'examiner':
-            q = q.where(Examiner.account_id == account["account_id"])
-        elif role_name == 'examinee':
-            q = q = (
-                q.join(Participant, Participant.exam_id == Exam.exam_id)
-                    .where(Participant.examinee_account_id == account["account_id"])
-            )
+            if role_name == 'examiner':
+                q = q.where(Examiner.account_id == account["account_id"])
+            elif role_name == 'examinee':
+                q = q = (
+                    q.join(Participant, Participant.exam_id == Exam.exam_id)
+                        .where(Participant.examinee_account_id == account["account_id"])
+                )
 
         q = q.where(Exam.exam_id == exam_id)
 
@@ -119,7 +120,7 @@ class Exam_Service:
         q.execution_options(synchronize_session="fetch")
         await self.session.execute(q)
         await self.session.commit()
-        return await self.get_one_exam(exam_id)
+        return await self.get_one_exam(exam_id, None)
 
     # DELETE
     async def delete_exam(self, exam_id):
