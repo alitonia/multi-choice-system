@@ -67,3 +67,13 @@ async def get_all_status(
     qs = ExamAnalyticService(s)
     account_id = principal.account_id
     return await qs.get_score_overview(exam_id, account_id)
+
+@router.get("/exam_analytic/score_overview_bin/{exam_id}")
+async def get_all_status(
+        exam_id: int,
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = ExamAnalyticService(s)
+    account_id = principal.account_id
+    return await qs.get_score_overview_by_bin(exam_id, account_id)

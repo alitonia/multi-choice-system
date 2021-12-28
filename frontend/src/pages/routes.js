@@ -7,6 +7,7 @@ import CreateExam from "./CRUDExam/CreateExam.js";
 import AdminDashboard from "./admin/Dashboard";
 import CreateAccount from "./admin/CreateAccount";
 import EditAccount from "./account/EditAccount";
+import ExamStatistic from "./ExamStatistic/index.js";
 
 export const routes = [
     {
@@ -48,6 +49,11 @@ export const routes = [
         path: "/account/edit/:id",
         others: {},
         component: EditAccount
+    },
+    {
+        path: "/examStatistic/:id",
+        others: {},
+        component: ExamStatistic
     },
     {
         path: "/",
