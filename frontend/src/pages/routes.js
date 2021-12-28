@@ -7,6 +7,7 @@ import CreateExam from "./CRUDExam/CreateExam.js";
 import AdminDashboard from "./admin/Dashboard";
 import CreateAccount from "./admin/CreateAccount";
 import EditAccount from "./account/EditAccount";
+import {Page404} from "./404/404";
 
 export const routes = [
     {
@@ -52,6 +53,6 @@ export const routes = [
     {
         path: "/",
         others: {},
-        component: Placeholder
+        component: Page404
     }
 ].filter(r => !!r && !!r.path && !!r.component);
