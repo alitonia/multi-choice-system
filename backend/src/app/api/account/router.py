@@ -33,7 +33,6 @@ async def show_account(
     return account
 
 
-
 @router.get("/account/{account_id}")
 async def show_account(
         account_id: int,
@@ -54,6 +53,17 @@ async def show_accounts(
 ) -> List[Account_Schema_Output]:
     qs = Account_Service(s)
     accounts = await qs.get_accounts_no_pass(skip, limit, email, role)
+    return accounts
+
+
+@router.get("/accounts/total")
+async def show_accounts(
+        email: Optional[str] = None,
+        role: Optional[str] = None,
+        s: Session = Depends(get_session)
+) -> List[Account_Schema_Output]:
+    qs = Account_Service(s)
+    accounts = await qs.get_accounts_total(email, role)
     return accounts
 
 

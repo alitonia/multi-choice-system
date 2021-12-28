@@ -6,7 +6,7 @@ import {useParams} from "react-router-dom";
 const ExamPage = () => {
     const [info, setInfo] = useState({});
     let jwtToken =
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjUwMDAsImV4cCI6MTY0MDYzNzA5Mi44ODUyMzN9.0_JqHr0mTwOTEWlws3V1l2SJdLjgaDxxYMl7NywMh3s";
+        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjUwMDAsImV4cCI6MTY0MDcyNDEwNy44MzI2MjAxfQ.S5QTCWhCbj-8ZCRw1XIF6IWjJUf920we1p_a4-cdqdw";
     const { id } = useParams();
     useEffect(() => {
         // console.log(id)
@@ -145,7 +145,8 @@ const ExamPage = () => {
                         <div className={styles.backButton}>
                             <a href={"/dashboard"}><button>&lt; Back</button></a>
                         </div>
-                    </div>)}
+                    </div>)
+            }
         </div>
     );
 };

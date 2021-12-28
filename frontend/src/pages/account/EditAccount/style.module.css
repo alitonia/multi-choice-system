@@ -1,0 +1,198 @@
+Footer {
+    margin-top: 1rem;
+    height: 3rem;
+}
+.adminPageUpper {
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    padding: 1rem;
+}
+
+.adminPageUpperLeft {
+    flex-basis: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.adminPageUpperRight {
+    flex-basis: 50%;
+    height: 100%;
+    padding: 0.5rem;
+    border: 1px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.adminPageUpperRight a {
+    text-decoration: none;
+    color: blue;
+}
+
+.adminPageUpperRight i {
+    font-size: 18px;
+    color: black;
+    background-color: white;
+    padding: 0.15rem 0.25rem;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.adminPageUpperRight button {
+    background-color: black;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.editAccountBody {
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 0.5rem 5rem;
+    padding: 0rem !important;
+}
+
+.editAccountBody > table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    height: 100%;
+}
+
+.editAccountBody > table > tbody > tr > td {
+    padding: 1.25rem 1rem;
+    height: 100%;
+}
+
+.editAccountBody > table > tbody > tr:first-child > td {
+    padding-top: 3rem;
+}
+
+.editAccountBody > table > tbody > tr:nth-last-child(2) > td {
+    padding-bottom: 2rem;
+}
+
+.editAccountBody > table > tbody > tr > td:nth-child(2) {
+    border-left: 2px solid black;
+    border-right: 2px solid black;
+    width: 30%;
+    text-align: left;
+}
+
+.editAccountBody > table > tbody > tr > td:nth-child(3) {
+    width: 50%;
+    text-align: left;
+    padding-left: 3rem;
+}
+
+.editAccountBody > table > tbody > tr > td:nth-child(1) {
+    text-align: right;
+    padding-right: 2rem;
+}
+
+.editAccountBody > table > tbody > tr > td input[type="text"] {
+    width: 80%;
+    padding-left: 0.5rem;
+    padding-bottom: 0.25rem;
+    padding-top: 0.25rem;
+    border-radius: 10px;
+    border: 1px solid gray;
+}
+
+.editAccountBody > table > tbody > tr > td label {
+    margin-bottom: 1rem;
+}
+
+.editAccountBody > table > tbody > tr > td label > input[type="radio"] {
+    /*cursor: pointer;*/
+    width: 0.8rem;
+    height: 0.8rem;
+    border: 2px solid black;
+}
+
+.editAccountBody > table > tbody > tr > td label > input[type="radio"]:checked:after {
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    background-color: black;
+    content: "";
+    display: inline-block;
+    visibility: visible;
+}
+
+.editAccountBody > table > tbody > tr:last-child > td {
+    border-top: 2px solid black;
+    text-align: center;
+    padding-bottom: 0.5rem;
+}
+
+.editAccountBottom {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.editAccountBottomLeft {
+    width: 100%;
+    flex-basis: 43%;
+    text-align: left;
+    font-size: 24px;
+}
+
+.editAccountBottomLeft a {
+    text-decoration: none;
+    color: black;
+    cursor: pointer;
+}
+
+.editAccountBottomRight {
+    width: 100%;
+    flex-basis: 57%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+/*.editAccountBottomRight i{*/
+/*    font-size: 18px;*/
+/*    color: black;*/
+/*    background-color: white;*/
+/*    padding: 0.15rem 0.25rem;*/
+/*    border-radius: 50%;*/
+/*    margin-right: 0.5rem;*/
+/*}*/
+
+.editAccountBottomRight button {
+    background-color: black;
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 3rem;
+    width: 120%;
+    height: 2rem;
+}
+
+.editAccountBody > table > tbody > tr:last-child > td > div {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.deleteButton {
+    color: red;
+    background: none;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+}

@@ -38,6 +38,7 @@ async def show_exams(
         skip: int = 0,
         limit: int = 15,
         s: Session = Depends(get_session),
+        sort: str = None,
         principal: Principal = Depends(security.get_current_user)
 ):
     qs = Exam_Service(s)
@@ -46,9 +47,27 @@ async def show_exams(
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
 
-    exams = await qs.get_exams(account, skip, limit)
-    return exams
+    exams = await qs.get_exams(account, skip, limit, sort)
+    count = await qs.get_exams_count(account)
+    
+    result = dict()
+    result["exams"] = exams
+    result["total"] = count["total"]
+    return result
 
+@router.get("/exams/total")
+async def get_exam_count(
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = Exam_Service(s)
+    account_id = principal.account_id
+
+    qs1 = Account_Service(s)
+    account = await qs1.get_one_account_no_pass(account_id)
+
+    exams = await qs.get_exams_count(account)
+    return exams
 
 @router.post("/exam/new")
 async def create_exam(
@@ -163,5 +182,19 @@ async def add_examinees_to_exam(
     exam = await qs.remove_examinees(
         item.exam_id,
         item.examinee_ids
+    )
+    return exam
+
+
+@router.get("/exam/get_examinees")
+async def add_examinees_to_exam(
+        exam_id: str = None,
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = Exam_Service(s)
+
+    exam = await qs.get_examinees(
+        exam_id
     )
     return exam
