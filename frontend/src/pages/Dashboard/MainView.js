@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
-    ExamList,
     ExamListWrapper,
+    GridList,
     MainViewBody,
     MainViewHeader,
     MainViewWrapper,
@@ -10,6 +10,8 @@ import {
 } from "./MainView.styles";
 import ExamCard from "./ExamCard";
 import { useSelector } from "react-redux";
+import Pagination from "../../components/pagination";
+import { useHistory } from "react-router-dom";
 
 ExamSearch.propTypes = {
     onExamSearch: PropTypes.func
@@ -42,80 +44,97 @@ function ExamSearch(props) {
     );
 }
 
-function RecentExamList() {
-    const arr = [];
-    arr.fill(
-        {
-            name: "He",
-            creator: "He",
-            subject: "He",
-            duration: "120",
-            startTime: "2021-11-06T06:25:49.742Z"
-        },
-        0,
-        9
-    );
-    return (
-        <ExamListWrapper>
-            <div className="title text-heading">RECENT</div>
-            <ExamList>
-                {arr.map((exam, index) => {
-                    return (
-                        <ExamCard
-                            key={index.toString()}
-                            name={exam.name}
-                            creator={exam.creator}
-                            subject={exam.subject}
-                            duration={exam.duration}
-                            startTime={exam.startTime}
-                        />
-                    );
-                })}
-            </ExamList>
-        </ExamListWrapper>
-    );
-}
+ExamList.propTypes = {
+    examList: PropTypes.array,
+    title: PropTypes.string,
+    pagination: PropTypes.bool,
+    currentPage: PropTypes.number,
+    pageSize: PropTypes.number,
+    total: PropTypes.number,
+    onPageChange: PropTypes.func
+};
 
-function AllExamList() {
-    const arr = [];
-    arr.fill(
-        {
-            name: "He",
-            creator: "He",
-            subject: "He",
-            duration: "120",
-            startTime: "2021-11-06T06:25:49.742Z"
-        },
-        0,
-        9
-    );
+function ExamList({ examList, title, pagination, currentPage, pageSize, total, onPageChange }) {
+    if (!examList || examList.length === 0) {
+        return null;
+    }
+
     return (
         <ExamListWrapper>
-            <div className="title text-heading">ALL</div>
-            <ExamList>
-                {arr.map((exam, index) => {
+            <div className="title text-heading">{title.toUpperCase()}</div>
+            <GridList>
+                {examList.map((exam, index) => {
                     return (
                         <ExamCard
-                            key={index.toString()}
-                            name={exam.name}
+                            key={index}
+                            id={exam.exam_id}
+                            name={exam.exam_name}
                             creator={exam.creator}
                             subject={exam.subject}
                             duration={exam.duration}
-                            startTime={exam.startTime}
+                            startTime={exam.start_time}
                         />
                     );
                 })}
-            </ExamList>
+            </GridList>
+            {pagination && (
+                <Pagination
+                    currentPage={currentPage}
+                    pageSize={pageSize}
+                    total={total}
+                    onPageChange={onPageChange}
+                />
+            )}
         </ExamListWrapper>
     );
 }
 
 export default function MainView() {
-    const { user } = useSelector(state => state.common);
+    const history = useHistory();
+    const { user, token } = useSelector(state => state.common);
+    const [recentExamList, setRecentExamList] = useState([]);
+    const [allExamList, setAllExamList] = useState([]);
+
+    const pageSize = 10;
+    const [currentPage, setCurrentPage] = useState(0);
+    const [total, setTotal] = useState(0);
 
     const onExamSearch = exam => {
         console.log(exam);
     };
+
+    const onPageChange = page => {
+        console.log(page);
+        setCurrentPage(page);
+    };
+
+    useEffect(() => {
+        const fetchAllExam = async () => {
+            const skip = currentPage * pageSize || 0;
+            const res = await fetch(
+                `http://${process.env.REACT_APP_BACKEND_URL}exams/get?limit=${pageSize}&skip=${skip}`,
+                {
+                    method: "GET",
+                    headers: {
+                        "content-type": "application/json; charset=utf-8",
+                        "Access-Control-Allow-Origin": true,
+                        authorization: `bearer ${token}`
+                    }
+                }
+            );
+            const data = await res.json();
+            if (res.status >= 400) {
+                console.log(data.detail.message);
+            } else {
+                setAllExamList(data.exams);
+                setTotal(data.total);
+            }
+        };
+
+        if (token) {
+            fetchAllExam();
+        }
+    }, [currentPage, token]);
 
     return (
         <MainViewWrapper>
@@ -125,14 +144,27 @@ export default function MainView() {
                     <span>Welcome back, {user?.name}</span>
                     <div className="toolbox">
                         {user?.role.role_id === 2 ? (
-                            <button className="create-exam-btn text-base">Create New Exam</button>
+                            <button
+                                className="create-exam-btn text-base"
+                                onClick={() => history.push("/createExam")}
+                            >
+                                Create New Exam
+                            </button>
                         ) : null}
                     </div>
                 </div>
             </MainViewHeader>
             <MainViewBody>
-                <RecentExamList />
-                <AllExamList />
+                <ExamList title="recent" examList={recentExamList} />
+                <ExamList
+                    title="all"
+                    examList={allExamList}
+                    pagination={true}
+                    currentPage={currentPage}
+                    pageSize={pageSize}
+                    total={total}
+                    onPageChange={onPageChange}
+                />
             </MainViewBody>
         </MainViewWrapper>
     );
