@@ -22,7 +22,7 @@ class Question_Service:
             select(Question, Question_Group, Question_Type, Answer)
                 .join(Question_Group, Question.question_group_id == Question_Group.question_group_id)
                 .join(Question_Type, Question.question_type_id == Question_Type.question_type_id)
-                .join(Answer, Answer.question_id == Question.question_id)
+                .join(Answer, Answer.question_id == Question.question_id, isouter=True)
         )
 
     # GET
@@ -45,22 +45,27 @@ class Question_Service:
 
         question_body.question_group = question_group
         question_body.question_type = question_type
-        question_body.answers = answers
+        question_body.answers = answers if answers != [None] else []
 
         return question_body
 
     # GET
-    async def get_questions(self, skip, limit):
-        resultIter = await self.session.execute(
+    async def get_questions(self, skip, limit, exam_id):
+        print(exam_id)
+        q = (
             self.get_generic_questions_query()
-            # .offset(skip)
-            # .limit(limit)
+        )
+        if exam_id is not None:
+            q = q.where(Question.exam_id == exam_id)
+
+        resultIter = await self.session.execute(
+            q
         )
         resultList = [t for t in resultIter]
         question_group_dict = DictList(unique=True)
         question_type_dict = DictList(unique=True)
         answer_dict = DictList(unique=True)
-        uniq_questions = unique([q for (q, _, _, _) in resultList])[skip:skip + limit]
+        uniq_questions = unique([q for (q, _, _, _) in resultList])
 
         for (q, question_group, question_type, answer) in resultList:
             question_group_dict.add(q.question_id, question_group)
@@ -71,6 +76,8 @@ class Question_Service:
             q.question_group = question_group_dict.get(q.question_id)
             q.question_type = question_type_dict.get(q.question_id)
             q.answers = answer_dict.get(q.question_id)
+            if q.answers == [None]:
+                q.answers = []
 
         return uniq_questions
 
