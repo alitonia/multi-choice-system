@@ -16,6 +16,7 @@ function App() {
             method: "GET",
             headers: {
                 "content-type": "application/json; charset=utf-8",
+                "Access-Control-Allow-Origin": true,
                 authorization: `bearer ${token}`
             }
         };
@@ -36,7 +37,6 @@ function App() {
         if (data) {
             console.log(data);
             dispatch({ type: APP_LOADED, token, user: data });
-            // history.push("/dashboard");
         }
 
         if (error) {

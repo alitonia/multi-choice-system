@@ -7,7 +7,6 @@ import {
     InputWrapper,
     ButtonWrapper,
     StyledButton,
-    ExternalLogin,
     ErrorMessage
 } from "./LoginPanel.styles";
 
@@ -32,7 +31,8 @@ const LoginPanel = () => {
             const res = await fetch(`http://${process.env.REACT_APP_BACKEND_URL}account/login`, {
                 method: "POST",
                 headers: {
-                    "content-type": "application/json; charset=utf-8"
+                    "content-type": "application/json; charset=utf-8",
+                    "Access-Control-Allow-Origin": true
                 },
                 body: JSON.stringify(payload)
             });
@@ -54,14 +54,6 @@ const LoginPanel = () => {
         } catch (error) {
             setError(error.message);
         }
-    };
-
-    const handleGoogleLogin = () => {
-        console.log("Logged in with google");
-    };
-
-    const handleOutlookLogin = () => {
-        console.log("Logged in with Outlook");
     };
 
     return (
@@ -90,18 +82,14 @@ const LoginPanel = () => {
             {error && <ErrorMessage>{error}</ErrorMessage>}
 
             <ButtonWrapper>
-                <StyledButton bgcolor="#334257" color="#ffffff" onClick={handleSubmit}>
+                <StyledButton
+                    type="submit"
+                    bgcolor="#334257"
+                    color="#ffffff"
+                    onClick={handleSubmit}
+                >
                     Login
                 </StyledButton>
-
-                <span>or</span>
-
-                <ExternalLogin>
-                    <StyledButton onClick={handleGoogleLogin}>Continue with Google</StyledButton>
-                    <StyledButton bgcolor="#000000" color="#ffffff" onClick={handleOutlookLogin}>
-                        Continue with Outlook
-                    </StyledButton>
-                </ExternalLogin>
             </ButtonWrapper>
         </Wrapper>
     );
