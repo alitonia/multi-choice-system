@@ -56,6 +56,17 @@ async def show_accounts(
     return accounts
 
 
+@router.get("/accounts/total")
+async def show_accounts(
+        email: Optional[str] = None,
+        role: Optional[str] = None,
+        s: Session = Depends(get_session)
+) -> List[Account_Schema_Output]:
+    qs = Account_Service(s)
+    accounts = await qs.get_accounts_total(email, role)
+    return accounts
+
+
 @router.post("/account/new")
 async def create_account(
         item: Account_Schema_Input_New,

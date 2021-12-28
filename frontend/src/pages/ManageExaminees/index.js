@@ -19,7 +19,8 @@ const ManageExaminees = () => {
     const [inputEmail, setInputEmail] = useState();
     const [inputSearch, setInputSearch] = useState();
 
-    const token ='eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ5OTcsImV4cCI6MTY0MDcxOTk2NS41MzE3OTl9.TbxhMxciP-dyLB8gmD8BQ-n9ZrdXu2NMQNkwoFn1Hfk'
+    const token =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ5OTcsImV4cCI6MTY0MDcxOTk2NS41MzE3OTl9.TbxhMxciP-dyLB8gmD8BQ-n9ZrdXu2NMQNkwoFn1Hfk";
 
     useEffect(() => {
         getData();
@@ -27,10 +28,7 @@ const ManageExaminees = () => {
 
     const getData = async () => {
         var myHeaders = new Headers();
-        myHeaders.append(
-            "Authorization",
-            `Bearer ${token}`
-        );
+        myHeaders.append("Authorization", `Bearer ${token}`);
 
         var requestOptions = {
             method: "GET",
@@ -75,10 +73,7 @@ const ManageExaminees = () => {
     const handleClickAdd = () => {
         console.log(inputEmail);
         var myHeaders = new Headers();
-        myHeaders.append(
-            "Authorization",
-            `Bearer ${token}`
-        );
+        myHeaders.append("Authorization", `Bearer ${token}`);
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -102,10 +97,7 @@ const ManageExaminees = () => {
     const handleDeleteExaminee = (exam_id, examinee_id) => {
         console.log(exam_id, examinee_id);
         var myHeaders = new Headers();
-        myHeaders.append(
-            "Authorization",
-            `Bearer ${token}`
-        );
+        myHeaders.append("Authorization", `Bearer ${token}`);
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -187,8 +179,8 @@ const ManageExaminees = () => {
                                             <tr key={index}>
                                                 <td>{value.date_of_birth}</td>
                                                 <td>{value.phone_number}</td>
-                                                <td>ICT01 - K63</td>
-                                                <td>ICT</td>
+                                                <td>{value?.additional_info?.classname || ""}</td>
+                                                <td>{value?.additional_info?.major || ""}</td>
                                                 <td>
                                                     <button
                                                         onClick={() =>

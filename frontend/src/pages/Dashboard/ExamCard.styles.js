@@ -11,6 +11,7 @@ export const StyledExamCard = styled.div`
     box-sizing: border-box;
     padding: 8px;
     line-height: 16px;
+    cursor: pointer;
 
     .exam-name {
         line-height: 21px;
