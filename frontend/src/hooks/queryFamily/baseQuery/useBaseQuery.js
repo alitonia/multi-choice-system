@@ -1,9 +1,9 @@
 // @flow
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import * as assert from "assert";
 
 export const useBaseQuery = (props: P) => {
-    const { url, lazy = false, data: requestData, _request = null } = props;
+    const { url, lazy = false, data: requestData } = props;
 
     assert.notEqual(url, undefined, "Must have URL");
 
@@ -18,22 +18,20 @@ export const useBaseQuery = (props: P) => {
         setError(null);
         setData(null);
 
-        return fetch(url, requestData)
-            .then(res => res.json())
-            .then(respondVal => {
-                if (mountRef.current) {
-                    setLoading(false);
-                    setData(respondVal);
-                    setError(null);
+        if (mountRef.current) {
+            try {
+                const res = await fetch(url, requestData);
+                const data = await res.json();
+                if (res.status >= 400) {
+                    throw new Error(data.detail);
                 }
-            })
-            .catch(err => {
-                if (mountRef.current) {
-                    setLoading(false);
-                    setError(err);
-                    setData(null);
-                }
-            });
+                setData(data);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        }
     }, [url, requestData, mountRef, setLoading, setData, setError]);
 
     useEffect(() => {

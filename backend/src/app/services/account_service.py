@@ -8,7 +8,7 @@ from app.models.examinee import Examinee
 from app.models.admin import Admin
 
 from app.models.role import Role
-from sqlalchemy import update, delete, select, join
+from sqlalchemy import update, delete, select, join, func
 from datetime import datetime
 from app.utils.decrypt_encrypt_service import DecryptAndEnCrypt
 from fastapi.encoders import jsonable_encoder
@@ -89,7 +89,7 @@ class Account_Service:
     async def get_one_account(self, account_id: int):
         result_arbit_data = await self.session.execute(
             select(Account, Role).where(Account.account_id == account_id)
-            .join(Role, Account.role_id == Role.role_id)
+                .join(Role, Account.role_id == Role.role_id)
         )
         result_list = [x for x in result_arbit_data]
 
@@ -110,14 +110,7 @@ class Account_Service:
         result = await self.session.execute(select(Account).where(Account.email == email))
         return result.scalar()
 
-    async def login(self, email: str, password: str) -> Optional[Account]:
-        account = await self.get_account_by_email(email)
-        if de.match_password(password, account.hash_password):
-            return account
-        return None
-
     # GET one account
-
     async def get_one_account_no_pass(self, account_id):
         result = await self.get_one_account(account_id)
         if result is not None:
@@ -127,6 +120,12 @@ class Account_Service:
             return filtered
         else:
             return None
+
+    async def login(self, email: str, password: str) -> Optional[Account]:
+        account = await self.get_account_by_email(email)
+        if de.match_password(password, account.hash_password):
+            return await self.get_one_account_no_pass(account.account_id)
+        return None
 
     # GET accounts
     async def get_accounts_no_pass(
@@ -138,11 +137,11 @@ class Account_Service:
     ):
         q = (
             select(Account, Role)
-            .join(Role, Account.role_id == Role.role_id)
-            .limit(limit)
+                .join(Role, Account.role_id == Role.role_id)
+                .limit(limit)
         )
         if email is not None:
-            q = q.filter(Account.email == email)
+            q = q.filter(Account.email.ilike(f"%{email}%"))
 
         if role is not None:
             q = q.filter(Role.name == role)
@@ -158,6 +157,25 @@ class Account_Service:
             entry[0].role = entry[1]
 
         return [self.get_account_no_pass_filter(x[0]) for x in result_list]
+
+    async def get_accounts_total(
+            self,
+            email: Optional[str] = None,
+            role: Optional[str] = None,
+    ):
+        q = (
+            select(func.count(Account.account_id))
+                .join(Role, Account.role_id == Role.role_id)
+        )
+        if email is not None:
+            q = q.filter(Account.email == email)
+
+        if role is not None:
+            q = q.filter(Role.name == role)
+
+        result_arbit_data = await self.session.execute(q)
+
+        return {"total": result_arbit_data.scalar()}
 
     # POST
     async def add_account(
@@ -226,7 +244,7 @@ class Account_Service:
     async def change_account_visibility(self, account_id, visibility):
         q = (
             update(Account).where(Account.account_id == account_id)
-            .values(enable=visibility)
+                .values(enable=visibility)
         )
         q.execution_options(synchronize_session="fetch")
 
