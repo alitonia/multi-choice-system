@@ -9,6 +9,7 @@ import {
     StyledExamSearch
 } from "./MainView.styles";
 import ExamCard from "./ExamCard";
+import { useSelector } from "react-redux";
 
 ExamSearch.propTypes = {
     onExamSearch: PropTypes.func
@@ -110,9 +111,7 @@ function AllExamList() {
 }
 
 export default function MainView() {
-    // get user from redux state
-    const name = "he";
-    const role_id = 1;
+    const { user } = useSelector(state => state.common);
 
     const onExamSearch = exam => {
         console.log(exam);
@@ -123,9 +122,9 @@ export default function MainView() {
             <MainViewHeader>
                 <ExamSearch onExamSearch={onExamSearch} />
                 <div className="user-welcome text-large">
-                    <span>Welcome back, {name}</span>
+                    <span>Welcome back, {user?.name}</span>
                     <div className="toolbox">
-                        {role_id === 1 ? (
+                        {user?.role.role_id === 2 ? (
                             <button className="create-exam-btn text-base">Create New Exam</button>
                         ) : null}
                     </div>
