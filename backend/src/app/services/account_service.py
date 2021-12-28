@@ -168,7 +168,7 @@ class Account_Service:
                 .join(Role, Account.role_id == Role.role_id)
         )
         if email is not None:
-            q = q.filter(Account.email == email)
+            q = q.filter(Account.email.ilike(f"%{email}%"))
 
         if role is not None:
             q = q.filter(Role.name == role)
