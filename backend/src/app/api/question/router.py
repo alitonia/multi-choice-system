@@ -13,6 +13,7 @@ from typing import Optional
 from app.services.account_service import Account_Service
 from app.api.libs import security
 from app.core.principal import Principal
+from app.services.exam_service import Exam_Service
 
 router = APIRouter()
 
@@ -28,11 +29,14 @@ async def show_question(
 
     qs = Account_Service(s)
     account = await qs.get_one_account_no_pass(account_id)
-    can_view_question = account["role"]["name"] == 'examinee'
-    if can_view_question is False:
-        return None
 
     qs1 = Question_Service(s)
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        permission = qs1.check_question_viewer(question_id, -1, account)
+        if permission is False:
+            return None
+
     questions = await qs1.get_question(question_id)
     return questions
 
@@ -50,11 +54,17 @@ async def show_questions(
 
     qs = Account_Service(s)
     account = await qs.get_one_account_no_pass(account_id)
-    can_view_question = account["role"]["name"] == 'examiner'
-    if can_view_question is False:
-        return None
 
     qs1 = Question_Service(s)
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        if exam_id != None:
+            permission = qs1.check_question_viewer(-1, exam_id, account)
+        else:
+            permission = qs1.check_question_viewer(-1, -1, account)
+        if permission is False:
+            return None
+
     questions = qs1.get_questions(skip, limit, exam_id)
     return await questions
 
@@ -69,12 +79,16 @@ async def create_question(
     
     qs = Account_Service(s)
     account = await qs.get_one_account_no_pass(account_id)
-    can_create_question = account["role"]["name"] == 'examiner'
-    if can_create_question is False:
-        return None
     
-    qs1 = Question_Service(s)
-    questions = qs1.add_question(
+    qs1 = Exam_Service(s)
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        permission = qs1.check_exam_viewer(item.exam_id, account)
+        if permission is False:
+            return None
+
+    qs2 = Question_Service(s)
+    questions = qs2.add_question(
         item.question_content,
         item.exam_id,
         item.question_group_id,
@@ -93,11 +107,14 @@ async def update_question(
     
     qs = Account_Service(s)
     account = await qs.get_one_account_no_pass(account_id)
-    can_update_question = account["role"]["name"] == 'examiner'
-    if can_update_question is False:
-        return None
 
     qs1 = Question_Service(s)
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        permission = qs1.check_question_viewer(question_id , -1, account)
+        if permission is False:
+            return None
+
     questions = qs1.edit_question(
         item.question_id,
         item.question_content,
@@ -117,11 +134,14 @@ async def update_question(
     
     qs = Account_Service(s)
     account = await qs.get_one_account_no_pass(account_id)
-    can_delete_question = account["role"]["name"] == 'examiner'
-    if can_delete_question is False:
-        return None
 
     qs1 = Question_Service(s)
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        permission = qs1.check_question_viewer(question_id , -1, account)
+        if permission is False:
+            return None
+
     questions = qs1.delete_question(
         item.question_id,
     )

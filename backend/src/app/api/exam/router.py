@@ -29,6 +29,12 @@ async def show_exam(
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
 
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        is_viewer = qs.check_exam_viewer(exam_id, account)
+        if is_viewer is False:
+            return None
+
     exam = await qs.get_one_exam(exam_id, account)
     return exam
 
@@ -47,6 +53,12 @@ async def show_exams(
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
 
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        is_viewer = qs.check_exam_viewer(-1,account)
+        if is_viewer is False:
+            return None
+
     exams = await qs.get_exams(account, skip, limit, sort)
     return exams
 
@@ -62,8 +74,9 @@ async def create_exam(
 
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
-    can_create_exam = account["role"]["name"] == 'examiner'
-    if can_create_exam is False:
+    
+    role_name = account["role"]["name"]
+    if role_name != "admin" and role_name != "examiner":
         return None
 
     # return account
@@ -88,9 +101,12 @@ async def update_question(
 
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
-    can_create_exam = account["role"]["name"] == 'examiner'
-    if can_create_exam is False:
-        return None
+
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        is_viewer = qs.check_exam_viewer(item.exam_id,account)
+        if is_viewer is False:
+            return None
 
     # return account
     exam = qs.edit_exam(
@@ -114,9 +130,12 @@ async def update_question(
 
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
-    can_create_exam = account["role"]["name"] == 'examiner'
-    if can_create_exam is False:
-        return None
+    
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        is_viewer = qs.check_exam_viewer(exam_id,account)
+        if is_viewer is False:
+            return None
 
     questions = qs.delete_exam(
         exam_id
@@ -135,9 +154,12 @@ async def add_examinees_to_exam(
 
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
-    can_create_exam = account["role"]["name"] == 'examiner'
-    if can_create_exam is False:
-        return None
+
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        is_viewer = qs.check_exam_viewer(item.exam_id,account)
+        if is_viewer is False:
+            return None
 
     exam = await qs.add_examinees(
         item.exam_id,
@@ -157,10 +179,13 @@ async def add_examinees_to_exam(
 
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
-    can_create_exam = account["role"]["name"] == 'examiner'
-    if can_create_exam is False:
-        return None
 
+    role_name = account["role"]["name"]
+    if role_name != "admin":
+        is_viewer = qs.check_exam_viewer(item.exam_id,account)
+        if is_viewer is False:
+            return None
+    
     exam = await qs.remove_examinees(
         item.exam_id,
         item.examinee_ids
