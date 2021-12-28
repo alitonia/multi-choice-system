@@ -10,8 +10,8 @@ import { isEqual } from "lodash";
 const EditAccount = () => {
     const { id } = useParams();
     // get currentUser from redux store/fetch
-    let jwtToken =
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ2NzgwNS43OTcyNTh9.EkacOKr9LgUFeGLc3_QKn647STyM_MbB7Ej3AfUWDgI";
+    let jwtToken = "Bearer "+ localStorage.getItem("access_token");
+        // "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ2NzgwNS43OTcyNTh9.EkacOKr9LgUFeGLc3_QKn647STyM_MbB7Ej3AfUWDgI";
     // const currentUser = {
     //     id: 13,
     //     email: "test_admin1@mana.itss",
@@ -159,7 +159,7 @@ const EditAccount = () => {
                 <div className={styles.adminPageUpperRight}>
                     <div>
                         Welcome back,{" "}
-                        <a className="username" href="/settings">
+                        <a className="username" href="/">
                             {currentUser.name}
                         </a>
                     </div>
@@ -397,7 +397,8 @@ const EditAccount = () => {
                             <td colSpan={3}>
                                 <div className={styles.editAccountBottom}>
                                     <div className={styles.editAccountBottomLeft}>
-                                        <a href={"/"}>&lt; Back</a>
+                                        <a href={(typeof currentUser.role !== "undefined" &&
+                                            currentUser.role.name === "admin")?"/admin/dashboard":"/dashboard"}>&lt; Back</a>
                                     </div>
                                     <div className={styles.editAccountBottomRight}>
                                         <div>
