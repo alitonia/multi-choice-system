@@ -72,10 +72,29 @@ const ManageExaminees = () => {
 
     const handleClickAdd = () => {
         console.log(inputEmail);
-        const newExaminee = {
-            exam_id: 4,
-            examinee_ids: 123
+        var myHeaders = new Headers();
+        myHeaders.append(
+            "Authorization",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
+        );
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            exam_id: id,
+            emails: [inputEmail]
+        });
+
+        var requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
         };
+
+        fetch("http://localhost:8080/api/v1/exam/edit/add_examinees", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log("error", error));
     };
 
     const handleDeleteExaminee = (exam_id, examinee_id) => {
@@ -89,7 +108,7 @@ const ManageExaminees = () => {
 
         var raw = JSON.stringify({
             exam_id: exam_id,
-            examinee_ids: [examinee_id]
+            emails: [examinee_id]
         });
 
         var requestOptions = {
@@ -111,7 +130,7 @@ const ManageExaminees = () => {
             <div className={styles.wrapper}>
                 <MainViewHeader>
                     <StyledExamSearch>
-                        <div className="title text-heading">YOUR EXAMS</div>
+                        <div className="title text-heading">YOUR EXAM: </div>
                         <div className="input-wrapper">
                             <input
                                 className="text-base"
@@ -171,7 +190,7 @@ const ManageExaminees = () => {
                                                 <td>
                                                     <button
                                                         onClick={() =>
-                                                            handleDeleteExaminee(id, index)
+                                                            handleDeleteExaminee(id, value.email)
                                                         }
                                                     >
                                                         Remove
@@ -202,11 +221,6 @@ const ManageExaminees = () => {
                         <p>{actionResults}</p>
                     </Grid>
                 </Grid>
-                <div className={styles.backArrow}>
-                    <ArrowBackIcon
-                        style={{ color: "white", paddingTop: "5px", paddingLeft: "5px" }}
-                    />
-                </div>
             </div>
 
             <Footer />
