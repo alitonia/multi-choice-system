@@ -40,12 +40,6 @@ const CreateExam = () => {
             <div className={styles.wrapper}>
                 <CRUDHeader headerType="CREATE"></CRUDHeader>
                 <CRUDTable handleSubmit={handleSubmit}></CRUDTable>
-
-                <div className={styles.backArrow}>
-                    <ArrowBackIcon
-                        style={{ color: "white", paddingTop: "5px", paddingLeft: "5px" }}
-                    />
-                </div>
             </div>
             <Footer />
         </div>
