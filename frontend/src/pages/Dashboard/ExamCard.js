@@ -5,7 +5,7 @@ import { StyledExamCard } from "./ExamCard.styles";
 ExamCard.propTypes = {
     name: PropTypes.string,
     subject: PropTypes.string,
-    creator: PropTypes.string,
+    creator: PropTypes.any,
     startTime: PropTypes.string,
     duration: PropTypes.string
 };

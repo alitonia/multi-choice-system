@@ -27,6 +27,7 @@ export const MainViewHeader = styled.div`
         border-radius: 16px;
         padding: 8px;
         width: 30%;
+        min-width: 360px;
         color: var(--primary);
 
         .toolbox {
