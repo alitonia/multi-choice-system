@@ -10,14 +10,14 @@ from app.core.principal import Principal
 from app.api.libs import security
 from app.services.exam_service import Exam_Service
 from app.services.question_service import Question_Service
-from app.services import choice_service
+from app.services import choice_service, participant_exam_service
 from app.schemas.question import (
     Question_Schema,
     Question_Schema_POST_Params,
     Question_Schema_PUT_Params,
     Question_Schema_DEL_Params
 )
-from backend.src.app.schemas.exam import ExamAnswerSchemaIn
+from backend.src.app.schemas.exam import ExamAnswerSchemaIn, ExamFinishSchemaIn
 
 router = APIRouter()
 
@@ -57,9 +57,15 @@ async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_se
     output_questions = []
     for question in questions:
         answers = await question_service.get_question_answers(question_id=question.question_id)
+        num_of_correct_answers = 0
+        for answer in answers:
+            if answer.is_correct:
+                num_of_correct_answers += 1
         answers_dict = [answer.__dict__ for answer in answers]
         question_dict = question.__dict__
         question_dict["answers"] = answers_dict
+        question_dict["num_of_correct_answers"] = num_of_correct_answers
+
         output_questions.append(question_dict)
 
     output_exam = participant.exam.__dict__
@@ -93,6 +99,35 @@ async def answer_question(exam_id: int, body: ExamAnswerSchemaIn, session: Async
 
     # TODO construct a schema output for this
     return {"message": "ok"}
+
+
+@router.post("/exam/finish")
+async def finish_exam(body: ExamFinishSchemaIn, session: AsyncSession = Depends(get_session), principal: Principal = Depends(security.get_current_user)):
+    exam_service = Exam_Service(session=session)
+    question_service = Question_Service(session=session)
+
+    account_id = principal.account_id
+    # TODO: check for legibility
+    exam_id = body.exam_id
+    participant_exam = await participant_exam_service.get_participant_exam(session=session, exam_id=exam_id, examinee_id=account_id)
+
+    questions = await question_service.get_exam_questions(exam_id=exam_id)
+    score = 0
+    for question in questions:
+        answers = await question_service.get_question_answers(question_id=question.question_id)
+        num_of_correct_answers = 0
+        for answer in answers:
+            if answer.is_correct:
+                num_of_correct_answers += 1
+        answers_id = [answer.answer_id for answer in answers]
+        choices = await choice_service.get_choices(session=session, question_id=question.question_id, examinee_id=account_id)
+        if not choices:
+            continue
+        choices_id = [choice.answer_id for choice in choices]
+        if all(item in choices_id for item in answers_id) and all(item in answers_id for item in choices_id):
+            score += 1
+
+    await participant_exam_service.finish_participant_exam(session=session, participant_exam=participant_exam, score=score)
 
     #
     # @router.post("/question/")
