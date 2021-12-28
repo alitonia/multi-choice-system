@@ -8,7 +8,7 @@ from app.models.question import Question
 from app.models.participant import Participant
 
 from sqlalchemy.future import select
-from sqlalchemy import update, delete, text, desc, asc
+from sqlalchemy import update, delete, text, desc, asc, func
 
 import datetime
 from dateutil import parser
@@ -82,6 +82,26 @@ class Exam_Service:
 
         result = await self.session.execute(q)
         return result.scalars().all()
+
+    async def get_exams_count(
+            self,
+            account,
+    ):
+        # Will need to check jwt to differentiate users
+        q = select(func.count(Exam.exam_id))
+        role_name = account["role"]["name"]
+
+        if role_name == 'examiner':
+            q = q.where(Exam.creator == account["account_id"])
+        elif role_name == 'examinee':
+            q = (
+                q.join(Participant, Participant.exam_id == Exam.exam_id)
+                    .where(Participant.examinee_account_id == account["account_id"])
+            )
+
+        result = await self.session.execute(q)
+        print(result)
+        return {"total": result.scalar()}
 
     # POST
     async def add_exam(self,
