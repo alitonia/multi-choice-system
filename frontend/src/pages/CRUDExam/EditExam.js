@@ -40,27 +40,35 @@ const EditExam = () => {
     };
 
     const handleEditSubmit = async (examName, subjectName, startTime, duration) => {
-        console.log(examName, subjectName, startTime, duration);
-        const article = {
+        console.log(duration);
+        var myHeaders = new Headers();
+        myHeaders.append(
+            "Authorization",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
+        );
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
             exam_id: id,
             exam_name: examName,
             subject: subjectName,
             start_time: startTime,
-            duration: duration.substring(0, parseInt(duration.length) - 3)
+            duration: duration
+        });
+
+        console.log(raw);
+
+        var requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
         };
-        console.log(JSON.stringify(article));
-        try {
-            const res = await axios
-                .put(`http://` + process.env.REACT_APP_BACKEND_URL + `exam/edit`, article, {
-                    headers: {
-                        Authorization:
-                            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
-                    }
-                })
-                .then(response => console.log(response));
-        } catch (error) {
-            console.error(error);
-        }
+
+        fetch("http://localhost:8080/api/v1/exam/edit", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log("error", error));
     };
 
     const handleDeleteSubmit = async () => {

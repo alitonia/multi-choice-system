@@ -72,6 +72,27 @@ td {
     font-size: 20px;
 }
 
+.inputFieldSpecial {
+    width: 60%;
+    height: 45px;
+    margin: 0 auto;
+    border: none; /* <-- This thing here */
+    border: solid 1px #ccc;
+    border-radius: 10px;
+    font-size: 20px;
+}
+.inputFieldSpecial::-webkit-datetime-edit-ampm-field {
+    display: none;
+}
+input[type="time"]::-webkit-clear-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    margin: -10px;
+}
+
 .submitButton {
     border: none;
     background-color: #334257;

@@ -106,7 +106,7 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                         Duration
                                     </td>
                                     <td style={{ textAlign: "left", paddingLeft: "15px" }}>
-                                        t minutes
+                                        hh:mm
                                     </td>
                                     <td
                                         style={{
@@ -116,10 +116,10 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                         <input
                                             type="time"
                                             placeholder="Change duration in minutes ..."
-                                            min="09:00"
-                                            max="18:00"
+                                            min="00:01"
+                                            max="05:00"
                                             defaultValue={data ? data.duration : ""}
-                                            className={styles.inputField}
+                                            className={styles.inputFieldSpecial}
                                             onChange={handleChangeDuration}
                                         ></input>
                                     </td>
