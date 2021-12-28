@@ -1,9 +1,36 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styles from "./EditExam.module.scss";
 
 const CRUDTable = ({ data, handleSubmit }) => {
     const name = "he";
+    const [examName, setExamName] = useState(data ? data.exam_name : "");
+    const [subjectName, setSubjectName] = useState(data ? data.subject : "");
+    const [startTime, setStartTime] = useState(data ? data.start_time : "");
+    const [duration, setDuration] = useState(data ? data.duration : "");
+
+    useEffect(() => {
+        setExamName(data?.exam_name);
+        setSubjectName(data?.subject);
+        setStartTime(data?.start_time);
+        setDuration(data?.duration);
+    }, [data]);
+
+    const handleChangeName = event => {
+        setExamName(event.target.value);
+    };
+
+    const handleChangeSubject = event => {
+        setSubjectName(event.target.value);
+    };
+
+    const handleChangeTime = event => {
+        setStartTime(event.target.value);
+    };
+
+    const handleChangeDuration = event => {
+        setDuration(event.target.value);
+    };
 
     return (
         <div className={styles.wrapperTable}>
@@ -28,6 +55,8 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                             type="text"
                                             placeholder="Change exam name ..."
                                             className={styles.inputField}
+                                            defaultValue={data ? data.exam_name : ""}
+                                            onChange={handleChangeName}
                                         ></input>
                                     </td>
                                 </tr>
@@ -47,6 +76,8 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                             type="text"
                                             placeholder="Change subject name ..."
                                             className={styles.inputField}
+                                            defaultValue={data ? data.subject : ""}
+                                            onChange={handleChangeSubject}
                                         ></input>
                                     </td>
                                 </tr>
@@ -65,6 +96,8 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                         <input
                                             type="datetime-local"
                                             className={styles.inputField}
+                                            defaultValue={data ? data.start_time : ""}
+                                            onChange={handleChangeTime}
                                         ></input>
                                     </td>
                                 </tr>
@@ -81,9 +114,13 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                         }}
                                     >
                                         <input
-                                            type="text"
+                                            type="time"
                                             placeholder="Change duration in minutes ..."
+                                            min="09:00"
+                                            max="18:00"
+                                            defaultValue={data ? data.duration : ""}
                                             className={styles.inputField}
+                                            onChange={handleChangeDuration}
                                         ></input>
                                     </td>
                                 </tr>
@@ -92,7 +129,12 @@ const CRUDTable = ({ data, handleSubmit }) => {
                     </tr>
                     <tr>
                         <td style={{ textAlign: "center" }}>
-                            <button className={styles.submitButton} onClick={handleSubmit}>
+                            <button
+                                className={styles.submitButton}
+                                onClick={() =>
+                                    handleSubmit(examName, subjectName, startTime, duration)
+                                }
+                            >
                                 Save change
                             </button>
                         </td>

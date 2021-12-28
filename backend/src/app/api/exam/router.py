@@ -166,3 +166,17 @@ async def add_examinees_to_exam(
         item.examinee_ids
     )
     return exam
+
+
+@router.get("/exam/get_examinees")
+async def add_examinees_to_exam(
+        exam_id: str = None,
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = Exam_Service(s)
+
+    exam = await qs.get_examinees(
+        exam_id
+    )
+    return exam

@@ -20,7 +20,7 @@ export const routes = [
         component: LoginPage
     },
     {
-        path: "/editExam",
+        path: "/editExam/:id",
         others: {},
         component: EditExam
     },
@@ -30,7 +30,7 @@ export const routes = [
         component: CreateExam
     },
     {
-        path: "/examPage",
+        path: "/exam",
         others: {},
         component: ExamPage
     },

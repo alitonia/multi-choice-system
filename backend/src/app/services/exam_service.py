@@ -3,6 +3,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.models.exam import Exam
 from app.models.examiner import Examiner
+from app.models.examinee import Examinee
+
 from app.models.account import Account
 from app.models.question import Question
 from app.models.participant import Participant
@@ -12,6 +14,7 @@ from sqlalchemy import update, delete, text, desc, asc
 
 import datetime
 from dateutil import parser
+from fastapi.encoders import jsonable_encoder
 
 
 class Exam_Service:
@@ -29,15 +32,16 @@ class Exam_Service:
                 .join(Question, Question.exam_id == Exam.exam_id, isouter=True)
         )
 
-        role_name = account["role"]["name"]
+        if account is not None:
+            role_name = account["role"]["name"]
 
-        if role_name == 'examiner':
-            q = q.where(Examiner.account_id == account["account_id"])
-        elif role_name == 'examinee':
-            q = q = (
-                q.join(Participant, Participant.exam_id == Exam.exam_id)
-                    .where(Participant.examinee_account_id == account["account_id"])
-            )
+            if role_name == 'examiner':
+                q = q.where(Examiner.account_id == account["account_id"])
+            elif role_name == 'examinee':
+                q = q = (
+                    q.join(Participant, Participant.exam_id == Exam.exam_id)
+                        .where(Participant.examinee_account_id == account["account_id"])
+                )
 
         q = q.where(Exam.exam_id == exam_id)
 
@@ -119,7 +123,7 @@ class Exam_Service:
         q.execution_options(synchronize_session="fetch")
         await self.session.execute(q)
         await self.session.commit()
-        return await self.get_one_exam(exam_id)
+        return await self.get_one_exam(exam_id, None)
 
     # DELETE
     async def delete_exam(self, exam_id):
@@ -171,3 +175,41 @@ class Exam_Service:
         await self.session.execute(q)
         await self.session.commit()
         return {"status": "OK"}
+
+    async def get_examinees(self, exam_id):
+        print(exam_id)
+        q = (
+            select(Account, Examinee)
+                .join(Examinee, Examinee.account_id == Account.account_id)
+                .join(Participant, Participant.examinee_account_id == Examinee.account_id)
+        )
+        if exam_id is not None:
+            q = q.where(Participant.exam_id == int(exam_id))
+        else:
+            return []
+
+        result_iter = await self.session.execute(q)
+        result_list = [x for x in result_iter]
+        return_list = []
+
+        for (account, examinee_info) in result_list:
+            filtered_account = Account(
+                account_id=account.account_id,
+                email=account.email,
+                name=account.name,
+                date_of_birth=account.date_of_birth,
+                phone_number=account.phone_number,
+                role_id=account.role_id,
+            )
+
+            filtered_account.additional_info = examinee_info
+            json_account = jsonable_encoder(filtered_account)
+
+            json_account["date_of_birth"] = (
+                datetime.datetime.strptime(json_account["date_of_birth"], "%Y-%m-%d")
+                    .strftime("%d-%m-%Y")
+            )
+            return_list.append(json_account)
+
+        await self.session.commit()
+        return return_list
