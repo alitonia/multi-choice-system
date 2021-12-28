@@ -25,7 +25,8 @@ const LoginPanel = () => {
         setPassword(e.target.value);
     };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async e => {
+        e.preventDefault();
         const payload = { email, password };
         try {
             const res = await fetch(`http://${process.env.REACT_APP_BACKEND_URL}account/login`, {
