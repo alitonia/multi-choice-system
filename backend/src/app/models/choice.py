@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Text, DateTime, Time
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.schema import Table
+from sqlalchemy.sql.schema import PrimaryKeyConstraint, Table
 
 from app.models.base import Base
 from app.models.answer import Answer
@@ -11,6 +11,7 @@ from app.models.examinee import Examinee
 
 class Choice(Base):
     __tablename__ = 'Choice'
+    __table_args__ = (PrimaryKeyConstraint('question_id', 'answer_id', "examinee_account_id"),)
     question_id = Column(Integer, ForeignKey(Question.question_id))
     answer_id = Column(Integer, ForeignKey(Answer.answer_id))
     examinee_account_id = Column(Integer, ForeignKey(Examinee.account_id))
