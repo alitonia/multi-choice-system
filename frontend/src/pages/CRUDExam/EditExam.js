@@ -24,7 +24,7 @@ const EditExam = () => {
             exam_name: examName,
             subject: subjectName,
             start_time: startTime,
-            duration: duration
+            duration: duration.substring(0, parseInt(duration.length) - 3)
         };
         console.log(JSON.stringify(article));
         try {
@@ -32,7 +32,7 @@ const EditExam = () => {
                 .put(`http://` + process.env.REACT_APP_BACKEND_URL + `exam/edit`, article, {
                     headers: {
                         Authorization:
-                            "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ5OTcsImV4cCI6MTY0MDY3ODcwNS43MzEwNDYyfQ.8QhQgE8wX47L2GUWK_Sg2p85uYwBDXqZZexxO_I6_gY"
+                            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5NDM3Mi41OTIyMzUzfQ.WCg4OZM3qc0A7KOmnHBWzRk5QmRK9YRNG6iNu42MlyU"
                     }
                 })
                 .then(response => console.log(response));
@@ -54,7 +54,7 @@ const EditExam = () => {
                 {
                     headers: {
                         Authorization:
-                            "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ5OTcsImV4cCI6MTY0MDY3ODcwNS43MzEwNDYyfQ.8QhQgE8wX47L2GUWK_Sg2p85uYwBDXqZZexxO_I6_gY"
+                            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5NDM3Mi41OTIyMzUzfQ.WCg4OZM3qc0A7KOmnHBWzRk5QmRK9YRNG6iNu42MlyU"
                     }
                 }
             );

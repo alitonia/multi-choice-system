@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     width: 500px;
-    height: 380px;
+    /* height: 380px; */
 
     .forgot-password-text {
         margin-bottom: 10px;
@@ -72,4 +72,8 @@ export const ExternalLogin = styled.div`
     flex-direction: column;
     justify-content: space-between;
     flex: 1 0;
+`;
+
+export const ErrorMessage = styled.p`
+    color: red;
 `;

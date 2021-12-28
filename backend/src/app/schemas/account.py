@@ -8,6 +8,7 @@ class Account_Schema_Base(BaseModel):
     date_of_birth: str
     phone_number: str
     role_id: int
+
     # role = relationship("Role", back_populates="role")
 
     class Config:
@@ -26,7 +27,6 @@ class Account_Schema_Output(Account_Schema_Base):
 
 class Account_Schema_Input_Edit(BaseModel):
     id: int  # this is account_id, but use id in accordance with doc
-    email: str
     name: str
     date_of_birth: str
     phone_number: str
@@ -47,3 +47,4 @@ class Account_Schema_Login(BaseModel):
 
 class Account_Schema_Login_Output(BaseModel):
     access_token: str
+    account: Account_Schema_Base

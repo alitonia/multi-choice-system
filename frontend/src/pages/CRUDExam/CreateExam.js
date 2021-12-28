@@ -19,19 +19,20 @@ const handleSubmit = async (examName, subjectName, startTime, duration) => {
     try {
         const res = await axios.post(
             `http://` + process.env.REACT_APP_BACKEND_URL + `exam/new`,
-            JSON.stringify(article),
+            article,
             {
                 headers: {
                     Authorization:
-                        "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5NDM3Mi41OTIyMzUzfQ.WCg4OZM3qc0A7KOmnHBWzRk5QmRK9YRNG6iNu42MlyU"
+                        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5NDM3Mi41OTIyMzUzfQ.WCg4OZM3qc0A7KOmnHBWzRk5QmRK9YRNG6iNu42MlyU"
                 }
             }
         );
-        console.log(res.status);
+        console.log(res);
     } catch (error) {
         console.error(error);
     }
 };
+
 const CreateExam = () => {
     return (
         <div>

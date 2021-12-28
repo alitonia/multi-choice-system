@@ -9,6 +9,7 @@ from app.schemas.question import (
     Question_Schema_PUT_Params,
     Question_Schema_DEL_Params
 )
+from typing import Optional
 
 router = APIRouter()
 
@@ -27,10 +28,11 @@ async def show_question(
 async def show_questions(
         skip: int = 0,
         limit: int = 15,
+        exam_id: Optional[int] = None,
         s: Session = Depends(get_session)
 ) -> List[Question_Schema]:
     qs = Question_Service(s)
-    questions = qs.get_questions(skip, limit)
+    questions = qs.get_questions(skip, limit, exam_id)
     return await questions
 
 
