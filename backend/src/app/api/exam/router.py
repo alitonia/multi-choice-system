@@ -1,6 +1,7 @@
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.param_functions import Body
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.orm import Session
 
@@ -17,7 +18,7 @@ from app.schemas.question import (
     Question_Schema_PUT_Params,
     Question_Schema_DEL_Params
 )
-from backend.src.app.schemas.exam import ExamAnswerSchemaIn, ExamFinishSchemaIn
+from app.schemas.exam import ExamAnswerSchemaIn, ExamFinishSchemaIn, ExamSchemaOut
 
 router = APIRouter()
 
@@ -40,7 +41,25 @@ async def show_accounts(
     return exams
 
 
-@router.get("/exam/get/{exam_id}")
+@router.post("/exam/start")
+async def start_exam(exam_id: int = Body(..., embed=True), session: AsyncSession = Depends(get_session), principal: Principal = Depends(security.get_current_user)):
+    exam_service = Exam_Service(session=session)
+    account_id = principal.account_id
+
+    participant = await exam_service.get_participant_exam(
+        exam_id=exam_id, examinee_id=account_id)
+    if not participant:
+        raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
+            f"Exam does not exist or you don't have permission to access this"))
+    participant_exam = await participant_exam_service.get_participant_exam(session=session, exam_id=exam_id, examinee_id=account_id)
+    if participant_exam:
+        raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
+            f"You have already done this exam"))
+
+    await participant_exam_service.create_participant_exam(session=session, exam_id=exam_id, examinee_id=account_id)
+
+
+@router.get("/exam/get/{exam_id}", response_model=ExamSchemaOut)
 async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_session), principal: Principal = Depends(security.get_current_user)):
     exam_service = Exam_Service(session=session)
     question_service = Question_Service(session=session)
