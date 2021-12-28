@@ -19,8 +19,8 @@ export default function ExamCard(props) {
             <div className="class">
                 Class of: <span className="teacher">{creator}</span>
             </div>
-            <div className="start-time">{new Date(startTime).toLocaleString()}</div>
-            <div className="duration">{duration} minutes</div>
+            <div className="start-time">{startTime}</div>
+            <div className="duration">{duration}</div>
         </StyledExamCard>
     );
 }

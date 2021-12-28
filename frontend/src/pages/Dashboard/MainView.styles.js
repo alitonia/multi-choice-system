@@ -118,7 +118,7 @@ export const ExamListWrapper = styled.div`
     }
 `;
 
-export const ExamList = styled.div`
+export const GridList = styled.div`
     display: grid;
     row-gap: 40px;
     column-gap: 40px;
