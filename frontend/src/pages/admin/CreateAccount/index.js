@@ -9,8 +9,8 @@ import { RadioGroup, Radio } from "react-radio-group";
 
 const CreateAccount = () => {
     // get currentUser from redux store/fetch
-    let jwtToken = "Bearer "+ localStorage.getItem("access_token");
-        // "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ1NjMyNC4xMTQzOTkyfQ.2fzKr1V5YutdB9e78LoKurgHDLqfwOMs_iB9usctfVM";
+    let jwtToken = "Bearer " + localStorage.getItem("access_token");
+    // "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ1NjMyNC4xMTQzOTkyfQ.2fzKr1V5YutdB9e78LoKurgHDLqfwOMs_iB9usctfVM";
     // const currentUser = {
     //     email: 'test_admin1@mana.itss',
     //     name: 'fluffy_admin_1',
@@ -135,10 +135,7 @@ const CreateAccount = () => {
                 <div className={styles.adminPageUpperRight}>
                     <div>
                         Welcome back,{" "}
-                        <a
-                            className="username"
-                            href={"/account/edit/" + currentUser.account_id}
-                        >
+                        <a className="username" href={"/account/edit/" + currentUser.account_id}>
                             {currentUser.name}
                         </a>
                     </div>
