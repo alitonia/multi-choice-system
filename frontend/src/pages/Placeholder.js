@@ -1,6 +1,6 @@
-import {useBaseQuery} from "../hooks/queryFamily/baseQuery/useBaseQuery";
-import {useMemo, useState} from "react";
-import {useFakeQuery} from "../hooks/queryFamily/fakeQuery/useFakeQuery";
+import { useBaseQuery } from "../hooks/queryFamily/baseQuery/useBaseQuery";
+import { useMemo, useState } from "react";
+import { useFakeQuery } from "../hooks/queryFamily/fakeQuery/useFakeQuery";
 
 export const Placeholder = props => {
     const [x, setX] = useState(1);
@@ -10,14 +10,14 @@ export const Placeholder = props => {
             method: "GET",
             headers: {
                 "Content-Type": "application/json; charset=utf-8",
-                "Authorization": `bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ1NDkyMS4zMTg5NDV9.3S8MJYXtkO4LyBkvezzuC7x11AXh5uiDhs6SnkSn6Zw`
-            },
-        }
-    }, [])
+                Authorization: `bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDU5NTk1Mi43ODAwNzM0fQ.nyN6R2b6hgI5Hw7CR8ktsPoFazGFBpPlSM6WzaP8ZWk`
+            }
+        };
+    }, []);
 
-    const url = `http://${process.env.REACT_APP_BACKEND_URL}accounts`
+    const url = `http://${process.env.REACT_APP_BACKEND_URL}accounts`;
 
-    const {data, loading, error} = useBaseQuery({
+    const { data, loading, error } = useBaseQuery({
         url: url,
         hint: "account",
         data: body

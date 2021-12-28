@@ -1,8 +1,10 @@
-import { Placeholder } from "./Placeholder.js";
 import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
 import ManageExaminees from "./ManageExaminees/index.js";
+import AdminDashboard from "./admin/Dashboard";
+import CreateAccount from "./admin/CreateAccount";
+import EditAccount from "./account/EditAccount";
 
 export const routes = [
     {
@@ -11,12 +13,7 @@ export const routes = [
         component: Dashboard
     },
     {
-        path: "/dashboard",
-        others: {},
-        component: Dashboard
-    },
-    {
-        path: "/manageExaminees",
+        path: "/manageExaminees/:id",
         others: {},
         component: ManageExaminees
     },
@@ -26,9 +23,24 @@ export const routes = [
         component: LoginPage
     },
     {
-        path: "/examPage",
+        path: "/exam",
         others: {},
         component: ExamPage
+    },
+    {
+        path: "/admin/dashboard",
+        others: {},
+        component: AdminDashboard
+    },
+    {
+        path: "/admin/createAccount",
+        others: {},
+        component: CreateAccount
+    },
+    {
+        path: "/account/edit/:id",
+        others: {},
+        component: EditAccount
     },
     {
         path: "/",

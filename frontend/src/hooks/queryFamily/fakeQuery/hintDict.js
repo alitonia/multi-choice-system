@@ -7,7 +7,7 @@ const _dataAccount = id => ({
     enable: id % 3 === 0 ? "FALSE" : "TRUE",
     role: {
         role_id: (id % 2) + 1,
-        name: id === 2 ? 'examiner' : 'examinee'
+        name: id === 2 ? "examiner" : "examinee"
     }
 });
 
@@ -33,7 +33,7 @@ const _dataExam = id => ({
     subject: `subject_${id}`,
     creator: {
         id: 1,
-        department: 'defence against the dark art',
+        department: "defence against the dark art",
         name: `alitonia_${id}`
     },
     start_time: Date.now(),
@@ -59,7 +59,7 @@ const _dataQuestion = id => ({
     question_id: `43${id}`,
     question_content: `content for ${id}`,
     exam_id: `${211}`,
-    question_group: [{question_group_id: 1, description: "TEST_QT_1"}],
+    question_group: [{ question_group_id: 1, description: "TEST_QT_1" }],
     question_type: [
         {
             question_type_id: (id % 2) + 1,
@@ -83,7 +83,7 @@ const _dataQuestions = [...Array(30).keys()].map(id => {
 
 const _dataQuestionsExaminee = _dataQuestions.map(x => ({
     ...x,
-    choice: {answer_id: x.question_id === 431 ? 1 : null}
+    choice: { answer_id: x.question_id === 431 ? 1 : null }
 }));
 
 const _dataLogs = [...Array(50).keys()].map(id => ({
@@ -115,4 +115,4 @@ const hintDict = {
 
 Object.freeze(hintDict);
 
-export {hintDict};
+export { hintDict };

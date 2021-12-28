@@ -6,10 +6,13 @@ import Footer from "../../components/footer/Footer";
 import styles from "./ManageExaminees.module.scss";
 import { StyledExamSearch, MainViewHeader } from "../Dashboard/MainView.styles";
 import axios from "axios";
+import { result } from "lodash";
+import { useParams } from "react-router";
 
 const ManageExaminees = () => {
     const name = "he";
     const role_id = 1;
+    const { id } = useParams();
     const [actionResults, setActionResults] = useState("Nothing to play");
     const [data, setData] = useState();
     const [tableData, setTableData] = useState();
@@ -21,25 +24,26 @@ const ManageExaminees = () => {
     }, []);
 
     const getData = async () => {
-        try {
-            const res = await axios.get(
-                "http://" + process.env.REACT_APP_BACKEND_URL + "exam/get_examinees?exam_id=4",
-                {
-                    headers: {
-                        Authorization:
-                            "bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ5OTcsImV4cCI6MTY0MDY3ODcwNS43MzEwNDYyfQ.8QhQgE8wX47L2GUWK_Sg2p85uYwBDXqZZexxO_I6_gY"
-                    }
-                }
-            );
-            console.log(res.status);
-            if (res.status === 200) {
-                console.log(res.data);
-                setData(res.data);
-                setTableData(res.data);
-            }
-        } catch (error) {
-            console.error(error);
-        }
+        var myHeaders = new Headers();
+        myHeaders.append(
+            "Authorization",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
+        );
+
+        var requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            redirect: "follow"
+        };
+
+        fetch(`http://localhost:8080/api/v1/exam/get_examinees?exam_id=${id} `, requestOptions)
+            .then(response => response.json())
+            .then(result => {
+                console.log(result);
+                setData(result);
+                setTableData(result);
+            })
+            .catch(error => console.log("error", error));
     };
 
     const handleChangeInput = event => {
@@ -72,6 +76,33 @@ const ManageExaminees = () => {
             exam_id: 4,
             examinee_ids: 123
         };
+    };
+
+    const handleDeleteExaminee = (exam_id, examinee_id) => {
+        console.log(exam_id, examinee_id);
+        var myHeaders = new Headers();
+        myHeaders.append(
+            "Authorization",
+            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
+        );
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            exam_id: exam_id,
+            examinee_ids: [examinee_id]
+        });
+
+        var requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/v1/exam/edit/remove_examinees", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log("error", error));
     };
 
     return (
@@ -138,7 +169,13 @@ const ManageExaminees = () => {
                                                 <td>ICT01 - K63</td>
                                                 <td>ICT</td>
                                                 <td>
-                                                    <button>Remove</button>
+                                                    <button
+                                                        onClick={() =>
+                                                            handleDeleteExaminee(id, index)
+                                                        }
+                                                    >
+                                                        Remove
+                                                    </button>
                                                 </td>
                                             </tr>
                                         );

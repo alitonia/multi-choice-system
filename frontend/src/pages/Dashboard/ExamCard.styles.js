@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const StyledExam = styled.div`
+export const StyledExamCard = styled.div`
     display: flex;
     flex-direction: column;
     text-align: center;
