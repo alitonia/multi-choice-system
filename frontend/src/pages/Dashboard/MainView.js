@@ -11,6 +11,7 @@ import {
 import ExamCard from "./ExamCard";
 import { useSelector } from "react-redux";
 import Pagination from "../../components/pagination";
+import { useHistory } from "react-router-dom";
 
 ExamSearch.propTypes = {
     onExamSearch: PropTypes.func
@@ -66,6 +67,7 @@ function ExamList({ examList, title, pagination, currentPage, pageSize, total, o
                     return (
                         <ExamCard
                             key={index}
+                            id={exam.exam_id}
                             name={exam.exam_name}
                             creator={exam.creator}
                             subject={exam.subject}
@@ -88,6 +90,7 @@ function ExamList({ examList, title, pagination, currentPage, pageSize, total, o
 }
 
 export default function MainView() {
+    const history = useHistory();
     const { user, token } = useSelector(state => state.common);
     const [recentExamList, setRecentExamList] = useState([]);
     const [allExamList, setAllExamList] = useState([]);
@@ -123,8 +126,8 @@ export default function MainView() {
             if (res.status >= 400) {
                 console.log(data.detail.message);
             } else {
-                setAllExamList(data.exams)
-                setTotal(data.total)
+                setAllExamList(data.exams);
+                setTotal(data.total);
             }
         };
 
@@ -141,7 +144,12 @@ export default function MainView() {
                     <span>Welcome back, {user?.name}</span>
                     <div className="toolbox">
                         {user?.role.role_id === 2 ? (
-                            <button className="create-exam-btn text-base">Create New Exam</button>
+                            <button
+                                className="create-exam-btn text-base"
+                                onClick={() => history.push("/createExam")}
+                            >
+                                Create New Exam
+                            </button>
                         ) : null}
                     </div>
                 </div>

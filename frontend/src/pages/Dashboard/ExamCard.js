@@ -1,8 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { StyledExamCard } from "./ExamCard.styles";
+import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 ExamCard.propTypes = {
+    id: PropTypes.number,
     name: PropTypes.string,
     subject: PropTypes.string,
     creator: PropTypes.any,
@@ -11,9 +14,21 @@ ExamCard.propTypes = {
 };
 
 export default function ExamCard(props) {
-    const { name, subject, creator, startTime, duration } = props;
+    const { user } = useSelector(state => state.common);
+    const history = useHistory();
+    const { id, name, subject, creator, startTime, duration } = props;
+
+    const onExamCardClick = e => {
+        const roleId = user.role.role_id;
+        if (roleId === 3) {
+            history.push(`/exam/${id}`);
+        } else if (roleId === 2) {
+            history.push(`/editExam/${id}`);
+        }
+    };
+
     return (
-        <StyledExamCard className="text-small">
+        <StyledExamCard className="text-small" onClick={onExamCardClick}>
             <div className="exam-name text-title">{name}</div>
             <div className="subject">{subject}</div>
             <div className="class">

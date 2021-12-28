@@ -30,7 +30,7 @@ export const routes = [
         component: CreateExam
     },
     {
-        path: "/exam",
+        path: "/exam/:id",
         others: {},
         component: ExamPage
     },
