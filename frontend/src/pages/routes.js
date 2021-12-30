@@ -8,6 +8,7 @@ import CreateExam from "./CRUDExam/CreateExam.js";
 import AdminDashboard from "./admin/Dashboard";
 import CreateAccount from "./admin/CreateAccount";
 import EditAccount from "./account/EditAccount";
+import CRUDQuestionPage from "./CRUDQuestion/index.js";
 
 export const routes = [
     {
@@ -45,6 +46,11 @@ export const routes = [
         path: "/questionPage/:id",
         others: {},
         component: QuestionPage
+    },
+    {
+        path: "/examiner/editExam/:examID/question",
+        others: {},
+        component: CRUDQuestionPage
     },
     {
         path: "/admin/dashboard",

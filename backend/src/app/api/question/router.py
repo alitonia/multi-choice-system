@@ -24,7 +24,7 @@ async def show_question(
     return questions
 
 
-@router.get("/questions/get")
+@router.get("/questions/get/{exam_id}")
 async def show_questions(
         skip: int = 0,
         limit: int = 15,
