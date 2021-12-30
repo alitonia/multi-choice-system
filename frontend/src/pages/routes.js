@@ -8,6 +8,7 @@ import CreateExam from "./CRUDExam/CreateExam.js";
 import AdminDashboard from "./admin/Dashboard";
 import CreateAccount from "./admin/CreateAccount";
 import EditAccount from "./account/EditAccount";
+import { Placeholder } from "./Placeholder";
 
 export const routes = [
     {

@@ -19,13 +19,20 @@ const ManageExaminees = () => {
     const [inputEmail, setInputEmail] = useState();
     const [inputSearch, setInputSearch] = useState();
 
+    const token =
+        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjQ5OTcsImV4cCI6MTY0MDcxOTk2NS41MzE3OTl9.TbxhMxciP-dyLB8gmD8BQ-n9ZrdXu2NMQNkwoFn1Hfk";
+
     useEffect(() => {
         getData();
     }, []);
 
     const getData = async () => {
         var myHeaders = new Headers();
+<<<<<<< HEAD
         myHeaders.append("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
+=======
+        myHeaders.append("Authorization", `Bearer ${token}`);
+>>>>>>> 2800f7d6d00a5d2024f17850801637f20da726ae
 
         var requestOptions = {
             method: "GET",
@@ -70,7 +77,11 @@ const ManageExaminees = () => {
     const handleClickAdd = async () => {
         console.log(inputEmail);
         var myHeaders = new Headers();
+<<<<<<< HEAD
         myHeaders.append("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
+=======
+        myHeaders.append("Authorization", `Bearer ${token}`);
+>>>>>>> 2800f7d6d00a5d2024f17850801637f20da726ae
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -96,7 +107,11 @@ const ManageExaminees = () => {
     const handleDeleteExaminee = async (exam_id, examinee_id) => {
         console.log(exam_id, examinee_id);
         var myHeaders = new Headers();
+<<<<<<< HEAD
         myHeaders.append("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
+=======
+        myHeaders.append("Authorization", `Bearer ${token}`);
+>>>>>>> 2800f7d6d00a5d2024f17850801637f20da726ae
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -179,8 +194,8 @@ const ManageExaminees = () => {
                                             <tr key={index}>
                                                 <td>{value.date_of_birth}</td>
                                                 <td>{value.phone_number}</td>
-                                                <td>ICT01 - K63</td>
-                                                <td>ICT</td>
+                                                <td>{value?.additional_info?.classname || ""}</td>
+                                                <td>{value?.additional_info?.major || ""}</td>
                                                 <td>
                                                     <button
                                                         onClick={() =>
