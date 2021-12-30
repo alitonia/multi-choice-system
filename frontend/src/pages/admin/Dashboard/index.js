@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../../components/header/Header";
 import styles from "./style.module.css";
 import Footer from "../../../components/footer/Footer";
-import {useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 
 const accountPerPage = 15;
@@ -14,12 +14,12 @@ function useQuery() {
 }
 
 const AdminDashboard = () => {
-    const query = useQuery()
-    const currentPage = parseInt(query.get("page")) || 1
-    const keyWord = query.get("search") || ""
-    const [totalPage, setTotalPage] = useState(1)
+    const query = useQuery();
+    const currentPage = parseInt(query.get("page")) || 1;
+    const keyWord = query.get("search") || "";
+    const [totalPage, setTotalPage] = useState(1);
 
-    const [totalAccount, setTotalAccount] = useState(1)
+    const [totalAccount, setTotalAccount] = useState(1);
     // get currentUser from redux store/fetch
     let jwtToken = "Bearer " + localStorage.getItem("access_token");
     // "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ1NjMyNC4xMTQzOTkyfQ.2fzKr1V5YutdB9e78LoKurgHDLqfwOMs_iB9usctfVM";
@@ -36,7 +36,7 @@ const AdminDashboard = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        console.log("current page, keyword"+currentPage.toString()+keyWord)
+        console.log("current page, keyword" + currentPage.toString() + keyWord);
         // axios
         //     .get(process.env.REACT_APP_BACKEND_URL + "account/current", {
         //         headers: {
@@ -62,22 +62,38 @@ const AdminDashboard = () => {
             })
             .catch(error => console.log("error", error));
 
-        fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts/total"+"?email="+keyWord, {
-            method: "GET",
-            headers: newHeader,
-            redirect: "follow"
-        })
+        fetch(
+            "http://" + process.env.REACT_APP_BACKEND_URL + "accounts/total" + "?email=" + keyWord,
+            {
+                method: "GET",
+                headers: newHeader,
+                redirect: "follow"
+            }
+        )
             .then(response => response.json())
             .then(result => {
                 setTotalAccount(result.total);
-                setTotalPage(Math.floor(result.total/accountPerPage)+1)
-                console.log(totalAccount)
-                const skip = (result.total+1-currentPage*accountPerPage)<0?0:result.total+1-currentPage*accountPerPage
-                fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts?limit="+accountPerPage.toString()+"&skip="+skip.toString()+"&email="+keyWord, {
-                    method: "GET",
-                    headers: newHeader,
-                    redirect: "follow"
-                })
+                setTotalPage(Math.floor(result.total / accountPerPage) + 1);
+                console.log(totalAccount);
+                const skip =
+                    result.total + 1 - currentPage * accountPerPage < 0
+                        ? 0
+                        : result.total + 1 - currentPage * accountPerPage;
+                fetch(
+                    "http://" +
+                        process.env.REACT_APP_BACKEND_URL +
+                        "accounts?limit=" +
+                        accountPerPage.toString() +
+                        "&skip=" +
+                        skip.toString() +
+                        "&email=" +
+                        keyWord,
+                    {
+                        method: "GET",
+                        headers: newHeader,
+                        redirect: "follow"
+                    }
+                )
                     .then(response => response.json())
                     .then(result => {
                         setLoading(false);
@@ -89,77 +105,81 @@ const AdminDashboard = () => {
     }, []);
     const [keyword, setKeyword] = useState(keyWord);
     const submitSearch = event => {
-        console.log(keyword, keyWord)
-        if(keyword===keyWord) {
-            console.log("old search")
-        }else{
-            window.location.href="http://" + process.env.REACT_APP_FRONTEND_URL+"/admin/dashboard?page=1&search="+keyword;
+        console.log(keyword, keyWord);
+        if (keyword === keyWord) {
+            console.log("old search");
+        } else {
+            window.location.href =
+                "http://" +
+                process.env.REACT_APP_FRONTEND_URL +
+                "/admin/dashboard?page=1&search=" +
+                keyword;
         }
-        event.preventDefault()
+        event.preventDefault();
         // let currentKeyword = document.getElementById("searchInput").value;
         // if (currentKeyword.trim() !== keyword) {
         //     setData([]);
         //     setLoading(true);
-            // setKeyword(currentKeyword.trim());
-            // console.log("search with keyword " + currentKeyword.trim());
+        // setKeyword(currentKeyword.trim());
+        // console.log("search with keyword " + currentKeyword.trim());
 
-            // let newHeader = new Headers();
-            // newHeader.append("Authorization", jwtToken);
-            // if (currentKeyword.trim() === "") {
+        // let newHeader = new Headers();
+        // newHeader.append("Authorization", jwtToken);
+        // if (currentKeyword.trim() === "") {
         // if(keyWord)
-                // fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts/total", {
-                //     method: "GET",
-                //     headers: newHeader,
-                //     redirect: "follow"
-                // })
-                //     .then(response => response.json())
-                //     .then(result => {
-                //         setTotalAccount(result.total);
-                //         fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts?limit="+accountPerPage.toString(), {
-                //             method: "GET",
-                //             headers: newHeader,
-                //             redirect: "follow"
-                //         })
-                //             .then(response => response.json())
-                //             .then(result => {
-                //                 setLoading(false);
-                //                 setData(result);
-                //             })
-                //             .catch(error => console.log("error", error));
-                //     })
-                //     .catch(error => console.log("error", error));
-            //     window.location.href="/admin/dashboard?page=1"
-            //     return
-            // } else {
-            //     fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts/total"+"?email=" +
-            //         currentKeyword.trim(), {
-            //         method: "GET",
-            //         headers: newHeader,
-            //         redirect: "follow"
-            //     })
-            //         .then(response => response.json())
-            //         .then(result => {
-            //             setTotalAccount(result.total);
-            //             fetch(
-            //                 "http://" +
-            //                 process.env.REACT_APP_BACKEND_URL +
-            //                 "accounts?limit="+accountPerPage.toString()+"&email=" +
-            //                 currentKeyword.trim(),
-            //                 {
-            //                     method: "GET",
-            //                     headers: newHeader,
-            //                     redirect: "follow"
-            //                 }
-            //             )
-            //                 .then(response => response.json())
-            //                 .then(result => {
-            //                     setLoading(false);
-            //                     setData(result);
-            //                 })
-            //                 .catch(error => console.log("error", error));
-            //         })
-            //         .catch(error => console.log("error", error));
-            // }
+        // fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts/total", {
+        //     method: "GET",
+        //     headers: newHeader,
+        //     redirect: "follow"
+        // })
+        //     .then(response => response.json())
+        //     .then(result => {
+        //         setTotalAccount(result.total);
+        //         fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts?limit="+accountPerPage.toString(), {
+        //             method: "GET",
+        //             headers: newHeader,
+        //             redirect: "follow"
+        //         })
+        //             .then(response => response.json())
+        //             .then(result => {
+        //                 setLoading(false);
+        //                 setData(result);
+        //             })
+        //             .catch(error => console.log("error", error));
+        //     })
+        //     .catch(error => console.log("error", error));
+        //     window.location.href="/admin/dashboard?page=1"
+        //     return
+        // } else {
+        //     fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts/total"+"?email=" +
+        //         currentKeyword.trim(), {
+        //         method: "GET",
+        //         headers: newHeader,
+        //         redirect: "follow"
+        //     })
+        //         .then(response => response.json())
+        //         .then(result => {
+        //             setTotalAccount(result.total);
+        //             fetch(
+        //                 "http://" +
+        //                 process.env.REACT_APP_BACKEND_URL +
+        //                 "accounts?limit="+accountPerPage.toString()+"&email=" +
+        //                 currentKeyword.trim(),
+        //                 {
+        //                     method: "GET",
+        //                     headers: newHeader,
+        //                     redirect: "follow"
+        //                 }
+        //             )
+        //                 .then(response => response.json())
+        //                 .then(result => {
+        //                     setLoading(false);
+        //                     setData(result);
+        //                 })
+        //                 .catch(error => console.log("error", error));
+        //         })
+        //         .catch(error => console.log("error", error));
+        // }
         // } else {
         //     console.log("old search");
         // }
@@ -178,7 +198,7 @@ const AdminDashboard = () => {
                                 placeholder="Search for an account by email..."
                                 id="searchInput"
                                 value={keyword}
-                                onChange={e=>setKeyword(e.target.value)}
+                                onChange={e => setKeyword(e.target.value)}
                             />
                             <button type="submit">Search</button>
                         </form>
@@ -260,67 +280,75 @@ const AdminDashboard = () => {
                 </table>
             </div>
             <div className={styles.pagination}>
-                <Pagination currentPage={currentPage} totalPage={totalPage} search={keyWord}/>
+                <Pagination currentPage={currentPage} totalPage={totalPage} search={keyWord} />
             </div>
             <Footer />
         </div>
     );
 };
 
-const Pagination = ({currentPage, totalPage, search}) => {
-    const cP = currentPage > totalPage?totalPage : currentPage
-    const tmp = new Array(totalPage)
+const Pagination = ({ currentPage, totalPage, search }) => {
+    const cP = currentPage > totalPage ? totalPage : currentPage;
+    const tmp = new Array(totalPage);
     const moveToPage = (pageIndex, search) => {
-        window.location.href="http://" + process.env.REACT_APP_FRONTEND_URL+"/admin/dashboard?page="+pageIndex.toString()+"&search="+search;
-    }
-    tmp.fill("")
-    if(totalPage < 5)
+        window.location.href =
+            "http://" +
+            process.env.REACT_APP_FRONTEND_URL +
+            "/admin/dashboard?page=" +
+            pageIndex.toString() +
+            "&search=" +
+            search;
+    };
+    tmp.fill("");
+    if (totalPage < 5)
         return (
             <div>
-                {tmp.map((item, index) =>
-                    (<button key={index} onClick={()=>moveToPage(index, search)}>{index+1}</button>)
-                )}
+                {tmp.map((item, index) => (
+                    <button key={index} onClick={() => moveToPage(index, search)}>
+                        {index + 1}
+                    </button>
+                ))}
             </div>
-        )
+        );
     else {
-        if(cP === 1 || cP === 2){
+        if (cP === 1 || cP === 2) {
             return (
                 <div>
-                    <button onClick={()=>moveToPage(1, search)}>1</button>
-                    <button onClick={()=>moveToPage(2, search)}>2</button>
-                    <button onClick={()=>moveToPage(3, search)}>...</button>
-                    <button onClick={()=>moveToPage(totalPage, search)}>{totalPage}</button>
+                    <button onClick={() => moveToPage(1, search)}>1</button>
+                    <button onClick={() => moveToPage(2, search)}>2</button>
+                    <button onClick={() => moveToPage(3, search)}>...</button>
+                    <button onClick={() => moveToPage(totalPage, search)}>{totalPage}</button>
                 </div>
-            )
-        }
-        else if (cP === totalPage || cP ===totalPage-1){
+            );
+        } else if (cP === totalPage || cP === totalPage - 1) {
             return (
                 <div>
-                    <button onClick={()=>moveToPage(1, search)}>1</button>
-                    <button onClick={()=>moveToPage(totalPage-2, search)}>...</button>
-                    <button onClick={()=>moveToPage(totalPage-1, search)}>{totalPage-1}</button>
-                    <button onClick={()=>moveToPage(totalPage, search)}>{totalPage}</button>
+                    <button onClick={() => moveToPage(1, search)}>1</button>
+                    <button onClick={() => moveToPage(totalPage - 2, search)}>...</button>
+                    <button onClick={() => moveToPage(totalPage - 1, search)}>
+                        {totalPage - 1}
+                    </button>
+                    <button onClick={() => moveToPage(totalPage, search)}>{totalPage}</button>
                 </div>
-            )
-        }
-        else {
-            return  (
+            );
+        } else {
+            return (
                 <div>
-                    <button onClick={()=>moveToPage(1, search)}>1</button>
-                    <button onClick={()=>moveToPage(cP-1, search)}>...</button>
-                    <button onClick={()=>moveToPage(cP, search)}>{cP}</button>
-                    <button onClick={()=>moveToPage(cP+1, search)}>...</button>
-                    <button onClick={()=>moveToPage(totalPage, search)}>{totalPage}</button>
+                    <button onClick={() => moveToPage(1, search)}>1</button>
+                    <button onClick={() => moveToPage(cP - 1, search)}>...</button>
+                    <button onClick={() => moveToPage(cP, search)}>{cP}</button>
+                    <button onClick={() => moveToPage(cP + 1, search)}>...</button>
+                    <button onClick={() => moveToPage(totalPage, search)}>{totalPage}</button>
                 </div>
-            )
+            );
         }
     }
-}
+};
 
 Pagination.propTypes = {
     currentPage: PropTypes.number,
     totalPage: PropTypes.number,
     search: PropTypes.string
-}
+};
 
 export default AdminDashboard;

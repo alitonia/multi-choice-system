@@ -57,7 +57,7 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                             className={styles.inputField}
                                             defaultValue={data ? data.exam_name : ""}
                                             onChange={handleChangeName}
-                                        ></input>
+                                        />
                                     </td>
                                 </tr>
                                 <tr>
@@ -78,7 +78,7 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                             className={styles.inputField}
                                             defaultValue={data ? data.subject : ""}
                                             onChange={handleChangeSubject}
-                                        ></input>
+                                        />
                                     </td>
                                 </tr>
                                 <tr>
@@ -98,7 +98,7 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                             className={styles.inputField}
                                             defaultValue={data ? data.start_time : ""}
                                             onChange={handleChangeTime}
-                                        ></input>
+                                        />
                                     </td>
                                 </tr>
                                 <tr>
@@ -121,7 +121,7 @@ const CRUDTable = ({ data, handleSubmit }) => {
                                             defaultValue={data ? data.duration : ""}
                                             className={styles.inputFieldSpecial}
                                             onChange={handleChangeDuration}
-                                        ></input>
+                                        />
                                     </td>
                                 </tr>
                             </tbody>

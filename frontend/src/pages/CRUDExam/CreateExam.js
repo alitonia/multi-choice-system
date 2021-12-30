@@ -44,8 +44,8 @@ const CreateExam = () => {
         <div>
             <Header />
             <div className={styles.wrapper}>
-                <CRUDHeader headerType="CREATE"></CRUDHeader>
-                <CRUDTable handleSubmit={handleSubmit}></CRUDTable>
+                <CRUDHeader headerType="CREATE" />
+                <CRUDTable handleSubmit={handleSubmit} />
             </div>
             <Footer />
         </div>
