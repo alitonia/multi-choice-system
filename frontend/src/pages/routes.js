@@ -1,18 +1,24 @@
-import { Placeholder } from "./Placeholder.js";
 import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
+import ManageExaminees from "./ManageExaminees/index.js";
 import EditExam from "./CRUDExam/EditExam.js";
 import CreateExam from "./CRUDExam/CreateExam.js";
 import AdminDashboard from "./admin/Dashboard";
 import CreateAccount from "./admin/CreateAccount";
 import EditAccount from "./account/EditAccount";
+import { Placeholder } from "./Placeholder";
 
 export const routes = [
     {
         path: "/dashboard",
         others: {},
         component: Dashboard
+    },
+    {
+        path: "/manageExaminees/:id",
+        others: {},
+        component: ManageExaminees
     },
     {
         path: "/login",
