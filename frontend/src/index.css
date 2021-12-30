@@ -45,3 +45,25 @@ html, body, #root, .App {
 html, body {
     min-height: 99vh;
 }
+
+.actionable-but {
+    filter: brightness(130%) !important;
+    background: #4A403A !important;
+}
+
+.base-wide-input {
+    min-width: 15rem !important;
+    padding: 7px 12px !important;
+
+}
+
+.base-wide-input:active {
+    border: #DA0037;
+}
+
+.real-button {
+    padding: 7px 15px !important;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {
     ExamListWrapper,
@@ -9,9 +9,10 @@ import {
     StyledExamSearch
 } from "./MainView.styles";
 import ExamCard from "./ExamCard";
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 import Pagination from "../../components/pagination";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
+import styles from './styles.module.css'
 
 ExamSearch.propTypes = {
     onExamSearch: PropTypes.func
@@ -54,7 +55,7 @@ ExamList.propTypes = {
     onPageChange: PropTypes.func
 };
 
-function ExamList({ examList, title, pagination, currentPage, pageSize, total, onPageChange }) {
+function ExamList({examList, title, pagination, currentPage, pageSize, total, onPageChange}) {
     if (!examList || examList.length === 0) {
         return null;
     }
@@ -91,7 +92,7 @@ function ExamList({ examList, title, pagination, currentPage, pageSize, total, o
 
 export default function MainView() {
     const history = useHistory();
-    const { user, token } = useSelector(state => state.common);
+    const {user, token} = useSelector(state => state.common);
     const [recentExamList, setRecentExamList] = useState([]);
     const [allExamList, setAllExamList] = useState([]);
 
@@ -139,7 +140,7 @@ export default function MainView() {
     return (
         <MainViewWrapper>
             <MainViewHeader>
-                <ExamSearch onExamSearch={onExamSearch} />
+                <ExamSearch onExamSearch={onExamSearch}/>
                 <div className="user-welcome text-large">
                     <span>Welcome back, {user?.name}</span>
                     <div className="toolbox">
@@ -155,7 +156,7 @@ export default function MainView() {
                 </div>
             </MainViewHeader>
             <MainViewBody>
-                <ExamList title="recent" examList={recentExamList} />
+                <ExamList title="recent" examList={recentExamList}/>
                 <ExamList
                     title="all"
                     examList={allExamList}

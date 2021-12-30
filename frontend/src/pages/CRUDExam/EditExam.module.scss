@@ -105,12 +105,13 @@ input[type="time"]::-webkit-clear-button {
 
 .editButton {
     width: 100%;
-    background-color: #b5b2b2;
+    //background-color: #b5b2b2;
     border: none;
-    color: white;
+    //color: white;
     height: 30px;
     border-radius: 10px;
     font-size: 20px;
+    cursor: pointer;
 }
 
 .centerText {
