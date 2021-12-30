@@ -1,4 +1,3 @@
-import { Placeholder } from "./Placeholder.js";
 import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
