@@ -1,14 +1,14 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../../components/header/Header";
 import styles from "./style.module.css";
-import {Redirect, useParams} from "react-router-dom";
+import { Redirect, useParams } from "react-router-dom";
 import Footer from "../../../components/footer/Footer";
 import DatePicker from "react-datepicker";
-import {Radio, RadioGroup} from "react-radio-group";
-import {isEqual} from "lodash";
+import { Radio, RadioGroup } from "react-radio-group";
+import { isEqual } from "lodash";
 
 const EditAccount = () => {
-    const {id} = useParams();
+    const { id } = useParams();
     // get currentUser from redux store/fetch
     let jwtToken = "Bearer " + localStorage.getItem("access_token");
 
@@ -75,7 +75,6 @@ const EditAccount = () => {
         );
     };
 
-
     function saveChange() {
         if (!isEqual(defaultInfo, editInfo)) {
             setLoad(true);
@@ -127,10 +126,10 @@ const EditAccount = () => {
 
     return (
         <div>
-            <Header/>
+            <Header />
             <div className={styles.adminPageUpper}>
                 <div className={styles.adminPageUpperLeft}>
-                    <div style={{textTransform: "uppercase", fontSize: "24px"}}>Edit account</div>
+                    <div style={{ textTransform: "uppercase", fontSize: "24px" }}>Edit account</div>
                 </div>
                 <div className={styles.adminPageUpperRight}>
                     <div>
@@ -139,7 +138,7 @@ const EditAccount = () => {
                             {currentUser.name}
                         </a>
                     </div>
-                    <div style={{display: currentUser.role === "admin" ? "" : "none"}}>
+                    <div style={{ display: currentUser.role === "admin" ? "" : "none" }}>
                         <a href={"/admin/createAccount/"}>
                             <button>
                                 <i className="fa fa-plus"></i>Create New Account...
@@ -148,189 +147,193 @@ const EditAccount = () => {
                     </div>
                 </div>
             </div>
-            <hr style={{margin: "0.2rem 0.5rem", height: "1px", backgroundColor: "black"}}/>
-            <div style={{height: "1rem"}}></div>
+            <hr style={{ margin: "0.2rem 0.5rem", height: "1px", backgroundColor: "black" }} />
+            <div style={{ height: "1rem" }}></div>
             <div className={styles.editAccountBody}>
                 <table id={"account_info"}>
                     <tbody>
-                    <tr>
-                        <td>Email</td>
-                        <td>{loadCurrentAccount ? "Loading..." : editAccount.email}</td>
-                        <td>
-                            Email cannot be changed!
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Display name</td>
-                        <td>{loadCurrentAccount ? "Loading..." : editAccount.name}</td>
-                        <td>
-                            <input
-                                type="text"
-                                placeholder="Change display name..."
-                                onChange={data => {
-                                    setEditInfo({
-                                        ...editInfo,
-                                        name: data.target.value.trim()
-                                    });
-                                }}
-                                className={'base-wide-input'}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Date of birth</td>
-                        <td>{loadCurrentAccount ? "Loading..." : editAccount.date_of_birth}</td>
-                        <td>
-                            <DatePicker
-                                selected={startDate}
-                                onChange={date => {
-                                    setEditInfo({
-                                        ...editInfo,
-                                        date_of_birth: formatDate(date)
-                                    });
-                                    setStartDate(date);
-                                }}
-                                dateFormat="dd-MM-yyyy"
-                                placeholderText="dd-mm-yyyy"
-                                className={'base-wide-input'}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Phone number</td>
-                        <td>{loadCurrentAccount ? "Loading..." : editAccount.phone_number}</td>
-                        <td>
-                            <input
-                                type="text"
-                                pattern="[0-9]*"
-                                placeholder="Change phone number..."
-                                className={'base-wide-input'}
-                                onChange={data => {
-                                    let pattern = /^\d+$/;
-                                    if (data.target.value.trim() === "") {
-                                        setPhone("");
+                        <tr>
+                            <td>Email</td>
+                            <td>{loadCurrentAccount ? "Loading..." : editAccount.email}</td>
+                            <td>Email cannot be changed!</td>
+                        </tr>
+                        <tr>
+                            <td>Display name</td>
+                            <td>{loadCurrentAccount ? "Loading..." : editAccount.name}</td>
+                            <td>
+                                <input
+                                    type="text"
+                                    placeholder="Change display name..."
+                                    onChange={data => {
                                         setEditInfo({
                                             ...editInfo,
-                                            phone_number: ""
+                                            name: data.target.value.trim()
                                         });
-                                        return;
-                                    }
-                                    if (pattern.test(data.target.value.trim())) {
+                                    }}
+                                    className={"base-wide-input"}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Date of birth</td>
+                            <td>{loadCurrentAccount ? "Loading..." : editAccount.date_of_birth}</td>
+                            <td>
+                                <DatePicker
+                                    selected={startDate}
+                                    onChange={date => {
                                         setEditInfo({
                                             ...editInfo,
-                                            phone_number: data.target.value.trim()
+                                            date_of_birth: formatDate(date)
                                         });
-                                        setPhone(data.target.value.trim());
-                                    } else {
-                                        data.target.value = phone;
-                                    }
-                                }}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td
-                            style={{
-                                display: "flex",
-                                flexDirection: "row",
-                                justifyContent: "flex-end"
-                            }}
-                        >
-                            <div>Role</div>
-                        </td>
-                        <td
-                            style={{
-                                textTransform: "capitalize",
-                                color:
-                                    typeof editAccount.role !== "undefined" &&
-                                    editAccount.role.name === "admin"
-                                        ? "#FE3B3B"
-                                        : typeof editAccount.role !== "undefined" &&
-                                        editAccount.role.name === "examinee"
-                                            ? "#334257"
-                                            : typeof editAccount.role !== "undefined"
-                                                ? "#CC00FF"
-                                                : ""
-                            }}
-                        >
-                            <div
+                                        setStartDate(date);
+                                    }}
+                                    dateFormat="dd-MM-yyyy"
+                                    placeholderText="dd-mm-yyyy"
+                                    className={"base-wide-input"}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Phone number</td>
+                            <td>{loadCurrentAccount ? "Loading..." : editAccount.phone_number}</td>
+                            <td>
+                                <input
+                                    type="text"
+                                    pattern="[0-9]*"
+                                    placeholder="Change phone number..."
+                                    className={"base-wide-input"}
+                                    onChange={data => {
+                                        let pattern = /^\d+$/;
+                                        if (data.target.value.trim() === "") {
+                                            setPhone("");
+                                            setEditInfo({
+                                                ...editInfo,
+                                                phone_number: ""
+                                            });
+                                            return;
+                                        }
+                                        if (pattern.test(data.target.value.trim())) {
+                                            setEditInfo({
+                                                ...editInfo,
+                                                phone_number: data.target.value.trim()
+                                            });
+                                            setPhone(data.target.value.trim());
+                                        } else {
+                                            data.target.value = phone;
+                                        }
+                                    }}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td
                                 style={{
                                     display: "flex",
-                                    justifyContent: "flex-start",
-                                    height: "100%",
-                                    width: "100%",
-                                    position: "relative"
+                                    flexDirection: "row",
+                                    justifyContent: "flex-end"
                                 }}
                             >
-                                {typeof editAccount.role === "undefined"
-                                    ? "Loading..."
-                                    : editAccount.role.name}
-                            </div>
-                        </td>
-                        <td>
-                            <RadioGroup
-                                style={{display: "flex", flexDirection: "column", lineHeight: 'unset'}}
-                                name="role"
-                                selectedValue={
-                                    typeof editAccount.role === "undefined"
-                                        ? ""
-                                        : editAccount.role.name
-                                }
+                                <div>Role</div>
+                            </td>
+                            <td
+                                style={{
+                                    textTransform: "capitalize",
+                                    color:
+                                        typeof editAccount.role !== "undefined" &&
+                                        editAccount.role.name === "admin"
+                                            ? "#FE3B3B"
+                                            : typeof editAccount.role !== "undefined" &&
+                                              editAccount.role.name === "examinee"
+                                            ? "#334257"
+                                            : typeof editAccount.role !== "undefined"
+                                            ? "#CC00FF"
+                                            : ""
+                                }}
                             >
-                                <label style={{color: "lightgrey"}}>
-                                    <Radio value="admin" disabled={true}/>
-                                    <span style={{marginLeft: "0.5rem"}}>Admin</span>
-                                </label>
-                                <label style={{color: "lightgrey"}}>
-                                    <Radio value="examinee" disabled={true}/>
-                                    <span style={{marginLeft: "0.5rem"}}>Examinee</span>
-                                </label>
-                                <label style={{color: "lightgrey"}}>
-                                    <Radio value="examiner" disabled={true}/>
-                                    <span style={{marginLeft: "0.5rem"}}>Examiner</span>
-                                </label>
-                            </RadioGroup>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={3}>
-                            <div className={styles.editAccountBottom}>
-                                <div className={styles.editAccountBottomLeft}>
-                                    <a
-                                        href={
-                                            typeof currentUser.role !== "undefined" &&
-                                            currentUser.role.name === "admin"
-                                                ? "/admin/dashboard"
-                                                : "/dashboard"
-                                        }
-                                    >
-                                        &lt; Back
-                                    </a>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "flex-start",
+                                        height: "100%",
+                                        width: "100%",
+                                        position: "relative"
+                                    }}
+                                >
+                                    {typeof editAccount.role === "undefined"
+                                        ? "Loading..."
+                                        : editAccount.role.name}
                                 </div>
-                                <div className={styles.editAccountBottomRight}>
-                                    <div>
-                                        <button onClick={saveChange} className={'real-button'}>Save Changes</button>
-                                    </div>
-                                    <div style={{marginLeft: "5rem"}}>
-                                        {isEqual(defaultInfo, editInfo)
+                            </td>
+                            <td>
+                                <RadioGroup
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        lineHeight: "unset"
+                                    }}
+                                    name="role"
+                                    selectedValue={
+                                        typeof editAccount.role === "undefined"
                                             ? ""
-                                            : "You have unsaved changes"}
+                                            : editAccount.role.name
+                                    }
+                                >
+                                    <label style={{ color: "lightgrey" }}>
+                                        <Radio value="admin" disabled={true} />
+                                        <span style={{ marginLeft: "0.5rem" }}>Admin</span>
+                                    </label>
+                                    <label style={{ color: "lightgrey" }}>
+                                        <Radio value="examinee" disabled={true} />
+                                        <span style={{ marginLeft: "0.5rem" }}>Examinee</span>
+                                    </label>
+                                    <label style={{ color: "lightgrey" }}>
+                                        <Radio value="examiner" disabled={true} />
+                                        <span style={{ marginLeft: "0.5rem" }}>Examiner</span>
+                                    </label>
+                                </RadioGroup>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colSpan={3}>
+                                <div className={styles.editAccountBottom}>
+                                    <div className={styles.editAccountBottomLeft}>
+                                        <a
+                                            href={
+                                                typeof currentUser.role !== "undefined" &&
+                                                currentUser.role.name === "admin"
+                                                    ? "/admin/dashboard"
+                                                    : "/dashboard"
+                                            }
+                                        >
+                                            &lt; Back
+                                        </a>
+                                    </div>
+                                    <div className={styles.editAccountBottomRight}>
+                                        <div>
+                                            <button onClick={saveChange} className={"real-button"}>
+                                                Save Changes
+                                            </button>
+                                        </div>
+                                        <div style={{ marginLeft: "5rem" }}>
+                                            {isEqual(defaultInfo, editInfo)
+                                                ? ""
+                                                : "You have unsaved changes"}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div style={{marginTop: "1.5rem"}}>
-                                {load
-                                    ? "Processing..."
-                                    : isEqual(defaultInfo, editInfo)
+                                <div style={{ marginTop: "1.5rem" }}>
+                                    {load
+                                        ? "Processing..."
+                                        : isEqual(defaultInfo, editInfo)
                                         ? error
                                         : ""}
-                            </div>
-                        </td>
-                    </tr>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

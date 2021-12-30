@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import styles from "./EditExam.module.scss";
 import Grid from "@mui/material/Grid";
@@ -6,24 +6,24 @@ import CRUDHeader from "./CRUDHeader";
 import CRUDTable from "./CRUDTable";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Footer from "../../components/footer/Footer";
-import {useParams} from "react-router";
+import { useParams } from "react-router";
 import axios from "axios";
-import {styled, Box} from "@mui/system";
+import { styled, Box } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const EditExam = () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const [examData, setExamData] = useState();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const history = useHistory()
+    const history = useHistory();
 
     useEffect(() => {
         getData();
@@ -66,7 +66,7 @@ const EditExam = () => {
         fetch("http://localhost:8080/api/v1/exam/edit", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
-            .then(() => history.push('/dashboard'))
+            .then(() => history.push("/dashboard"))
             .catch(error => console.log("error", error));
     };
 
@@ -86,7 +86,7 @@ const EditExam = () => {
         fetch(`http://localhost:8080/api/v1/exam/del/${id}`, requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
-            .then(() => history.replace('/dashboard'))
+            .then(() => history.replace("/dashboard"))
             .catch(error => console.log("error", error));
 
         setOpen(false);
@@ -114,16 +114,19 @@ const EditExam = () => {
     };
     return (
         <div>
-            <Header/>
+            <Header />
             <div className={styles.wrapper}>
-                <CRUDHeader headerType="EDIT"/>
-                <CRUDTable data={examData} handleSubmit={handleEditSubmit}/>
+                <CRUDHeader headerType="EDIT" />
+                <CRUDTable data={examData} handleSubmit={handleEditSubmit} />
 
                 <Grid container spacing={4}>
                     <Grid item xs={6}>
                         <div className={styles.CRUDHeader}>EXAMINEES</div>
-                        <button className={styles.editButton}
-                                onClick={() => history.push(`/manageExaminees/${id}`)}>Edit Examinees
+                        <button
+                            className={styles.editButton}
+                            onClick={() => history.push(`/manageExaminees/${id}`)}
+                        >
+                            Edit Examinees
                         </button>
                     </Grid>
                     <Grid item xs={6}>
@@ -132,7 +135,7 @@ const EditExam = () => {
                     </Grid>
                 </Grid>
                 <div className={styles.centerText}>
-                    <p style={{color: "red", textDecoration: "underline"}} onClick={handleOpen}>
+                    <p style={{ color: "red", textDecoration: "underline" }} onClick={handleOpen}>
                         Delete this exam
                     </p>
 
@@ -163,7 +166,7 @@ const EditExam = () => {
                     </Modal>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

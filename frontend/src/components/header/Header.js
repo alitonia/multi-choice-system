@@ -19,7 +19,7 @@ export default function Header() {
     };
 
     const onLogout = e => {
-        localStorage.removeItem('access_token')
+        localStorage.removeItem("access_token");
         dispatch({ type: LOGOUT });
         history.push("/login");
     };

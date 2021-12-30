@@ -1,19 +1,19 @@
-import React, {useEffect} from 'react';
-import {isLoggedIn} from "../../utils/isLoggedIn";
-import {useHistory} from "react-router-dom";
+import React, { useEffect } from "react";
+import { isLoggedIn } from "../../utils/isLoggedIn";
+import { useHistory } from "react-router-dom";
 
 export const HomeRoot = () => {
     const history = useHistory();
-    const loggedIn = isLoggedIn()
+    const loggedIn = isLoggedIn();
 
     useEffect(() => {
-        console.log('here')
+        console.log("here");
         if (loggedIn) {
-            history.push('/dashboard')
+            history.push("/dashboard");
         } else {
-            history.push('/login')
+            history.push("/login");
         }
-    }, [loggedIn])
+    }, [loggedIn]);
 
-    return null
+    return null;
 };
