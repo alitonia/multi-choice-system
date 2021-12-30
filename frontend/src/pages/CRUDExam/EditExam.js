@@ -40,12 +40,10 @@ const EditExam = () => {
     };
 
     const handleEditSubmit = async (examName, subjectName, startTime, duration) => {
-        console.log(duration);
+        console.log(duration.length);
+        console.log(duration.substring(0, duration.length - 3));
         var myHeaders = new Headers();
-        myHeaders.append(
-            "Authorization",
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
-        );
+        myHeaders.append("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
         myHeaders.append("Content-Type", "application/json");
 
         var raw = JSON.stringify({
@@ -53,7 +51,7 @@ const EditExam = () => {
             exam_name: examName,
             subject: subjectName,
             start_time: startTime,
-            duration: duration
+            duration: duration.length == 5 ? duration : duration.substring(0, duration.length - 3)
         });
 
         console.log(raw);
@@ -73,10 +71,7 @@ const EditExam = () => {
 
     const handleDeleteSubmit = async () => {
         var myHeaders = new Headers();
-        myHeaders.append(
-            "Authorization",
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
-        );
+        myHeaders.append("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
 
         var raw = "";
 
@@ -102,8 +97,7 @@ const EditExam = () => {
                 `http://` + process.env.REACT_APP_BACKEND_URL + `exam/get/${id}`,
                 {
                     headers: {
-                        Authorization:
-                            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5NDM3Mi41OTIyMzUzfQ.WCg4OZM3qc0A7KOmnHBWzRk5QmRK9YRNG6iNu42MlyU"
+                        Authorization: `Bearer ${localStorage.getItem("access_token")}`
                     }
                 }
             );
