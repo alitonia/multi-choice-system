@@ -4,6 +4,7 @@ from .question.router import router as question_router
 from .account.router import router as account_router
 from .exam.router import router as exam_router
 from .exam_analytic.router import router as exam_analytic_router
+from .answer.router import router as answer_router
 
 from . import auth
 
@@ -20,6 +21,7 @@ authenticated_router.include_router(account_router, tags=["accounts"])
 
 authenticated_router.include_router(exam_router, tags=["exams"])
 authenticated_router.include_router(exam_analytic_router, tags=["exam_analytic"])
+authenticated_router.include_router(answer_router, tags=["answer"])
 
 api_router.include_router(authenticated_router, dependencies=[
     Depends(security.jwt_header)])

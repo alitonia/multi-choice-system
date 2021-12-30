@@ -8,7 +8,7 @@ from app.models.examinee import Examinee
 from app.models.admin import Admin
 
 from app.models.role import Role
-from sqlalchemy import update, delete, select, join
+from sqlalchemy import update, delete, select, join, func
 from datetime import datetime
 from app.utils.decrypt_encrypt_service import DecryptAndEnCrypt
 from fastapi.encoders import jsonable_encoder
@@ -141,7 +141,7 @@ class Account_Service:
                 .limit(limit)
         )
         if email is not None:
-            q = q.filter(Account.email == email)
+            q = q.filter(Account.email.ilike(f"%{email}%"))
 
         if role is not None:
             q = q.filter(Role.name == role)
@@ -157,6 +157,25 @@ class Account_Service:
             entry[0].role = entry[1]
 
         return [self.get_account_no_pass_filter(x[0]) for x in result_list]
+
+    async def get_accounts_total(
+            self,
+            email: Optional[str] = None,
+            role: Optional[str] = None,
+    ):
+        q = (
+            select(func.count(Account.account_id))
+                .join(Role, Account.role_id == Role.role_id)
+        )
+        if email is not None:
+            q = q.filter(Account.email.ilike(f"%{email}%"))
+
+        if role is not None:
+            q = q.filter(Role.name == role)
+
+        result_arbit_data = await self.session.execute(q)
+
+        return {"total": result_arbit_data.scalar()}
 
     # POST
     async def add_account(

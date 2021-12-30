@@ -7,7 +7,7 @@ const ExamPage = () => {
         <div>
             <Header />
             <div className={styles.content}>
-                <img src="logo192.png"></img>
+                <img src="logo192.png" alt="exam"></img>
                 <h1>Exam Name</h1>
                 <p>Subject name</p>
                 <p>Class of: Teacher</p>

@@ -31,7 +31,6 @@ export const HeaderLogo = styled.div`
 `;
 
 export const Logo = styled.div`
-    font-family: ABeeZee;
     font-style: normal;
     font-weight: normal;
     font-size: 72px;
@@ -51,7 +50,6 @@ export const LoginTextArea = styled.div`
     /* padding: 30px; */
 
     span {
-        font-family: ABeeZee;
         font-style: normal;
         font-weight: normal;
         font-size: 96px;
@@ -59,7 +57,6 @@ export const LoginTextArea = styled.div`
     }
 
     p {
-        font-family: ABeeZee;
         font-style: normal;
         font-weight: normal;
         font-size: 18px;

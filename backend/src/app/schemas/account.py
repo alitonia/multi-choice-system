@@ -27,7 +27,6 @@ class Account_Schema_Output(Account_Schema_Base):
 
 class Account_Schema_Input_Edit(BaseModel):
     id: int  # this is account_id, but use id in accordance with doc
-    email: str
     name: str
     date_of_birth: str
     phone_number: str

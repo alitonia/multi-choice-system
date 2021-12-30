@@ -55,11 +55,31 @@ async def show_exams(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(-1,account)
+        is_viewer = qs.check_exam_viewer(-1, account)
         if is_viewer is False:
             return None
 
     exams = await qs.get_exams(account, skip, limit, sort)
+    count = await qs.get_exams_count(account)
+
+    result = dict()
+    result["exams"] = exams
+    result["total"] = count["total"]
+    return result
+
+
+@router.get("/exams/total")
+async def get_exam_count(
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = Exam_Service(s)
+    account_id = principal.account_id
+
+    qs1 = Account_Service(s)
+    account = await qs1.get_one_account_no_pass(account_id)
+
+    exams = await qs.get_exams_count(account)
     return exams
 
 
@@ -74,9 +94,9 @@ async def create_exam(
 
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
-    
-    role_name = account["role"]["name"]
-    if role_name != "admin" and role_name != "examiner":
+
+    can_create_exam = account["role"]["name"] in ['examiner', 'admin']
+    if can_create_exam is False:
         return None
 
     # return account
@@ -104,7 +124,7 @@ async def update_question(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(item.exam_id,account)
+        is_viewer = qs.check_exam_viewer(item.exam_id, account)
         if is_viewer is False:
             return None
 
@@ -130,10 +150,10 @@ async def update_question(
 
     qs1 = Account_Service(s)
     account = await qs1.get_one_account_no_pass(account_id)
-    
+
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(exam_id,account)
+        is_viewer = qs.check_exam_viewer(exam_id, account)
         if is_viewer is False:
             return None
 
@@ -157,13 +177,13 @@ async def add_examinees_to_exam(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(item.exam_id,account)
+        is_viewer = qs.check_exam_viewer(item.exam_id, account)
         if is_viewer is False:
             return None
 
     exam = await qs.add_examinees(
         item.exam_id,
-        item.examinee_ids
+        item.emails
     )
     return exam
 
@@ -182,12 +202,40 @@ async def add_examinees_to_exam(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(item.exam_id,account)
+        is_viewer = qs.check_exam_viewer(item.exam_id, account)
         if is_viewer is False:
             return None
-    
+
     exam = await qs.remove_examinees(
         item.exam_id,
-        item.examinee_ids
+        item.emails
+    )
+    return exam
+
+
+@router.get("/exam/get_examinees")
+async def add_examinees_to_exam(
+        exam_id: str = None,
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = Exam_Service(s)
+
+    exam = await qs.get_examinees(
+        exam_id
+    )
+    return exam
+
+
+@router.get("/exam/get_not_examinees")
+async def ge_not_examinees(
+        exam_id: str = None,
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = Exam_Service(s)
+
+    exam = await qs.get_non_examinees(
+        exam_id
     )
     return exam
