@@ -208,6 +208,35 @@ class Exam_Service:
         await self.session.commit()
         return {"status": "OK"}
 
+    # GET
+    async def check_exam_viewer(self, exam_id: int, account):
+        role_name = account["role"]["name"]
+
+        q = None
+        if role_name == 'examiner':
+            q = (
+                select(Exam, Examiner)
+                    .join(Examiner, Examiner.account_id == Exam.creator)
+                        .where(Exam.creator == account["account_id"])
+            )
+        elif role_name == 'examinee':
+            q = (
+                select(Exam, Participant)
+                    .join(Participant, Participant.exam_id == Exam.exam_id)
+                        .where(Participant.examinee_account_id == account["account_id"])
+            )
+
+        if(exam_id > 0):
+            q = q.where(Exam.exam_id == exam_id)
+
+        result_iter = await self.session.execute(q)
+        result_list = [tup for tup in result_iter]
+
+        if len(result_list) == 0:
+            return False
+
+        return True
+
     async def generic_participant(self, exam_id, equal=True):
         print(exam_id)
         q = (
