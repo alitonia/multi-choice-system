@@ -48,8 +48,26 @@ async def show_exams(
     account = await qs1.get_one_account_no_pass(account_id)
 
     exams = await qs.get_exams(account, skip, limit, sort)
-    return exams
+    count = await qs.get_exams_count(account)
+    
+    result = dict()
+    result["exams"] = exams
+    result["total"] = count["total"]
+    return result
 
+@router.get("/exams/total")
+async def get_exam_count(
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = Exam_Service(s)
+    account_id = principal.account_id
+
+    qs1 = Account_Service(s)
+    account = await qs1.get_one_account_no_pass(account_id)
+
+    exams = await qs.get_exams_count(account)
+    return exams
 
 @router.post("/exam/new")
 async def create_exam(

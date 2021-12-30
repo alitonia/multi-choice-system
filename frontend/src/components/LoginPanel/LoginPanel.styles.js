@@ -1,13 +1,13 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div`
+export const Wrapper = styled.form`
     background: #ffffff;
-    border-radius: 32px;
-    padding: 20px 40px;
+    border-radius: 1rem;
+    padding: 32px 40px;
     display: flex;
     flex-direction: column;
     width: 500px;
-    /* height: 380px; */
+    /* min-height: 380px; */
 
     .forgot-password-text {
         margin-bottom: 10px;
@@ -24,20 +24,16 @@ export const InputWrapper = styled.div`
 
     input {
         width: 100%;
+        padding: 8px 10px;
         margin-bottom: 24px;
         line-height: 24px;
-
+        font-size: 20px;
         border: 2px solid #b5b2b2;
         box-sizing: border-box;
-        border-radius: 8px;
-
-        padding: 8px 10px;
+        border-radius: 4px;
     }
 
     input::placeholder {
-        font-family: ABeeZee;
-        font-size: 20px;
-        line-height: 20px;
         color: #b5b2b2;
     }
 `;
@@ -60,11 +56,13 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const StyledButton = styled.button`
-    padding: 6px 0;
+    padding: 12px 0;
     background: ${props => props.bgcolor || "#FFFFFF"};
     color: ${props => props.color || "#000000"};
-    border-radius: 8px;
+    border-radius: 4px;
     font-size: 20px;
+    border: none;
+    outline: none;
 `;
 
 export const ExternalLogin = styled.div`
