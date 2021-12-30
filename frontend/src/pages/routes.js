@@ -9,6 +9,7 @@ import CreateAccount from "./admin/CreateAccount";
 import EditAccount from "./account/EditAccount";
 import {Page404} from "./404/404";
 import {Placeholder} from "./Placeholder";
+import {HomeRoot} from "./Home/HomeRoot";
 
 export const routes = [
     {
@@ -55,6 +56,13 @@ export const routes = [
         path: "/account/edit/:id",
         others: {},
         component: EditAccount
+    },
+    {
+        path: "/",
+        others: {
+            exact: true
+        },
+        component: HomeRoot
     },
     {
         path: "/",
