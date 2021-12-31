@@ -151,6 +151,6 @@ create table Participant_Exam
     score               int NOT NULL,
     FOREIGN KEY (exam_id) REFERENCES Exam (exam_id) on delete cascade on update cascade,
     FOREIGN KEY (examinee_account_id) REFERENCES Examinee (account_id)
-)
+);
 
 COMMIT;
