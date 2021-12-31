@@ -7,7 +7,7 @@ services:
       - "3306:3306"
 
     volumes:
-      - ./docker_data/db-docker:/mnt/d/project/test/db-data
+      - ./docker_data/db-docker:/var/lib/postgresql/data
       - ./docker_data/db-config:/docker-entrypoint-initdb.d
     environment:
       POSTGRES_USER: ${DB_USERNAME}

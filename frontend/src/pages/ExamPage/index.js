@@ -5,8 +5,7 @@ import {useParams} from "react-router-dom";
 
 const ExamPage = () => {
     const [info, setInfo] = useState({});
-    let jwtToken =
-        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjUwMDAsImV4cCI6MTY0MDcyNDEwNy44MzI2MjAxfQ.S5QTCWhCbj-8ZCRw1XIF6IWjJUf920we1p_a4-cdqdw";
+    let jwtToken = "Bearer " + localStorage.getItem("access_token");
     const { id } = useParams();
     useEffect(() => {
         // console.log(id)
