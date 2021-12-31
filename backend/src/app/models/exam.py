@@ -8,7 +8,8 @@ Base = declarative_base()
 
 class Exam(Base):
     __tablename__ = 'Exam'
-    __table_args__ = {'quote': False}  # Prevent query using double quote in query
+    # Prevent query using double quote in query
+    __table_args__ = {'quote': False}
     exam_id = Column(Integer, primary_key=True)
     exam_name = Column(String(50), nullable=False)
     subject = Column(String(50), nullable=False)

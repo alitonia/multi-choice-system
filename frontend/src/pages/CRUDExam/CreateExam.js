@@ -1,45 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/header/Header";
 import styles from "./EditExam.module.scss";
 import axios from "axios";
 import CRUDHeader from "./CRUDHeader";
 import CRUDTable from "./CRUDTable";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { useHistory } from "react-router-dom";
 import Footer from "../../components/footer/Footer";
 
-const handleSubmit = async (examName, subjectName, startTime, duration) => {
-    console.log(examName, subjectName, startTime, duration);
-    const article = {
-        exam_name: examName,
-        subject: subjectName,
-        start_time: startTime + ":00",
-        duration: duration
-    };
-    console.log(JSON.stringify(article));
-    try {
-        const res = await axios.post(
-            `http://` + process.env.REACT_APP_BACKEND_URL + `exam/new`,
-            article,
-            {
-                headers: {
-                    Authorization:
-                        "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5NDM3Mi41OTIyMzUzfQ.WCg4OZM3qc0A7KOmnHBWzRk5QmRK9YRNG6iNu42MlyU"
-                }
-            }
-        );
-        console.log(res);
-    } catch (error) {
-        console.error(error);
-    }
-};
-
 const CreateExam = () => {
+    const history = useHistory();
+    useEffect(() => {
+        const token = localStorage.getItem("access_token");
+        console.log(token);
+    }, []);
+
+    const handleSubmit = async (examName, subjectName, startTime, duration) => {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            exam_name: examName,
+            subject: subjectName,
+            start_time: startTime,
+            duration: duration
+        });
+
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
+        };
+
+        fetch("http://localhost:8080/api/v1/exam/new", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .catch(error => console.log("error", error));
+
+        history.push("/dashboard");
+    };
     return (
         <div>
             <Header />
             <div className={styles.wrapper}>
-                <CRUDHeader headerType="CREATE"></CRUDHeader>
-                <CRUDTable handleSubmit={handleSubmit}></CRUDTable>
+                <CRUDHeader headerType="CREATE" />
+                <CRUDTable handleSubmit={handleSubmit} />
             </div>
             <Footer />
         </div>

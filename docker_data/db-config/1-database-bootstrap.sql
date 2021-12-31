@@ -143,4 +143,14 @@ create table Participant
     FOREIGN KEY (examinee_account_id) REFERENCES Examinee (account_id)
 );
 
+create table Participant_Exam
+(
+    exam_id             int NOT NULL,
+    examinee_account_id int NOT NULL,
+    status              int NOT NULL,
+    score               int NOT NULL,
+    FOREIGN KEY (exam_id) REFERENCES Exam (exam_id) on delete cascade on update cascade,
+    FOREIGN KEY (examinee_account_id) REFERENCES Examinee (account_id)
+)
+
 COMMIT;
