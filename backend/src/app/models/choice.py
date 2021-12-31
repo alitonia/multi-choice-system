@@ -10,7 +10,7 @@ from app.models.examinee import Examinee
 
 
 class Choice(Base):
-    __tablename__ = 'Choice'
+    __tablename__ = 'choice'
     __table_args__ = (PrimaryKeyConstraint('question_id', 'answer_id', "examinee_account_id"),)
     question_id = Column(Integer, ForeignKey(Question.question_id))
     answer_id = Column(Integer, ForeignKey(Answer.answer_id))
