@@ -178,7 +178,6 @@ async def answer_question(exam_id: int, body: ExamAnswerSchemaIn, session: Async
 
     await choice_service.save_choices(session=session, question_id=question_id, answers_id=answers_id, examinee_id=account_id)
 
-    # TODO construct a schema output for this
     return {"message": "ok"}
 
 
