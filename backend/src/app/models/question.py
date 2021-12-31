@@ -5,8 +5,7 @@ from .examiner import Examiner
 from .question_group import Question_Group
 from .question_type import Question_Type
 
-Base = declarative_base()
-
+from app.models.base import Base
 
 class Question(Base):
     __tablename__ = 'question'

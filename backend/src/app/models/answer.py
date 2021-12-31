@@ -2,9 +2,11 @@ from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Text, DateT
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import Table
+
+from app.models.base import Base
 from .question import Question
 
-Base = declarative_base()
+
 
 
 class Answer(Base):

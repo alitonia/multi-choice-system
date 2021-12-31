@@ -116,7 +116,7 @@ async def start_exam(exam_id: int = Body(..., embed=True), session: AsyncSession
             f"You have already done this exam"))
 
     await participant_exam_service.create_participant_exam(session=session, exam_id=exam_id, examinee_id=account_id)
-#
+
 #
 # @router.get("/exam/{exam_id}", response_model=ExamSchemaOut)
 # async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_session), principal: Principal = Depends(security.get_current_user)):
