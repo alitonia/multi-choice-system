@@ -126,6 +126,7 @@ async def start_exam(exam_id: int = Body(..., embed=True), session: AsyncSession
 async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_session), principal: Principal = Depends(security.get_current_user)):
     exam_service = Exam_Service(session=session)
     question_service = Question_Service(session=session)
+    account_service = Account_Service(session=session)
     account_id = principal.account_id
 
     participant = await exam_service.get_participant_exam(
@@ -147,7 +148,7 @@ async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_se
         question_dict = question.__dict__
         choices = await choice_service.get_choices(session=session, question_id=question.question_id, examinee_id=account_id)
         if choices:
-            choices_list = [choice.question_id for choice in choices]
+            choices_list = [choice.answer_id for choice in choices]
         else:
             choices_list = []
         question_dict["answers"] = answers_dict
@@ -156,8 +157,11 @@ async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_se
 
         output_questions.append(question_dict)
 
+    examiner = await account_service.get_one_account_no_pass(account_id=participant.exam.creator)
+
     output_exam = participant.exam.__dict__
     output_exam["questions"] = output_questions
+    output_exam["creator_name"] = examiner["name"]
 
     return output_exam
 
