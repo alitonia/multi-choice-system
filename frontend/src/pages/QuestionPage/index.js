@@ -15,7 +15,7 @@ const QuestionPage = ({
                           // questionAPI = "https://opentdb.com/api.php?amount=50",
                       }) => {
     //   const [pageNumber, setPageNumber] = useState(0);
-    const [questionInfo, setQuestionInfo] = useState([]);
+    const [questionInfo, setQuestionInfo] = useState(null);
     // const [answers, setAnswers] = useState([]);
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [examInfo, setExamInfo] = useState({});
@@ -37,22 +37,22 @@ const QuestionPage = ({
         // send update choice to server
         // console.log("Choose: quesion_id " + question_id.toString() + " anwser_id " + answer_id.toString())
         // update setQuestionInfo
-        for (let item in questionInfo) {
-            if (questionInfo[item].question_id === question_id) {
+        for (let item in questionInfo.questions) {
+            if (questionInfo.questions[item].question_id === question_id) {
                 // console.log(questionInfo[item].question_type[0].description, questionInfo[item].choice.answer_id)
-                if (questionInfo[item].question_type[0].question_type_id === 1) {
-                    questionInfo[item].choice.answer_id = [answer_id]
+                if (questionInfo.questions[item].question_type_id === 1) {
+                    questionInfo.questions[item].choices = [answer_id]
                 } else {
-                    if (questionInfo[item].choice.answer_id === null) {
-                        questionInfo[item].choice.answer_id = [answer_id]
+                    if (questionInfo.questions[item].choices === null) {
+                        questionInfo.questions[item].choices = [answer_id]
                     } else {
-                        questionInfo[item].choice.answer_id.push(answer_id)
+                        questionInfo.questions[item].choices.push(answer_id)
                     }
                 }
             }
         }
-        const newQuestion = Array.from(questionInfo)
-        setQuestionInfo(newQuestion)
+        const newQuestion = Array.from(questionInfo.questions)
+        setQuestionInfo({...questionInfo, questions: newQuestion})
     }
 
     const updateUnchoose = (question_id, answer_id) => {
@@ -60,41 +60,42 @@ const QuestionPage = ({
         // send unchoice to server
         // console.log("Unchoose: quesion_id " + question_id.toString() + " anwser_id " + answer_id.toString())
         // update setQuestionInfo
-        for (let item in questionInfo) {
-            if (questionInfo[item].question_id === question_id) {
-                if (questionInfo[item].question_type[0].question_type_id === 1) {
-                    questionInfo[item].choice.answer_id = []
+        for (let item in questionInfo.questions) {
+            if (questionInfo.questions[item].question_id === question_id) {
+                if (questionInfo.questions[item].question_type_id === 1) {
+                    questionInfo.questions[item].choices = []
                 } else {
                     // remove specific item from array
-                    const index = questionInfo[item].choice.answer_id.indexOf(answer_id)
+                    const index = questionInfo.questions[item].choices.indexOf(answer_id)
                     if (index > -1) {
-                        questionInfo[item].choice.answer_id.splice(index, 1);
+                        questionInfo.questions[item].choices.splice(index, 1);
                     }
                 }
             }
         }
-        const newQuestion = Array.from(questionInfo)
-        setQuestionInfo(newQuestion)
+        const newQuestion = Array.from(questionInfo.questions)
+        setQuestionInfo({...questionInfo, questions: newQuestion})
     }
 
     const updateCurrent = (index, oldIndex) => {
         if(index === oldIndex) return
         // console.log(index, oldIndex)
         // send old index question to server
-        console.log("send to server question_id "+questionInfo[oldIndex].question_id+ " choice " + JSON.stringify(questionInfo[oldIndex].choice))
+        console.log("send to server question_id "+questionInfo.questions[oldIndex].question_id+ " choice " + JSON.stringify(questionInfo.questions[oldIndex].choices))
         setCurrentQuestion(index);
     };
 
     const submitExam = (index) => {
         if (window.confirm("Do you want to submit?")) {
-            console.log("send to server question_id " + questionInfo[index].question_id + " choice " + JSON.stringify(questionInfo[index].choice));
-            console.log(questionInfo);
+            console.log("send to server question_id " + questionInfo.questions[index].question_id + " choice " + JSON.stringify(questionInfo.questions[index].choices));
+            // console.log(questionInfo);
             // localStorage.removeItem("default_exam");
             // localStorage.removeItem("start_time");
         }
     };
 
     const forceSubmitExam = () => {
+        console.log("send to server question_id " + questionInfo.questions[currentQuestion].question_id + " choice " + JSON.stringify(questionInfo.questions[currentQuestion].choices));
         console.log("Force Submit");
         // localStorage.removeItem("default_exam");
         // localStorage.removeItem("start_time");
@@ -156,23 +157,23 @@ const QuestionPage = ({
         <div className="question-page-root-container">
             {/*<div className="question-page-default-header">Default Header</div>*/}
             <Header/>
-            {questionInfo.length === 0 ? (
+            {questionInfo === null ? (
                 <div>
                     <h1 style={{display: "flex", justifyContent: "center"}}>Loading</h1>
                 </div>
             ) : (
                 <div className="question-page-body">
                     <div className="question-page-body-left">
-                        <div className="question-page-body-left-exam">{examInfo.exam_name}</div>
-                        <div className="question-page-body-left-subject">Subject: {examInfo.subject}</div>
+                        <div className="question-page-body-left-exam">{questionInfo.exam_name}</div>
+                        <div className="question-page-body-left-subject">Subject: {questionInfo.subject}</div>
                         <div className="question-page-body-left-teacher">Teacher: {typeof examInfo.creator === "undefined" ? "" : examInfo.creator.name}</div>
                         <div className="question-page-body-left-duration">
                             <DisplayTime
-                                duration={hhmmyyToMin(examInfo.duration)}
+                                duration={hhmmyyToMin(questionInfo.duration)}
                                 startTime={
                                     // localStorage.getItem("start_time") !== null
                                     //     ? parseInt(localStorage.getItem("start_time")) :
-                                    (new Date(examInfo.start_time)).getTime()
+                                    (new Date(questionInfo.start_time)).getTime()
                                 }
                                 endExamHandler={forceSubmitExam}
                             />
@@ -181,7 +182,7 @@ const QuestionPage = ({
                         {/* {Math.floor(answers.length / questionsPerPage + 1)} - */}
                         {/* </div> */}
                         <DisplayPage
-                            answers={questionInfo}
+                            answers={questionInfo.questions}
                             changeCurrent={updateCurrent}
                             currentQuestion={currentQuestion}
                         />
@@ -198,11 +199,11 @@ const QuestionPage = ({
                         {/*/>*/}
                         <ShowQuestion
                             currentQuestionIndex={currentQuestion}
-                            currentQuestionInfo={questionInfo[currentQuestion]}
+                            currentQuestionInfo={questionInfo.questions[currentQuestion]}
                             updateChoose={updateChoice}
                             updateUnchoose={updateUnchoose}
                             changeCurrent={updateCurrent}
-                            questionListLength={questionInfo.length}
+                            questionListLength={questionInfo.questions.length}
                             submitExam={submitExam}
                         />
                     </div>
@@ -222,17 +223,17 @@ const ShowQuestion = ({
                           submitExam,
                       }) => {
     const checked = (index) => {
-        if (currentQuestionInfo.question_type[0].question_type_id === 1) {
-            if (currentQuestionInfo.choice.answer_id === null) return false
-            else if (currentQuestionInfo.choice.answer_id === index) {
+        if (currentQuestionInfo.question_type_id === 1) {
+            if (currentQuestionInfo.choices.length === 0) return false
+            else if (currentQuestionInfo.choices[0] === index) {
                 return true
             } else return false
         } else {
-            if (currentQuestionInfo.choice.answer_id === null) {
+            if (currentQuestionInfo.choices.length === 0) {
                 return false
-            } else if (currentQuestionInfo.choice.answer_id.length === 0) {
-                return false
-            } else if (currentQuestionInfo.choice.answer_id.includes(index)) {
+            // } else if (currentQuestionInfo.choices.length === 0) {
+            //     return false
+            } else if (currentQuestionInfo.choices.includes(index)) {
                 return true
             } else return false
         }
@@ -240,8 +241,8 @@ const ShowQuestion = ({
 
     const updateAnswer = (answer_id, checked) => {
         // console.log("update answer", answer_id, checked)
-        if (currentQuestionInfo.question_type[0].question_type_id === 1) {
-            if (currentQuestionInfo.choice.answer_id === answer_id) {
+        if (currentQuestionInfo.question_type_id === 1) {
+            if (currentQuestionInfo.choices[0] === answer_id) {
                 updateUnchoose(currentQuestionInfo.question_id, answer_id)
                 return;
             }
@@ -271,9 +272,9 @@ const ShowQuestion = ({
                     <input type={"checkbox"}
                            name={"question-" + currentQuestionIndex.toString() + "-answer-" + index.toString()}
                            id={"question-" + currentQuestionIndex.toString() + "-answer-" + index.toString()}
-                           defaultChecked={checked(index)}
+                           defaultChecked={checked(item.answer_id)}
                            onChange={e => {
-                               updateAnswer(index, e.target.checked)
+                               updateAnswer(item.answer_id, e.target.checked)
                            }}
                     />
                     <label
@@ -281,21 +282,15 @@ const ShowQuestion = ({
                             "question-" + currentQuestionIndex.toString() + "-answer-" + index.toString()
                         }
                         className={
-                            checked(index) ? "question-page-body-right-lower-checked"
+                            checked(item.answer_id) ? "question-page-body-right-lower-checked"
                                 : "question-page-body-right-lower-unchecked"
                         }
                     >
                         <div className="question-page-body-right-lower-choice-section">
                             <div
-                                className={currentQuestionInfo.question_type[0].question_type_id === 1 ? "question-page-body-right-lower-choice-index" : "question-page-body-right-lower-choice-index-multi"}>
+                                className={currentQuestionInfo.question_type_id === 1 ? "question-page-body-right-lower-choice-index" : "question-page-body-right-lower-choice-index-multi"}>
                                 <div className="question-page-body-right-lower-choice-index-content">
-                                    {index === 0
-                                        ? "A"
-                                        : index === 1
-                                            ? "B"
-                                            : index === 2
-                                                ? "C"
-                                                : "D"}
+                                    {String.fromCharCode(index+65)}
                                 </div>
                             </div>
                             <div className="question-page-body-right-lower-choice-content">
@@ -520,7 +515,7 @@ const DisplayPage = ({answers, changeCurrent, currentQuestion}) => {
                                         ? "question-page-button-current"
                                         : "question-page-button") +
                                     " " +
-                                    ((item.choice.answer_id === null || item.choice.answer_id.length === 0)
+                                    ((item.choices === null || item.choices.length === 0)
                                         ? "question-page-button-incomplete"
                                         : "question-page-button-complete")
                                 }
