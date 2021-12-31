@@ -145,7 +145,13 @@ async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_se
                 num_of_correct_answers += 1
         answers_dict = [answer.__dict__ for answer in answers]
         question_dict = question.__dict__
+        choices = await choice_service.get_choices(session=session, question_id=question.question_id, examinee_id=account_id)
+        if choices:
+            choices_list = [choice.question_id for choice in choices]
+        else:
+            choices_list = []
         question_dict["answers"] = answers_dict
+        question_dict["choices"] = choices_list
         question_dict["num_of_correct_answers"] = num_of_correct_answers
 
         output_questions.append(question_dict)
