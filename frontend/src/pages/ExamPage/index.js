@@ -92,7 +92,27 @@ const ExamPage = () => {
     };
 
     function moveToExam() {
-        window.location.href="../questionPage/"+id.toString()
+        // start exam
+        let newHeader = new Headers();
+        newHeader.append("Authorization", jwtToken);
+        newHeader.append("Content-Type", "application/json");
+        var raw = JSON.stringify({
+            "exam_id": parseInt(id)
+        });
+        fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/start", {
+            method: "POST",
+            headers: newHeader,
+            body: raw,
+            redirect: "follow"
+        })
+            .then(response => response.json())
+            .then(result => {
+                if(typeof result.message === "undefined")
+                    alert(result.detail.message)
+                else
+                    window.location.href="../questionPage/"+id.toString()
+            })
+            .catch(error => {console.log("error", error)});
     }
 
     const timeToUnix = (time) => {
