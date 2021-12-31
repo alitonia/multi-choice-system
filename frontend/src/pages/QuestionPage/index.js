@@ -18,14 +18,7 @@ const QuestionPage = ({
     const [questionInfo, setQuestionInfo] = useState([]);
     // const [answers, setAnswers] = useState([]);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [examInfo, setExamInfo] = useState({
-        exam_id: '',
-        exam_name: '',
-        subject: '',
-        creator: {name: ""},
-        start_time: Date.now(),
-        duration: 0,
-    });
+    const [examInfo, setExamInfo] = useState({});
     const {id} = useParams();
     // const updateAnswer = (id, answer) => {
     //     // console.log(id, answer);
@@ -48,7 +41,7 @@ const QuestionPage = ({
             if (questionInfo[item].question_id === question_id) {
                 // console.log(questionInfo[item].question_type[0].description, questionInfo[item].choice.answer_id)
                 if (questionInfo[item].question_type[0].question_type_id === 1) {
-                    questionInfo[item].choice.answer_id = answer_id
+                    questionInfo[item].choice.answer_id = [answer_id]
                 } else {
                     if (questionInfo[item].choice.answer_id === null) {
                         questionInfo[item].choice.answer_id = [answer_id]
@@ -70,7 +63,7 @@ const QuestionPage = ({
         for (let item in questionInfo) {
             if (questionInfo[item].question_id === question_id) {
                 if (questionInfo[item].question_type[0].question_type_id === 1) {
-                    questionInfo[item].choice.answer_id = null
+                    questionInfo[item].choice.answer_id = []
                 } else {
                     // remove specific item from array
                     const index = questionInfo[item].choice.answer_id.indexOf(answer_id)
@@ -92,8 +85,9 @@ const QuestionPage = ({
         setCurrentQuestion(index);
     };
 
-    const submitExam = () => {
+    const submitExam = (index) => {
         if (window.confirm("Do you want to submit?")) {
+            console.log("send to server question_id " + questionInfo[index].question_id + " choice " + JSON.stringify(questionInfo[index].choice));
             console.log(questionInfo);
             // localStorage.removeItem("default_exam");
             // localStorage.removeItem("start_time");
@@ -111,16 +105,11 @@ const QuestionPage = ({
         // console.log(data)
         setQuestionInfo(data)
         setExamInfo({
-            exam_id: '2110',
-            exam_name: 'exam_name_10',
-            subject: 'subject_10',
-            creator: {
-                id: 1,
-                department: 'defence against the dark art',
-                name: 'alitonia_10'
-            },
-            start_time: 1640186007857,
-            duration: 8000
+            "exam_id": 1,
+            "exam_name": "First alitonia test",
+            "subject": "DB",
+            "start_time": "2021-12-31T21:05:06",
+            "duration": "23:05:00",
         });
         // if (localStorage.getItem("default_exam") === null) {
         //     fetch(questionAPI)
@@ -155,25 +144,35 @@ const QuestionPage = ({
         // }
     }, []);
 
+    const hhmmyyToMin = (duration) => {
+        if (typeof duration === "undefined" || duration === null) return 0;
+        let hms = duration;
+        let a = hms.split(':');
+        let min = (+a[0]) * 60 + (+a[1]) + (+a[2]) / 60;
+        return min;
+    }
+
     return (
         <div className="question-page-root-container">
             {/*<div className="question-page-default-header">Default Header</div>*/}
             <Header/>
             {questionInfo.length === 0 ? (
-                <div>Loading Screen Plz</div>
+                <div>
+                    <h1 style={{display: "flex", justifyContent: "center"}}>Loading</h1>
+                </div>
             ) : (
                 <div className="question-page-body">
                     <div className="question-page-body-left">
                         <div className="question-page-body-left-exam">{examInfo.exam_name}</div>
                         <div className="question-page-body-left-subject">Subject: {examInfo.subject}</div>
-                        <div className="question-page-body-left-teacher">Teacher: {examInfo.creator.name}</div>
+                        <div className="question-page-body-left-teacher">Teacher: {typeof examInfo.creator === "undefined" ? "" : examInfo.creator.name}</div>
                         <div className="question-page-body-left-duration">
                             <DisplayTime
-                                duration={examInfo.duration}
+                                duration={hhmmyyToMin(examInfo.duration)}
                                 startTime={
                                     // localStorage.getItem("start_time") !== null
                                     //     ? parseInt(localStorage.getItem("start_time")) :
-                                    examInfo.start_time
+                                    (new Date(examInfo.start_time)).getTime()
                                 }
                                 endExamHandler={forceSubmitExam}
                             />
@@ -320,7 +319,7 @@ const ShowQuestion = ({
                 {currentQuestionIndex === questionListLength - 1 ? (
                     <button
                         className="question-page-body-right-bottom-next"
-                        onClick={submitExam}
+                        onClick={() => submitExam(currentQuestionIndex)}
                     >
                         Submit &gt;
                     </button>
