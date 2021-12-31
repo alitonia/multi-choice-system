@@ -112,10 +112,14 @@ async def start_exam(exam_id: int = Body(..., embed=True), session: AsyncSession
             f"Exam does not exist or you don't have permission to access this"))
     participant_exam = await participant_exam_service.get_participant_exam(session=session, exam_id=exam_id, examinee_id=account_id)
     if participant_exam:
-        raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
-            f"You have already done this exam"))
+        if participant_exam.status == 2:
+            raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
+                f"You have already done this exam"))
+        else:
+            return {"message": "OK"}
 
     await participant_exam_service.create_participant_exam(session=session, exam_id=exam_id, examinee_id=account_id)
+    return {"message": "OK"}
 
 
 @router.get("/exam/{exam_id}", response_model=ExamSchemaOut)
@@ -149,7 +153,6 @@ async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_se
     output_exam = participant.exam.__dict__
     output_exam["questions"] = output_questions
 
-    # TODO: construct a schema output for this
     return output_exam
 
 
@@ -207,7 +210,7 @@ async def finish_exam(body: ExamFinishSchemaIn, session: AsyncSession = Depends(
 
     await participant_exam_service.finish_participant_exam(session=session, participant_exam=participant_exam, score=score)
 
-  
+
 @router.post("/exam/new")
 async def create_exam(
         item: ExamNewInputSchema,
@@ -351,7 +354,7 @@ async def add_examinees_to_exam(
     )
     return exam
 
-  
+
 @router.get("/exam/get_not_examinees")
 async def ge_not_examinees(
         exam_id: str = None,
