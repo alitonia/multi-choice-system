@@ -110,6 +110,7 @@ class Question_Service:
         await self.session.execute(q)
         await self.session.commit()
 
+
     async def get_exam_questions(self, exam_id: int) -> List[Question]:
         result = await self.session.execute(select(Question).where(Question.exam_id == exam_id))
         return result.scalars().all()
@@ -117,3 +118,37 @@ class Question_Service:
     async def get_question_answers(self, question_id: int) -> List[Answer]:
         result = await self.session.execute(select(Answer).where(Answer.question_id == question_id))
         return result.scalars().all()
+
+    # GET
+    async def check_question_viewer(self, question_id: int, exam_id: int, account):
+        role_name = account["role"]["name"]
+
+        q = None
+        if role_name == 'examiner':
+            q = (
+                select(Question, Exam, Examiner)
+                    .join(Exam, Question.exam_id == Exam.exam_id)
+                    .join(Examiner, Examiner.account_id == Exam.creator)
+                        .where(Exam.creator == account["account_id"])
+            )
+        elif role_name == 'examinee':
+            q = (
+                select(Question, Exam, Participant)
+                    .join(Exam, Question.exam_id == Exam.exam_id)
+                    .join(Participant, Participant.exam_id == Exam.exam_id)
+                        .where(Participant.examinee_account_id == account["account_id"])
+            )
+
+        if(question_id > 0):
+            q = q.where(Question.question_id == question_id)
+
+        if(exam_id > 0):
+            q = q.where(Exam.exam_id == exam_id)
+
+        result_iter = await self.session.execute(q)
+        result_list = [tup for tup in result_iter]
+
+        if len(result_list) == 0:
+            return False
+
+        return True

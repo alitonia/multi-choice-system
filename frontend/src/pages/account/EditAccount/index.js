@@ -11,17 +11,7 @@ const EditAccount = () => {
     const { id } = useParams();
     // get currentUser from redux store/fetch
     let jwtToken = "Bearer " + localStorage.getItem("access_token");
-    // "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ2NzgwNS43OTcyNTh9.EkacOKr9LgUFeGLc3_QKn647STyM_MbB7Ej3AfUWDgI";
-    // const currentUser = {
-    //     id: 13,
-    //     email: "test_admin1@mana.itss",
-    //     name: "fluffy_admin_1",
-    //     date_of_birth: "20-06-1999",
-    //     phone_number: "0123456788",
-    //     enable: "TRUE",
-    //     role: "admin",
-    //     jwt_token: "jwt_token_123456"
-    // };
+
     const [currentUser, setCurrentUser] = useState({});
     const defaultInfo = {
         name: "",
@@ -38,16 +28,6 @@ const EditAccount = () => {
     const [load, setLoad] = useState(false);
     const [error, setError] = useState("");
 
-    // { currentUser !== {} && currentUser.role !== "admin" && currentUser.id !== parseInt(id) && (
-    //     <Redirect to={"/account/editAccount/" + currentUser.account_id} />
-    // )}
-    // const redirector = (data) => {
-    //     if(data === {}) return null;
-    //     else if(data.role.name !== "admin" && data.account_id !== parseInt(id)){
-    //         return <Redirect to={"/account/editAccount/" + data.account_id} />
-    //     }
-    //     else return null;
-    // }
     useEffect(() => {
         let newHeader = new Headers();
         newHeader.append("Authorization", jwtToken);
@@ -62,7 +42,6 @@ const EditAccount = () => {
             })
             .catch(error => console.log("error", error));
         // fetch user with id in route param
-        // if (currentUser.role.name === "admin" || currentUser.account_id === parseInt(id)) {
 
         fetch("http://" + process.env.REACT_APP_BACKEND_URL + "account/" + id, {
             method: "GET",
@@ -95,10 +74,6 @@ const EditAccount = () => {
             year.toString()
         );
     };
-
-    // function deleteAccount() {
-    //     console.log("delete account " + id)
-    // }
 
     function saveChange() {
         if (!isEqual(defaultInfo, editInfo)) {
@@ -145,10 +120,10 @@ const EditAccount = () => {
         } else {
             setError("You haven't change anything!");
         }
-        // console.log("edit account" + JSON.stringify(editInfo))
         // loading --> doi text You have unsaved changes
         // sau day thi redirect ve home
     }
+
     return (
         <div>
             <Header />
@@ -180,36 +155,8 @@ const EditAccount = () => {
                         <tr>
                             <td>Email</td>
                             <td>{loadCurrentAccount ? "Loading..." : editAccount.email}</td>
-                            <td>
-                                Email cannot be changed!
-                                {/*<input*/}
-                                {/*    type="text"*/}
-                                {/*    placeholder="Change email..."*/}
-                                {/*    onChange={data => {*/}
-                                {/*        setEditInfo({*/}
-                                {/*            ...editInfo,*/}
-                                {/*            email: data.target.value.trim()*/}
-                                {/*        });*/}
-                                {/*    }}*/}
-                                {/*/>*/}
-                            </td>
+                            <td>Email cannot be changed!</td>
                         </tr>
-                        {/*<tr>*/}
-                        {/*    <td>Password</td>*/}
-                        {/*    <td>{editAccount.password}</td>*/}
-                        {/*    <td>*/}
-                        {/*        <input*/}
-                        {/*            type="text"*/}
-                        {/*            placeholder="Change password..."*/}
-                        {/*            onChange={data => {*/}
-                        {/*                setEditInfo({*/}
-                        {/*                    ...editInfo,*/}
-                        {/*                    password: data.target.value.trim()*/}
-                        {/*                });*/}
-                        {/*            }}*/}
-                        {/*        />*/}
-                        {/*    </td>*/}
-                        {/*</tr>*/}
                         <tr>
                             <td>Display name</td>
                             <td>{loadCurrentAccount ? "Loading..." : editAccount.name}</td>
@@ -223,6 +170,7 @@ const EditAccount = () => {
                                             name: data.target.value.trim()
                                         });
                                     }}
+                                    className={"base-wide-input"}
                                 />
                             </td>
                         </tr>
@@ -241,6 +189,7 @@ const EditAccount = () => {
                                     }}
                                     dateFormat="dd-MM-yyyy"
                                     placeholderText="dd-mm-yyyy"
+                                    className={"base-wide-input"}
                                 />
                             </td>
                         </tr>
@@ -252,6 +201,7 @@ const EditAccount = () => {
                                     type="text"
                                     pattern="[0-9]*"
                                     placeholder="Change phone number..."
+                                    className={"base-wide-input"}
                                     onChange={data => {
                                         let pattern = /^\d+$/;
                                         if (data.target.value.trim() === "") {
@@ -316,27 +266,17 @@ const EditAccount = () => {
                             </td>
                             <td>
                                 <RadioGroup
-                                    style={{ display: "flex", flexDirection: "column" }}
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        lineHeight: "unset"
+                                    }}
                                     name="role"
                                     selectedValue={
                                         typeof editAccount.role === "undefined"
                                             ? ""
                                             : editAccount.role.name
                                     }
-                                    // onChange={data => {
-                                    //     setEditInfo({
-                                    //         ...editInfo,
-                                    //         role: {
-                                    //             name: data,
-                                    //             role_id:
-                                    //                 data === "admin"
-                                    //                     ? 0
-                                    //                     : data === "examinee"
-                                    //                     ? 2
-                                    //                     : 1
-                                    //         }
-                                    //     });
-                                    // }}
                                 >
                                     <label style={{ color: "lightgrey" }}>
                                         <Radio value="admin" disabled={true} />
@@ -353,46 +293,6 @@ const EditAccount = () => {
                                 </RadioGroup>
                             </td>
                         </tr>
-                        {/*<tr>*/}
-                        {/*    <td>Class</td>*/}
-                        {/*    <td>*/}
-                        {/*        {editAccount.class.trim() === ""*/}
-                        {/*            ? "None"*/}
-                        {/*            : editAccount.class.trim()}*/}
-                        {/*    </td>*/}
-                        {/*    <td>*/}
-                        {/*        <input*/}
-                        {/*            type="text"*/}
-                        {/*            placeholder="Change class..."*/}
-                        {/*            onChange={data => {*/}
-                        {/*                setEditInfo({*/}
-                        {/*                    ...editInfo,*/}
-                        {/*                    class: data.target.value.trim()*/}
-                        {/*                });*/}
-                        {/*            }}*/}
-                        {/*        />*/}
-                        {/*    </td>*/}
-                        {/*</tr>*/}
-                        {/*<tr>*/}
-                        {/*    <td>Major</td>*/}
-                        {/*    <td>*/}
-                        {/*        {editAccount.major.trim() === ""*/}
-                        {/*            ? "None"*/}
-                        {/*            : editAccount.major.trim()}*/}
-                        {/*    </td>*/}
-                        {/*    <td>*/}
-                        {/*        <input*/}
-                        {/*            type="text"*/}
-                        {/*            placeholder="Change major..."*/}
-                        {/*            onChange={data => {*/}
-                        {/*                setEditInfo({*/}
-                        {/*                    ...editInfo,*/}
-                        {/*                    major: data.target.value.trim()*/}
-                        {/*                });*/}
-                        {/*            }}*/}
-                        {/*        />*/}
-                        {/*    </td>*/}
-                        {/*</tr>*/}
                         <tr>
                             <td colSpan={3}>
                                 <div className={styles.editAccountBottom}>
@@ -410,7 +310,9 @@ const EditAccount = () => {
                                     </div>
                                     <div className={styles.editAccountBottomRight}>
                                         <div>
-                                            <button onClick={saveChange}>Save Changes</button>
+                                            <button onClick={saveChange} className={"real-button"}>
+                                                Save Changes
+                                            </button>
                                         </div>
                                         <div style={{ marginLeft: "5rem" }}>
                                             {isEqual(defaultInfo, editInfo)
@@ -426,10 +328,6 @@ const EditAccount = () => {
                                         ? error
                                         : ""}
                                 </div>
-                                {/*<div style={{ display:  "none" }}>*/}
-                                {/*    <button onClick={deleteAccount} className={styles.deleteButton}>Delete this account*/}
-                                {/*    </button>*/}
-                                {/*</div>*/}
                             </td>
                         </tr>
                     </tbody>
