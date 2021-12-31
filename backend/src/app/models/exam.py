@@ -1,9 +1,8 @@
 from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Text, DateTime, Time
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 from .examiner import Examiner
 
-Base = declarative_base()
+from app.models.base import Base
 
 
 class Exam(Base):

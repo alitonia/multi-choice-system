@@ -16,7 +16,7 @@ class Participant(Base):
     __table_args__ = (PrimaryKeyConstraint('exam_id', 'examinee_account_id'),)
     exam_id = Column(Integer, ForeignKey(Exam.exam_id))
     examinee_account_id = Column(Integer, ForeignKey(Examinee.account_id))
-    exam = relationship('Answer',  foreign_keys=[
+    exam = relationship('Exam',  foreign_keys=[
         exam_id], primaryjoin="Participant.exam_id==Exam.exam_id", lazy="immediate")
     examinee = relationship('Examinee',  foreign_keys=[
-        examinee_account_id], primaryjoin="Exam.examinee_account_id==Examinee.account_id", lazy="immediate")
+        examinee_account_id], primaryjoin="Participant.examinee_account_id==Examinee.account_id", lazy="immediate")

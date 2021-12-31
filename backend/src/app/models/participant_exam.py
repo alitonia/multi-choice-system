@@ -17,7 +17,7 @@ class ParticipantExam(Base):
     examinee_account_id = Column(Integer, ForeignKey(Examinee.account_id))
     status = Column(Integer)  # 1 = in progress  2 = finished
     score = Column(Integer)
-    exam = relationship('Answer',  foreign_keys=[
-        exam_id], primaryjoin="Participant.exam_id==Exam.exam_id", lazy="immediate")
+    exam = relationship('Exam',  foreign_keys=[
+        exam_id], primaryjoin="ParticipantExam.exam_id==Exam.exam_id", lazy="immediate")
     examinee = relationship('Examinee',  foreign_keys=[
-        examinee_account_id], primaryjoin="Exam.examinee_account_id==Examinee.account_id", lazy="immediate")
+        examinee_account_id], primaryjoin="ParticipantExam.examinee_account_id==Examinee.account_id", lazy="immediate")

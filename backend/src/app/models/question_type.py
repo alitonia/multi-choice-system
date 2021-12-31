@@ -2,8 +2,7 @@ from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Text, DateT
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
-
+from app.models.base import Base
 
 class Question_Type(Base):
     __tablename__ = 'Question_type'

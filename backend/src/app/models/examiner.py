@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 from .account import Account
 
-Base = declarative_base()
+from app.models.base import Base
 
 
 class Examiner(Base):

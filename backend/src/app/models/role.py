@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, String, Date, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 
-Base = declarative_base()
-
+from app.models.base import Base
 
 class Role(Base):
     __tablename__ = 'Role'
