@@ -1,4 +1,5 @@
-from typing import List
+import datetime
+from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -22,14 +23,15 @@ class ExamQuestion(BaseModel):
     question_group_id: int
     question_type_id: int
     answers: List[ExamAnswer]
+    choices: List[Optional[int]]
 
 
 class ExamSchemaOut(BaseModel):
     exam_id: int
     exam_name: str
     subject: str
-    start_time: str
-    duration: int
+    start_time: datetime.datetime
+    duration: datetime.time
     questions: List[ExamQuestion]
 
 
@@ -63,4 +65,3 @@ class ExamAddExamineeInputSchema(BaseModel):
     class Config:
         arbitrary_types_allowed = True
         orm_mode = True
-

@@ -112,45 +112,54 @@ async def start_exam(exam_id: int = Body(..., embed=True), session: AsyncSession
             f"Exam does not exist or you don't have permission to access this"))
     participant_exam = await participant_exam_service.get_participant_exam(session=session, exam_id=exam_id, examinee_id=account_id)
     if participant_exam:
-        raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
-            f"You have already done this exam"))
+        if participant_exam.status == 2:
+            raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
+                f"You have already done this exam"))
+        else:
+            return {"message": "OK"}
 
     await participant_exam_service.create_participant_exam(session=session, exam_id=exam_id, examinee_id=account_id)
+    return {"message": "OK"}
 
-#
-# @router.get("/exam/{exam_id}", response_model=ExamSchemaOut)
-# async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_session), principal: Principal = Depends(security.get_current_user)):
-#     exam_service = Exam_Service(session=session)
-#     question_service = Question_Service(session=session)
-#     account_id = principal.account_id
-#
-#     participant = await exam_service.get_participant_exam(
-#         exam_id=exam_id, examinee_id=account_id)
-#     if not participant:
-#         raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
-#             f"Exam does not exist or you don't have permission to access this"))
-#
-#     questions = await question_service.get_exam_questions(exam_id=exam_id)
-#
-#     output_questions = []
-#     for question in questions:
-#         answers = await question_service.get_question_answers(question_id=question.question_id)
-#         num_of_correct_answers = 0
-#         for answer in answers:
-#             if answer.is_correct:
-#                 num_of_correct_answers += 1
-#         answers_dict = [answer.__dict__ for answer in answers]
-#         question_dict = question.__dict__
-#         question_dict["answers"] = answers_dict
-#         question_dict["num_of_correct_answers"] = num_of_correct_answers
-#
-#         output_questions.append(question_dict)
-#
-#     output_exam = participant.exam.__dict__
-#     output_exam["questions"] = output_questions
-#
-#     # TODO: construct a schema output for this
-#     return output_exam
+
+@router.get("/exam/{exam_id}", response_model=ExamSchemaOut)
+async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_session), principal: Principal = Depends(security.get_current_user)):
+    exam_service = Exam_Service(session=session)
+    question_service = Question_Service(session=session)
+    account_id = principal.account_id
+
+    participant = await exam_service.get_participant_exam(
+        exam_id=exam_id, examinee_id=account_id)
+    if not participant:
+        raise HTTPException(status_code=400, detail=errors.create_http_exception_detail(
+            f"Exam does not exist or you don't have permission to access this"))
+
+    questions = await question_service.get_exam_questions(exam_id=exam_id)
+
+    output_questions = []
+    for question in questions:
+        answers = await question_service.get_question_answers(question_id=question.question_id)
+        num_of_correct_answers = 0
+        for answer in answers:
+            if answer.is_correct:
+                num_of_correct_answers += 1
+        answers_dict = [answer.__dict__ for answer in answers]
+        question_dict = question.__dict__
+        choices = await choice_service.get_choices(session=session, question_id=question.question_id, examinee_id=account_id)
+        if choices:
+            choices_list = [choice.question_id for choice in choices]
+        else:
+            choices_list = []
+        question_dict["answers"] = answers_dict
+        question_dict["choices"] = choices_list
+        question_dict["num_of_correct_answers"] = num_of_correct_answers
+
+        output_questions.append(question_dict)
+
+    output_exam = participant.exam.__dict__
+    output_exam["questions"] = output_questions
+
+    return output_exam
 
 
 @router.post("/exam/{exam_id}/answers")
@@ -175,7 +184,6 @@ async def answer_question(exam_id: int, body: ExamAnswerSchemaIn, session: Async
 
     await choice_service.save_choices(session=session, question_id=question_id, answers_id=answers_id, examinee_id=account_id)
 
-    # TODO construct a schema output for this
     return {"message": "ok"}
 
 
