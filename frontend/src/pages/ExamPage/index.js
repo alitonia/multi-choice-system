@@ -106,47 +106,16 @@ const ExamPage = () => {
     return (
         <div>
             <Header />
-            {(!loading&&info!==null)?
-                <div>
-                    <div className={styles.content}>
-                        <div>
-                            <img src="https://yt3.ggpht.com/ytc/AKedOLRKkvGBaNzKlDVVL7RGRQtDyNJr6GAP8Oh8Uggi=s900-c-k-c0x00ffffff-no-rj" alt="placeholder" />
-                            <h1>{info.exam_name}</h1>
-                            <p>Subject: {info.subject}</p>
-                            <p>Class of: {typeof info.creator === "undefined"?"":info.creator.name}</p>
-                            <p>Starts on: {startTimeString(info.start_time)}</p>
-                            <p>You will have {typeof info.duration === "undefined"? "":hhmmyyToMin(info.duration).toString()} minutes to finish the exam.</p>
-                            <p>Once you begin, you cannot restart the exam. Ready?</p>
-                        </div>
-                        <button
-                            className={styles.beginButton}
-                            disabled={(new Date(info.start_time)).getTime() + hhmmyyToMin(info.duration)*60*1000<Date.now()||(new Date(info.start_time)).getTime()>Date.now()}
-                            // disabled={false}
-                            onClick={moveToExam}
-                        >
-                            {(new Date(info.start_time)).getTime() + hhmmyyToMin(info.duration)*60*1000 < Date.now()
-                                ? "The exam has been expired"
-                                : (new Date(info.start_time)).getTime() > Date.now()
-                                ? "Not the time yet"
-                                : "Begin the exam"}
-                        </button>
-                        {/*{timeToUnix(info.start_time) + hhmmyyToMin(info.duration)*60*1000 }*/}
-                    </div>
-                    <div className={styles.backButton}>
-                        <a href={"/dashboard"}><button>&lt; Back</button></a>
-                    </div>
-                </div>
-                :(info!==null?
-                    <div>
-                        <h1 style={{display: "flex", justifyContent: "center"}}>Loading</h1>
-                    </div>:
-                    <div>
-                        <h1 style={{paddingLeft: "1.5rem"}}>You don&#39;t have the permission to view this exam</h1>
-                        <div className={styles.backButton}>
-                            <a href={"/dashboard"}><button>&lt; Back</button></a>
-                        </div>
-                    </div>)
-            }
+            <div className={styles.content}>
+                <img src="logo192.png" alt="exam" />
+                <h1>Exam Name</h1>
+                <p>Subject name</p>
+                <p>Class of: Teacher</p>
+                <p>Starts on: hh:mm AM, MM/DD/YYYY</p>
+                <p>You will have t minutes to finish the exam.</p>
+                <p>Once you begin, you cannot restart the exam. Ready?</p>
+                <button className={styles.beginButton}>Begin the exam</button>
+            </div>
         </div>
     );
 };

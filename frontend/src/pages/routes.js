@@ -1,20 +1,29 @@
-import {Placeholder} from "./Placeholder.js";
 import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
-import QuestionPage from "./QuestionPage";
+import ManageExaminees from "./ManageExaminees/index.js";
 import EditExam from "./CRUDExam/EditExam.js";
 import CreateExam from "./CRUDExam/CreateExam.js";
 import AdminDashboard from "./admin/Dashboard";
 import CreateAccount from "./admin/CreateAccount";
 import EditAccount from "./account/EditAccount";
+import QuestionPage from "./QuestionPage/index.js";
 import CRUDQuestionPage from "./CRUDQuestion/index.js";
+
+import { Page404 } from "./404/404";
+import { Placeholder } from "./Placeholder";
+import { HomeRoot } from "./Home/HomeRoot";
 
 export const routes = [
     {
         path: "/dashboard",
         others: {},
         component: Dashboard
+    },
+    {
+        path: "/manageExaminees/:id",
+        others: {},
+        component: ManageExaminees
     },
     {
         path: "/login",
@@ -69,7 +78,14 @@ export const routes = [
     },
     {
         path: "/",
+        others: {
+            exact: true
+        },
+        component: HomeRoot
+    },
+    {
+        path: "/",
         others: {},
-        component: Placeholder
+        component: Page404
     }
 ].filter(r => !!r && !!r.path && !!r.component);

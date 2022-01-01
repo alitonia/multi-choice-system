@@ -12,6 +12,7 @@ import ExamCard from "./ExamCard";
 import { useSelector } from "react-redux";
 import Pagination from "../../components/pagination";
 import { useHistory } from "react-router-dom";
+import styles from "./styles.module.css";
 
 ExamSearch.propTypes = {
     onExamSearch: PropTypes.func
@@ -95,7 +96,7 @@ export default function MainView() {
     const [recentExamList, setRecentExamList] = useState([]);
     const [allExamList, setAllExamList] = useState([]);
 
-    const pageSize = 10;
+    const pageSize = 30;
     const [currentPage, setCurrentPage] = useState(0);
     const [total, setTotal] = useState(0);
 

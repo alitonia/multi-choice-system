@@ -28,7 +28,7 @@ class ExamEditInputSchema(ExamNewInputSchema):
 
 class ExamAddExamineeInputSchema(BaseModel):
     exam_id: int
-    examinee_ids: List[int]
+    emails: List[str]
 
     class Config:
         arbitrary_types_allowed = True
