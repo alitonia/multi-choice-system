@@ -8,27 +8,6 @@ const ExamPage = () => {
     let jwtToken = "Bearer " + localStorage.getItem("access_token");
     const { id } = useParams();
     useEffect(() => {
-        // console.log(id)
-        // // we fetch data here
-        // setInfo({
-        //     "subject": "DB",
-        //     "duration": "02:35:00",
-        //     "creator": {
-        //         "account_id": 4997,
-        //         "department": "Natural Science",
-        //         "name": "test_examiner"
-        //     },
-        //     "exam_name": "Third done alitonia test",
-        //     "start_time": "2021-12-28T23:05:06",
-        //     "exam_id": 4,
-        //     "questions": [
-        //         20,
-        //         21,
-        //         22,
-        //         23,
-        //         24
-        //     ]
-        // });
         setLoading(true)
         let newHeader = new Headers();
         newHeader.append("Authorization", jwtToken);
