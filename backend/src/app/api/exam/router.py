@@ -122,7 +122,7 @@ async def start_exam(exam_id: int = Body(..., embed=True), session: AsyncSession
     return {"message": "OK"}
 
 
-@router.get("/exam/{exam_id}", response_model=ExamSchemaOut)
+@router.get("/exam/get2/{exam_id}", response_model=ExamSchemaOut)
 async def get_examinee_exam(exam_id: int, session: AsyncSession = Depends(get_session), principal: Principal = Depends(security.get_current_user)):
     exam_service = Exam_Service(session=session)
     question_service = Question_Service(session=session)
