@@ -114,7 +114,7 @@ class Question_Service:
              .values(question_content=question_content)
              .values(question_group_id=question_group_id)
              .values(question_type_id=question_type_id))
-
+        print("Here")
         q.execution_options(synchronize_session="fetch")
         await self.session.execute(q)
 
