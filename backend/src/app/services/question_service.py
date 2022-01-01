@@ -16,7 +16,6 @@ from sqlalchemy.future import select
 from sqlalchemy import update, delete
 
 
-
 class Question_Service:
     def __init__(self, session: AsyncSession):
         self.session = session
@@ -59,6 +58,7 @@ class Question_Service:
         q = (
             self.get_generic_questions_query()
         )
+
         if exam_id is not None:
             q = q.where(Question.exam_id == exam_id)
 
@@ -75,7 +75,12 @@ class Question_Service:
         for (q, question_group, question_type, answer) in resultList:
             question_group_dict.add(q.question_id, question_group)
             question_type_dict.add(q.question_id, question_type)
-            answer_dict.add(q.question_id, answer)
+            answer_dict.add(q.question_id, {
+                "answer_id": answer.answer_id,
+                "question_id": answer.question_id,
+                "content": answer.content,
+                "is_correct": answer.is_correct
+            })
 
         for q in uniq_questions:
             q.question_group = question_group_dict.get(q.question_id)
