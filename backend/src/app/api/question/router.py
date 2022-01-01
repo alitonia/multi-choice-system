@@ -33,7 +33,7 @@ async def show_question(
     qs1 = Question_Service(s)
     role_name = account["role"]["name"]
     if role_name != "admin":
-        permission = qs1.check_question_viewer(question_id, -1, account)
+        permission = await qs1.check_question_viewer(question_id, -1, account)
         if permission is False:
             return None
 
@@ -59,9 +59,9 @@ async def show_questions(
     role_name = account["role"]["name"]
     if role_name != "admin":
         if exam_id != None:
-            permission = qs1.check_question_viewer(-1, exam_id, account)
+            permission = await qs1.check_question_viewer(-1, exam_id, account)
         else:
-            permission = qs1.check_question_viewer(-1, -1, account)
+            permission = await qs1.check_question_viewer(-1, -1, account)
         if permission is False:
             return None
 
@@ -83,7 +83,7 @@ async def create_question(
     qs1 = Exam_Service(s)
     role_name = account["role"]["name"]
     if role_name != "admin":
-        permission = qs1.check_exam_viewer(item.exam_id, account)
+        permission = await qs1.check_exam_viewer(item.exam_id, account)
         if permission is False:
             return None
 
@@ -112,7 +112,7 @@ async def update_question(
     qs1 = Question_Service(s)
     role_name = account["role"]["name"]
     if role_name != "admin":
-        permission = qs1.check_question_viewer(item.question_id , -1, account)
+        permission = await qs1.check_question_viewer(item.question_id , -1, account)
         if permission is False:
             return None
 
@@ -140,7 +140,7 @@ async def update_question(
     qs1 = Question_Service(s)
     role_name = account["role"]["name"]
     if role_name != "admin":
-        permission = qs1.check_question_viewer(question_id , -1, account)
+        permission = await qs1.check_question_viewer(item.question_id , -1, account)
         if permission is False:
             return None
 

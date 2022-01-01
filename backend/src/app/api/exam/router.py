@@ -31,7 +31,7 @@ async def show_exam(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(exam_id, account)
+        is_viewer = await qs.check_exam_viewer(exam_id, account)
         if is_viewer is False:
             return None
 
@@ -55,7 +55,7 @@ async def show_exams(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(-1, account)
+        is_viewer = await qs.check_exam_viewer(-1, account)
         if is_viewer is False:
             return None
 
@@ -124,7 +124,7 @@ async def update_question(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(item.exam_id, account)
+        is_viewer = await qs.check_exam_viewer(item.exam_id, account)
         if is_viewer is False:
             return None
 
@@ -153,7 +153,7 @@ async def update_question(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(exam_id, account)
+        is_viewer = await qs.check_exam_viewer(exam_id, account)
         if is_viewer is False:
             return None
 
@@ -177,7 +177,7 @@ async def add_examinees_to_exam(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(item.exam_id, account)
+        is_viewer = await qs.check_exam_viewer(item.exam_id, account)
         if is_viewer is False:
             return None
 
@@ -202,7 +202,7 @@ async def add_examinees_to_exam(
 
     role_name = account["role"]["name"]
     if role_name != "admin":
-        is_viewer = qs.check_exam_viewer(item.exam_id, account)
+        is_viewer = await qs.check_exam_viewer(item.exam_id, account)
         if is_viewer is False:
             return None
 
