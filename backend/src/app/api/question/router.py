@@ -112,7 +112,7 @@ async def update_question(
     qs1 = Question_Service(s)
     role_name = account["role"]["name"]
     if role_name != "admin":
-        permission = qs1.check_question_viewer(question_id , -1, account)
+        permission = qs1.check_question_viewer(item.question_id , -1, account)
         if permission is False:
             return None
 
@@ -120,7 +120,8 @@ async def update_question(
         item.question_id,
         item.question_content,
         item.question_group_id,
-        item.question_type_id
+        item.question_type_id,
+        item.answers
     )
     return await questions
 

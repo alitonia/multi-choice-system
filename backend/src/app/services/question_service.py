@@ -20,9 +20,9 @@ class Question_Service:
     def get_generic_questions_query(self):
         return (
             select(Question, Question_Group, Question_Type, Answer)
-                .join(Question_Group, Question.question_group_id == Question_Group.question_group_id)
-                .join(Question_Type, Question.question_type_id == Question_Type.question_type_id)
-                .join(Answer, Answer.question_id == Question.question_id, isouter=True)
+            .join(Question_Group, Question.question_group_id == Question_Group.question_group_id)
+            .join(Question_Type, Question.question_type_id == Question_Type.question_type_id)
+            .join(Answer, Answer.question_id == Question.question_id, isouter=True)
         )
 
     # GET
@@ -82,7 +82,7 @@ class Question_Service:
         return uniq_questions
 
     # POST
-    async def add_question(self, question_content, exam_id, question_group_id, question_type_id, answer):
+    async def add_question(self, question_content, exam_id, question_group_id, question_type_id, answers):
         new_q = Question(
             question_content=question_content,
             exam_id=exam_id,
@@ -90,31 +90,51 @@ class Question_Service:
             question_type_id=question_type_id
         )
 
-        for a in answer:
-            new_q_a = Answer(
-                content=answer.content,
-                is_correct=answer.is_correct,
-                question_id=answer.question_id
-            )
         self.session.add(new_q)
         await self.session.commit()
 
+        if answers:
+            new_q_answers = [Answer(content=answer.content,
+                                    is_correct=answer.is_correct,
+                                    question_id=new_q.question_id) for answer in answers]
+
+            self.session.add_all(new_q_answers)
+            await self.session.commit()
+
+        return new_q.id
+
     # PUT
-    async def edit_question(self, question_id, question_content, question_group_id, question_type_id):
+    async def edit_question(self, question_id, question_content, question_group_id, question_type_id, answers):
         q = (update(Question).where(Question.question_id == question_id)
              .values(question_content=question_content)
              .values(question_group_id=question_group_id)
-             .values(question_type_id=question_type_id)
-             )
+             .values(question_type_id=question_type_id))
+
         q.execution_options(synchronize_session="fetch")
         await self.session.execute(q)
+
+        delete_answers_q = delete(Answer).where(
+            Answer.question_id == question_id)
+        await self.session.execute(delete_answers_q)
+
+        if answers:
+            new_q_answers = [Answer(content=answer.content,
+                                    is_correct=answer.is_correct,
+                                    question_id=question_id) for answer in answers]
+
+            self.session.add_all(new_q_answers)
+
         await self.session.commit()
+
+        return True
 
     # DELETE
     async def delete_question(self, question_id):
         q = delete(Question).where(Question.question_id == question_id)
         await self.session.execute(q)
         await self.session.commit()
+
+        return True
 
     # GET
     async def check_question_viewer(self, question_id: int, exam_id: int, account):
@@ -124,16 +144,16 @@ class Question_Service:
         if role_name == 'examiner':
             q = (
                 select(Question, Exam, Examiner)
-                    .join(Exam, Question.exam_id == Exam.exam_id)
-                    .join(Examiner, Examiner.account_id == Exam.creator)
-                        .where(Exam.creator == account["account_id"])
+                .join(Exam, Question.exam_id == Exam.exam_id)
+                .join(Examiner, Examiner.account_id == Exam.creator)
+                .where(Exam.creator == account["account_id"])
             )
         elif role_name == 'examinee':
             q = (
                 select(Question, Exam, Participant)
-                    .join(Exam, Question.exam_id == Exam.exam_id)
-                    .join(Participant, Participant.exam_id == Exam.exam_id)
-                        .where(Participant.examinee_account_id == account["account_id"])
+                .join(Exam, Question.exam_id == Exam.exam_id)
+                .join(Participant, Participant.exam_id == Exam.exam_id)
+                .where(Participant.examinee_account_id == account["account_id"])
             )
 
         if(question_id > 0):

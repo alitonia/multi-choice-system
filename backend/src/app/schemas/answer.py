@@ -1,7 +1,8 @@
-from typing import List
-
 from pydantic import BaseModel
 
+class AnswerContentSchema(BaseModel):
+    content: str
+    is_correct: bool
 
 class AnswerNewInputSchema(BaseModel):
     content: str
