@@ -1,4 +1,3 @@
-
 from sqlalchemy import Boolean, Column, Integer, String, ForeignKey, Text, DateTime, Time
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -11,12 +10,14 @@ from app.models.examinee import Examinee
 from app.models.exam import Exam
 
 
-class Participant(Base):
-    __tablename__ = 'participant'
+class ParticipantExam(Base):
+    __tablename__ = 'participant_exam'
     __table_args__ = (PrimaryKeyConstraint('exam_id', 'examinee_account_id'),)
     exam_id = Column(Integer, ForeignKey(Exam.exam_id))
     examinee_account_id = Column(Integer, ForeignKey(Examinee.account_id))
+    status = Column(Integer)  # 1 = in progress  2 = finished
+    score = Column(Integer)
     exam = relationship('Exam',  foreign_keys=[
-        exam_id], primaryjoin="Participant.exam_id==Exam.exam_id", lazy="immediate")
+        exam_id], primaryjoin="ParticipantExam.exam_id==Exam.exam_id", lazy="immediate")
     examinee = relationship('Examinee',  foreign_keys=[
-        examinee_account_id], primaryjoin="Participant.examinee_account_id==Examinee.account_id", lazy="immediate")
+        examinee_account_id], primaryjoin="ParticipantExam.examinee_account_id==Examinee.account_id", lazy="immediate")
