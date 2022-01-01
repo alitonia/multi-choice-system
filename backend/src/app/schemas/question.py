@@ -1,5 +1,7 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
+
+from .answer import AnswerContentSchema
 
 
 class Question_Schema_Base(BaseModel):
@@ -17,11 +19,12 @@ class Question_Schema(Question_Schema_No_ID):
 
 
 class Question_Schema_POST_Params(Question_Schema_No_ID):
-    pass
+    answers: Optional[List[AnswerContentSchema]]
 
 
 class Question_Schema_PUT_Params(Question_Schema_Base):
     question_id: int
+    answers: Optional[List[AnswerContentSchema]]
 
 
 class Question_Schema_DEL_Params(BaseModel):
