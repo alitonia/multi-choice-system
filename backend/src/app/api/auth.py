@@ -7,6 +7,7 @@ from app.api.libs.security import generate_token
 from app.core import config, errors
 from app.core.db import get_session
 from app.schemas.account import Account_Schema_Login
+from app.services import choice_service
 from app.services.account_service import Account_Service
 from app.schemas.account import Account_Schema_Login_Output
 
@@ -27,3 +28,8 @@ async def login(
         "access_token": generate_token(account_id=account["account_id"]),
         "account": account
     }
+
+
+@router.get("/aa")
+async def aaa(session: AsyncSession = Depends(get_session)):
+    return await choice_service.get_choices(session=session, question_id=1, examinee_id=1)

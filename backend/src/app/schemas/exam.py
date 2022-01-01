@@ -29,6 +29,7 @@ class ExamQuestion(BaseModel):
 class ExamSchemaOut(BaseModel):
     exam_id: int
     exam_name: str
+    creator_name: str
     subject: str
     start_time: datetime.datetime
     duration: datetime.time
