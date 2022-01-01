@@ -18,7 +18,7 @@ from sqlalchemy import update, delete
 
 
 class Question_Service:
-    def __init__(self, session):
+    def __init__(self, session: AsyncSession):
         self.session = session
 
     def get_generic_questions_query(self):
@@ -70,6 +70,7 @@ class Question_Service:
         question_type_dict = DictList(unique=True)
         answer_dict = DictList(unique=True)
         uniq_questions = unique([q for (q, _, _, _) in resultList])
+
 
         for (q, question_group, question_type, answer) in resultList:
             question_group_dict.add(q.question_id, question_group)
@@ -139,6 +140,14 @@ class Question_Service:
         await self.session.commit()
 
         return True
+
+    async def get_exam_questions(self, exam_id: int) -> List[Question]:
+        result = await self.session.execute(select(Question).where(Question.exam_id == exam_id))
+        return result.scalars().all()
+
+    async def get_question_answers(self, question_id: int) -> List[Answer]:
+        result = await self.session.execute(select(Answer).where(Answer.question_id == question_id))
+        return result.scalars().all()
 
     # GET
     async def check_question_viewer(self, question_id: int, exam_id: int, account):

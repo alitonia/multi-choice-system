@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, Date, Boolean, ForeignKey
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+
+from app.models.base import Base
 from .role import Role
 
-Base = declarative_base()
 
 
 class Account(Base):

@@ -1,3 +1,4 @@
+import {Placeholder} from "./Placeholder.js";
 import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
@@ -11,7 +12,7 @@ import QuestionPage from "./QuestionPage/index.js";
 import CRUDQuestionPage from "./CRUDQuestion/index.js";
 
 import { Page404 } from "./404/404";
-import { Placeholder } from "./Placeholder";
+// import { Placeholder } from "./Placeholder";
 import { HomeRoot } from "./Home/HomeRoot";
 
 export const routes = [

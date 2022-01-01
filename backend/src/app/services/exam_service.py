@@ -1,5 +1,7 @@
 from typing import List, Optional
+
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from app.models.exam import Exam
 from app.models.examiner import Examiner
@@ -9,7 +11,6 @@ from app.models.account import Account
 from app.models.question import Question
 from app.models.participant import Participant
 
-from sqlalchemy.future import select
 from sqlalchemy import update, delete, text, desc, asc, func
 
 import datetime
@@ -52,7 +53,8 @@ class Exam_Service:
             return None
 
         result = result_list[0]
-        questions = [question.question_id for (_, _, _, question) in result_list if question is not None]
+        questions = [question.question_id for (
+            _, _, _, question) in result_list if question is not None]
 
         exam, examiner, account, _ = result
         exam.creator = examiner
@@ -87,6 +89,12 @@ class Exam_Service:
         result = await self.session.execute(q)
         return result.scalars().all()
 
+
+    async def get_participant_exam(self, exam_id: int, examinee_id: int) -> Optional[Participant]:
+        result = await self.session.execute(select(Participant).where(Participant.exam_id == exam_id, Participant.examinee_account_id == examinee_id))
+        return result.scalars().first()
+
+      
     async def get_exams_count(
             self,
             account,
@@ -278,6 +286,7 @@ class Exam_Service:
 
         await self.session.commit()
         return return_list
+
 
     async def get_examinees(self, exam_id):
         return await self.generic_participant(exam_id, True)
