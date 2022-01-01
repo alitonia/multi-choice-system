@@ -47,7 +47,8 @@ const createOrUpdateQuestion = async (questionInfo) => {
                 question_id: questionInfo.question_id,
                 question_content: questionInfo.question_content,
                 question_type_id: questionInfo.question_type_id,
-                question_group_id: questionInfo.question_group_id
+                question_group_id: questionInfo.question_group_id,
+                answers: questionInfo.answers
             }
 
             const res = await axios.put(`http://${process.env.REACT_APP_BACKEND_URL}question`, updateData, { headers: headers });
@@ -61,7 +62,8 @@ const createOrUpdateQuestion = async (questionInfo) => {
                 exam_id: questionInfo.exam_id,
                 question_content: questionInfo.question_content,
                 question_type_id: questionInfo.question_type_id,
-                question_group_id: questionInfo.question_group_id
+                question_group_id: questionInfo.question_group_id,
+                answers: questionInfo.answers
             }
 
             const res = await axios.post(`http://${process.env.REACT_APP_BACKEND_URL}question`, createData, { headers: headers });

@@ -107,11 +107,6 @@ const CRUDQuestionPage = ({ }) => {
                 console.log("Fail to delete question");
             }
         });
-
-        questionInfos.splice(questionIndex, 1);
-        setQuestionInfos([...questionInfos]);
-
-        changeQuestionIndex(Math.min(questionIndex, questionInfos.length - 1));
     };
 
     const notifyQuestionDirty = (questionIndex) => {
