@@ -31,6 +31,10 @@
   height: 100%;
 }
 
+.question-page-body-right-container {
+  margin-bottom: 3.5em;
+}
+
 .question-page-body-right-wrapper {
   color: var(--question-page-main-color);
   display: flex;
@@ -170,10 +174,12 @@
 }
 
 .question-page-body-right-bottom {
-  margin-top: 2.5rem;
+  margin-top: 0;
 
-  position: absolute;
+  position: fixed;
   bottom: 0;
+
+  width: inherit;
 }
 
 .question-page-body-right-bottom button {

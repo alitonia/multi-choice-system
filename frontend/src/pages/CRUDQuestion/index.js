@@ -238,77 +238,76 @@ const ShowQuestion = ({
     };
 
     return (
-        <div className="question-page-body-right-wrapper">
-            <div className="question-page-body-right-top">
-                <div className="question-page-body-right-top-column-1">
-                    <div className="question-page-body-right-top-column-pad-right">
-                        Question type:
+        <div className="question-page-body-right-container">
+            <div className="question-page-body-right-wrapper">
+                <div className="question-page-body-right-top">
+                    <div className="question-page-body-right-top-column-1">
+                        <div className="question-page-body-right-top-column-pad-right">
+                            Question type:
+                        </div>
+                        <select value={questionInfo.question_type[0].question_type_id} onChange={e => changeQuestionType(parseInt(e.target.value))}>
+                            <option value={1}>Single-choice</option>
+                            <option value={2}>Multiple-choice</option>
+                        </select>
                     </div>
-                    <select value={questionInfo.question_type[0].question_type_id} onChange={e => changeQuestionType(parseInt(e.target.value))}>
-                        <option value={1}>Single-choice</option>
-                        <option value={2}>Multiple-choice</option>
-                    </select>
+                    <div className="question-page-body-right-top-column-2">
+                        <div>
+                            <div className="material-icons question-page-body-right-top-icon">
+                                delete_forever
+                            </div>
+                            <div className="question-page-body-right-top-icon-description">
+                                : Delete
+                            </div>
+                        </div>
+                        <div>
+                            <div className="material-icons question-page-body-right-top-icon">
+                                check
+                            </div>
+                            <div className="question-page-body-right-top-icon-description">
+                                : Mark as answer
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="question-page-body-right-top-column-2">
-                    <div>
-                        <div className="material-icons question-page-body-right-top-icon">
+                <div className="question-page-body-right-middle">
+                    <div className="question-page-body-right-middle-column-1">{questionIndex + 1}.</div>
+                    <div className="question-page-body-right-middle-column-2">
+                        <textarea value={questionInfo.question_content} onChange={e => updateQuestionContent(e.target.value)} />
+                    </div>
+                    <div className="question-page-body-right-middle-column-3">
+                        <div className="material-icons" onClick={e => deleteQuestion(questionIndex)}>
                             delete_forever
                         </div>
-                        <div className="question-page-body-right-top-icon-description">
-                            : Delete
-                        </div>
-                    </div>
-                    <div>
-                        <div className="material-icons question-page-body-right-top-icon">
-                            check
-                        </div>
-                        <div className="question-page-body-right-top-icon-description">
-                            : Mark as answer
-                        </div>
                     </div>
                 </div>
-            </div>
-            <div className="question-page-body-right-middle">
-                <div className="question-page-body-right-middle-column-1">{questionIndex + 1}.</div>
-                <div className="question-page-body-right-middle-column-2">
-                    <textarea value={questionInfo.question_content} onChange={e => updateQuestionContent(e.target.value)} />
-                </div>
-                <div className="question-page-body-right-middle-column-3">
-                    <div className="material-icons" onClick={e => deleteQuestion(questionIndex)}>
-                        delete_forever
-                    </div>
-                </div>
-            </div>
-            <hr></hr>
-
-            <div className="question-page-body-right-lower">
-                {questionInfo.answers.map((answer, answerIndex) => (
-                    <div key={answerIndex} className="question-page-body-right-lower-choice-section">
-                        <div className="question-page-body-right-lower-choice-index-container">
-                            <div
-                                className={questionInfo.question_type[0].question_type_id === 1 ? "question-page-body-right-lower-choice-index" : "question-page-body-right-lower-choice-index-multi"}>
-                                <div className="question-page-body-right-lower-choice-index-content">
-                                    {String.fromCharCode(65 + answerIndex)}
+                <hr></hr>
+                <div className="question-page-body-right-lower">
+                    {questionInfo.answers.map((answer, answerIndex) => (
+                        <div key={answerIndex} className="question-page-body-right-lower-choice-section">
+                            <div className="question-page-body-right-lower-choice-index-container">
+                                <div
+                                    className={questionInfo.question_type[0].question_type_id === 1 ? "question-page-body-right-lower-choice-index" : "question-page-body-right-lower-choice-index-multi"}>
+                                    <div className="question-page-body-right-lower-choice-index-content">
+                                        {String.fromCharCode(65 + answerIndex)}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="question-page-body-right-lower-choice-content">
+                                <textarea value={answer.content} onChange={e => changeAnswerContent(answerIndex, e.target.value)} />
+                            </div>
+                            <div className="question-page-body-right-lower-choice-button-group">
+                                <div className="material-icons" onClick={e => deleteAnswer(answerIndex)}>
+                                    delete_forever
+                                </div>
+                                <div className={`material-icons ${answer.is_correct ? "question-page-body-answer-marked" : "question-page-body-answer-unmarked"}`} onClick={e => toggleTrueAnswer(answerIndex)}>
+                                    check
                                 </div>
                             </div>
                         </div>
-                        <div className="question-page-body-right-lower-choice-content">
-                            <textarea value={answer.content} onChange={e => changeAnswerContent(answerIndex, e.target.value)} />
-                        </div>
-                        <div className="question-page-body-right-lower-choice-button-group">
-                            <div className="material-icons" onClick={e => deleteAnswer(answerIndex)}>
-                                delete_forever
-                            </div>
-                            <div className={`material-icons ${answer.is_correct ? "question-page-body-answer-marked" : "question-page-body-answer-unmarked"}`} onClick={e => toggleTrueAnswer(answerIndex)}>
-                                check
-                            </div>
-                        </div>
-
+                    ))}
+                    <div className="question-page-body-lower-choice-add-button" onClick={e => addAnswer()}>
+                        Add answer
                     </div>
-                ))}
-
-                <div className="question-page-body-lower-choice-add-button" onClick={e => addAnswer()}>
-                    Add answer
                 </div>
             </div>
         </div>)
