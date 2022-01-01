@@ -5,12 +5,16 @@ from app.models.question import Question
 from app.models.question_group import Question_Group
 from app.models.question_type import Question_Type
 from app.models.answer import Answer
+from app.models.exam import Exam
+from app.models.examiner import Examiner
+from app.models.participant import Participant
 
 from app.utils.unique_list import unique
 from app.utils.dict_list import DictList
 
 from sqlalchemy.future import select
 from sqlalchemy import update, delete
+
 
 
 class Question_Service:
