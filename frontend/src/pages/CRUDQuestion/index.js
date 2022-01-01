@@ -55,6 +55,7 @@ const CRUDQuestionPage = ({ }) => {
         const questionInfos = await APIClient.getQuestionInfos(examID);
         if (questionInfos) {
             setQuestionInfos(questionInfos);
+            changeQuestionIndex(Math.min(currentQuestionIndex, questionInfos.length - 1));
             return true;
         }
 
@@ -97,11 +98,7 @@ const CRUDQuestionPage = ({ }) => {
         // TODO: show modal
         APIClient.deleteQuestion(questionInfos[questionIndex].question_id).then(deleteResult => {
             if (deleteResult) {
-                fetchQuestions().then(fetchResult => {
-                    if (fetchResult) {
-                        changeQuestionIndex(Math.min(questionIndex, questionInfos.length - 1));
-                    }
-                });
+                fetchQuestions();
             }
             else {
                 console.log("Fail to delete question");
