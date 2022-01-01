@@ -92,7 +92,8 @@ async def create_question(
         item.question_content,
         item.exam_id,
         item.question_group_id,
-        item.question_type_id
+        item.question_type_id,
+        item.answers
     )
     return await questions
 

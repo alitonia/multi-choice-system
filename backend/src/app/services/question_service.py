@@ -82,13 +82,20 @@ class Question_Service:
         return uniq_questions
 
     # POST
-    async def add_question(self, question_content, exam_id, question_group_id, question_type_id):
+    async def add_question(self, question_content, exam_id, question_group_id, question_type_id, answer):
         new_q = Question(
             question_content=question_content,
             exam_id=exam_id,
             question_group_id=question_group_id,
             question_type_id=question_type_id
         )
+
+        for a in answer:
+            new_q_a = Answer(
+                content=answer.content,
+                is_correct=answer.is_correct,
+                question_id=answer.question_id
+            )
         self.session.add(new_q)
         await self.session.commit()
 
