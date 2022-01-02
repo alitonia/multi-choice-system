@@ -72,7 +72,7 @@ export const routes = [
         component: EditAccount
     },
     {
-        path: "/examStatistic/:id",
+        path: "/examiner/examStatistic/:id",
         others: {},
         component: ExamStatistic
     },
