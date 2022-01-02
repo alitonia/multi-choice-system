@@ -2,36 +2,33 @@ import React, { useEffect, useState } from "react";
 import Header from "../../../components/header/Header";
 import styles from "./style.module.css";
 import Footer from "../../../components/footer/Footer";
+import { useLocation } from "react-router-dom";
+import PropTypes from "prop-types";
+
+const accountPerPage = 15;
+
+function useQuery() {
+    const { search } = useLocation();
+
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 const AdminDashboard = () => {
+    const query = useQuery();
+    const currentPage = parseInt(query.get("page")) || 1;
+    const keyWord = query.get("search") || "";
+    const [totalPage, setTotalPage] = useState(1);
+
+    const [totalAccount, setTotalAccount] = useState(1);
     // get currentUser from redux store/fetch
     let jwtToken = "Bearer " + localStorage.getItem("access_token");
-    // "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjEsImV4cCI6MTY0MDQ1NjMyNC4xMTQzOTkyfQ.2fzKr1V5YutdB9e78LoKurgHDLqfwOMs_iB9usctfVM";
-    // const currentUser = {
-    //     email: 'test_admin1@mana.itss',
-    //     name: 'fluffy_admin_1',
-    //     date_of_birth: '20-06-1999',
-    //     phone_number: '0123456788',
-    //     enable: 'TRUE',
-    //     role: 'admin',
-    //     jwt_token: 'jwt_token_123456'
-    // };
+
     const [currentUser, setCurrentUser] = useState({});
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        // axios
-        //     .get(process.env.REACT_APP_BACKEND_URL + "account/current", {
-        //         headers: {
-        //             Authorization: jwtToken
-        //         }
-        //     })
-        //     .then(function (response) {
-        //         console.log(JSON.stringify(response.data));
-        //     })
-        //     .catch(function (error) {
-        //         console.log(error);
-        //     });
+        console.log("current page, keyword" + currentPage.toString() + keyWord);
+
         let newHeader = new Headers();
         newHeader.append("Authorization", jwtToken);
         fetch("http://" + process.env.REACT_APP_BACKEND_URL + "account/current", {
@@ -45,46 +42,32 @@ const AdminDashboard = () => {
             })
             .catch(error => console.log("error", error));
 
-        fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts?limit=5000", {
-            method: "GET",
-            headers: newHeader,
-            redirect: "follow"
-        })
+        fetch(
+            "http://" + process.env.REACT_APP_BACKEND_URL + "accounts/total" + "?email=" + keyWord,
+            {
+                method: "GET",
+                headers: newHeader,
+                redirect: "follow"
+            }
+        )
             .then(response => response.json())
             .then(result => {
-                setLoading(false);
-                setData(result);
-            })
-            .catch(error => console.log("error", error));
-    }, []);
-    const [keyword, setKeyword] = useState("");
-    const submitSearch = event => {
-        let currentKeyword = document.getElementById("searchInput").value;
-        if (currentKeyword.trim() !== keyword) {
-            setData([]);
-            setLoading(true);
-            setKeyword(currentKeyword.trim());
-            console.log("search with keyword " + currentKeyword.trim());
-            let newHeader = new Headers();
-            newHeader.append("Authorization", jwtToken);
-            if (currentKeyword.trim() === "") {
-                fetch("http://" + process.env.REACT_APP_BACKEND_URL + "accounts?limit=5000", {
-                    method: "GET",
-                    headers: newHeader,
-                    redirect: "follow"
-                })
-                    .then(response => response.json())
-                    .then(result => {
-                        setLoading(false);
-                        setData(result);
-                    })
-                    .catch(error => console.log("error", error));
-            } else {
+                setTotalAccount(result.total);
+                setTotalPage(Math.floor(result.total / accountPerPage) + 1);
+                console.log(totalAccount);
+                const skip =
+                    result.total + 1 - currentPage * accountPerPage < 0
+                        ? 0
+                        : result.total + 1 - currentPage * accountPerPage;
                 fetch(
                     "http://" +
                         process.env.REACT_APP_BACKEND_URL +
-                        "accounts?limit=5000&email=" +
-                        currentKeyword.trim(),
+                        "accounts?limit=" +
+                        accountPerPage.toString() +
+                        "&skip=" +
+                        skip.toString() +
+                        "&email=" +
+                        keyWord,
                     {
                         method: "GET",
                         headers: newHeader,
@@ -97,12 +80,24 @@ const AdminDashboard = () => {
                         setData(result);
                     })
                     .catch(error => console.log("error", error));
-            }
-        } else {
+            })
+            .catch(error => console.log("error", error));
+    }, []);
+    const [keyword, setKeyword] = useState(keyWord);
+    const submitSearch = event => {
+        console.log(keyword, keyWord);
+        if (keyword === keyWord) {
             console.log("old search");
+        } else {
+            window.location.href =
+                "http://" +
+                process.env.REACT_APP_FRONTEND_URL +
+                "/admin/dashboard?page=1&search=" +
+                keyword;
         }
         event.preventDefault();
     };
+
     return (
         <div>
             <Header />
@@ -115,8 +110,13 @@ const AdminDashboard = () => {
                                 type="text"
                                 placeholder="Search for an account by email..."
                                 id="searchInput"
+                                className={styles["searchInput"]}
+                                value={keyword}
+                                onChange={e => setKeyword(e.target.value)}
                             />
-                            <button type="submit">Search</button>
+                            <button type="submit" className={styles["override-but"]}>
+                                Search
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -129,8 +129,9 @@ const AdminDashboard = () => {
                     </div>
                     <div>
                         <a href={"/admin/createAccount/"}>
-                            <button>
-                                <i className="fa fa-plus"></i>Create New Account...
+                            <button className={styles["create-new-account-but"]}>
+                                <i className="fa fa-plus" />
+                                <span>Create New Account...</span>
                             </button>
                         </a>
                     </div>
@@ -187,7 +188,9 @@ const AdminDashboard = () => {
                                     </td>
                                     <td>
                                         <a href={"/account/edit/" + item.account_id.toString()}>
-                                            <button>Edit</button>
+                                            <button className={styles["classic-admin-edit-button"]}>
+                                                Edit
+                                            </button>
                                         </a>
                                     </td>
                                 </tr>
@@ -195,9 +198,144 @@ const AdminDashboard = () => {
                     </tbody>
                 </table>
             </div>
+            <div className={styles.pagination}>
+                <Pagination currentPage={currentPage} totalPage={totalPage} search={keyWord} />
+            </div>
             <Footer />
         </div>
     );
+};
+
+const Pagination = ({ currentPage, totalPage, search }) => {
+    const cP = currentPage > totalPage ? totalPage : currentPage;
+    const tmp = new Array(totalPage);
+    const moveToPage = (pageIndex, search) => {
+        window.location.href =
+            "http://" +
+            process.env.REACT_APP_FRONTEND_URL +
+            "/admin/dashboard?page=" +
+            pageIndex.toString() +
+            "&search=" +
+            search;
+    };
+    tmp.fill("");
+
+    if (totalPage < 5)
+        return (
+            <div>
+                {tmp.map((item, index) => (
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        key={index}
+                        onClick={() => moveToPage(index, search)}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
+        );
+    else {
+        if (cP === 1 || cP === 2) {
+            return (
+                <div>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(1, search)}
+                    >
+                        1
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(2, search)}
+                    >
+                        2
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(3, search)}
+                    >
+                        ...
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(totalPage, search)}
+                    >
+                        {totalPage}
+                    </button>
+                </div>
+            );
+        } else if (cP === totalPage || cP === totalPage - 1) {
+            return (
+                <div>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(1, search)}
+                    >
+                        1
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(totalPage - 2, search)}
+                    >
+                        ...
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(totalPage - 1, search)}
+                    >
+                        {totalPage - 1}
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(totalPage, search)}
+                    >
+                        {totalPage}
+                    </button>
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(1, search)}
+                    >
+                        1
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(cP - 1, search)}
+                    >
+                        ...
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(cP, search)}
+                    >
+                        {cP}
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(cP + 1, search)}
+                    >
+                        ...
+                    </button>
+                    <button
+                        className={styles["dashboard-pagination-button"]}
+                        onClick={() => moveToPage(totalPage, search)}
+                    >
+                        {totalPage}
+                    </button>
+                </div>
+            );
+        }
+    }
+};
+
+Pagination.propTypes = {
+    currentPage: PropTypes.number,
+    totalPage: PropTypes.number,
+    search: PropTypes.string
 };
 
 export default AdminDashboard;

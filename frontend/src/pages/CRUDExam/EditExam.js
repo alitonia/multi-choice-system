@@ -15,6 +15,7 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import { useHistory } from "react-router-dom";
 
 const EditExam = () => {
     const { id } = useParams();
@@ -22,6 +23,7 @@ const EditExam = () => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const history = useHistory();
 
     useEffect(() => {
         getData();
@@ -40,35 +42,37 @@ const EditExam = () => {
     };
 
     const handleEditSubmit = async (examName, subjectName, startTime, duration) => {
-        console.log(examName, subjectName, startTime, duration);
-        const article = {
+        var myHeaders = new Headers();
+        myHeaders.append("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
             exam_id: id,
             exam_name: examName,
             subject: subjectName,
             start_time: startTime,
-            duration: duration.substring(0, parseInt(duration.length) - 3)
+            duration: duration.length == 5 ? duration : duration.substring(0, duration.length - 3)
+        });
+
+        console.log(raw);
+
+        var requestOptions = {
+            method: "PUT",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow"
         };
-        console.log(JSON.stringify(article));
-        try {
-            const res = await axios
-                .put(`http://` + process.env.REACT_APP_BACKEND_URL + `exam/edit`, article, {
-                    headers: {
-                        Authorization:
-                            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
-                    }
-                })
-                .then(response => console.log(response));
-        } catch (error) {
-            console.error(error);
-        }
+
+        fetch("http://localhost:8080/api/v1/exam/edit", requestOptions)
+            .then(response => response.text())
+            .then(result => console.log(result))
+            .then(() => history.push("/dashboard"))
+            .catch(error => console.log("error", error));
     };
 
     const handleDeleteSubmit = async () => {
         var myHeaders = new Headers();
-        myHeaders.append(
-            "Authorization",
-            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5ODYzMC41NDA2MDk0fQ.dgAEixqpa5xc-d6BLKjeLcrS6s1Iq3aXRJUMtJf7wg0"
-        );
+        myHeaders.append("Authorization", `Bearer ${localStorage.getItem("access_token")}`);
 
         var raw = "";
 
@@ -82,6 +86,7 @@ const EditExam = () => {
         fetch(`http://localhost:8080/api/v1/exam/del/${id}`, requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
+            .then(() => history.replace("/dashboard"))
             .catch(error => console.log("error", error));
 
         setOpen(false);
@@ -94,8 +99,7 @@ const EditExam = () => {
                 `http://` + process.env.REACT_APP_BACKEND_URL + `exam/get/${id}`,
                 {
                     headers: {
-                        Authorization:
-                            "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjMwMDUsImV4cCI6MTY0MDY5NDM3Mi41OTIyMzUzfQ.WCg4OZM3qc0A7KOmnHBWzRk5QmRK9YRNG6iNu42MlyU"
+                        Authorization: `Bearer ${localStorage.getItem("access_token")}`
                     }
                 }
             );
@@ -112,13 +116,18 @@ const EditExam = () => {
         <div>
             <Header />
             <div className={styles.wrapper}>
-                <CRUDHeader headerType="EDIT"></CRUDHeader>
-                <CRUDTable data={examData} handleSubmit={handleEditSubmit}></CRUDTable>
+                <CRUDHeader headerType="EDIT" />
+                <CRUDTable data={examData} handleSubmit={handleEditSubmit} />
 
                 <Grid container spacing={4}>
                     <Grid item xs={6}>
                         <div className={styles.CRUDHeader}>EXAMINEES</div>
-                        <button className={styles.editButton}>Edit Examinees</button>
+                        <button
+                            className={styles.editButton}
+                            onClick={() => history.push(`/manageExaminees/${id}`)}
+                        >
+                            Edit Examinees
+                        </button>
                     </Grid>
                     <Grid item xs={6}>
                         <div className={styles.CRUDHeader}>QUESTION</div>
