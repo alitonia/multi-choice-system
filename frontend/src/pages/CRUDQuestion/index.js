@@ -5,6 +5,7 @@ import "./CRUDQuestionPage.css";
 import { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../components/header/Header";
+import Dialogs from "./dialogs"
 
 import APIClient from "./APIClient";
 
@@ -33,6 +34,9 @@ const CRUDQuestionPage = ({ }) => {
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
     const [editingQuestionInfo, setEditingQuestionInfo] = useState(null);
+
+    const [isUnsavedChangesConfirmationShowed, setIsUnsavedChangesConfirmationShowed] = useState(false);
+    const [unsavedChangesDialogActions, setUnsavedChangesDialogActions] = useState(null);
 
     useMemo(() => {
         if (questionInfos[currentQuestionIndex]) {
@@ -67,9 +71,26 @@ const CRUDQuestionPage = ({ }) => {
             return;
         }
 
-        // TODO: Check for unsaved changes
+        if (hasUnsavedChanges) {
+            setUnsavedChangesDialogActions({
+                saveAction: () => {
+                    saveChanges();
 
-        setCurrentQuestionIndex(index);
+                    toggleUnsavedChangesDialog(false);
+                },
+                discardAction: () => {
+                    setHasUnsavedChanges(false);
+                    setCurrentQuestionIndex(index);
+
+                    toggleUnsavedChangesDialog(false);
+                }
+            });
+
+            toggleUnsavedChangesDialog(true);
+        }
+        else {
+            setCurrentQuestionIndex(index);
+        }
     };
 
     const addQuestion = () => {
@@ -95,13 +116,14 @@ const CRUDQuestionPage = ({ }) => {
     };
 
     const deleteQuestion = (questionIndex) => {
-        // TODO: show modal
         APIClient.deleteQuestion(questionInfos[questionIndex].question_id).then(deleteResult => {
             if (deleteResult) {
                 fetchQuestions();
             }
             else {
-                console.log("Fail to delete question");
+                const message = "Fail to delete question";
+                console.log(message);
+                alert(message);
             }
         });
     };
@@ -121,10 +143,16 @@ const CRUDQuestionPage = ({ }) => {
                 setHasUnsavedChanges(false);
             }
             else {
-                console.log("Fail to save changes");
+                const message = "Fail to save changes";
+                console.log(message);
+                alert(message);
             }
         });
     };
+
+    const toggleUnsavedChangesDialog = (show) => {
+        setIsUnsavedChangesConfirmationShowed(show);
+    }
 
     return (
         <div className="question-page-root-container">
@@ -140,8 +168,13 @@ const CRUDQuestionPage = ({ }) => {
                         changeQuestionIndex={changeQuestionIndex}
                         addQuestion={addQuestion}
                     />
+                    <Dialogs.UnsavedChangesConfirmationDialog
+                        isOpened={isUnsavedChangesConfirmationShowed}
+                        onClose={e => { toggleUnsavedChangesDialog(false); }}
+                        onSaveClicked={unsavedChangesDialogActions?.saveAction}
+                        onDiscardClicked={unsavedChangesDialogActions?.discardAction}
+                    />
                     <div className="question-page-body-right">
-                        {/* TODO: guard empty question list case*/}
                         <ShowQuestion
                             questionIndex={currentQuestionIndex}
                             questionInfo={editingQuestionInfo}
@@ -168,6 +201,18 @@ const ShowQuestion = ({
     deleteQuestion,
     notifyQuestionDirty
 }) => {
+    const [isDeleteQuestionConfirmationShowed, setIsDeleteQuestionConfirmationShowed] = useState(false);
+
+    const closeDeleteQuestionConfirmation = () => {
+        setIsDeleteQuestionConfirmationShowed(false);
+    }
+
+    const confirmDeleteQuestion = () => {
+        deleteQuestion(questionIndex);
+        closeDeleteQuestionConfirmation();
+    }
+
+
     const markThisQuestionAsDirty = () => {
         notifyQuestionDirty(questionIndex);
     }
@@ -267,10 +312,15 @@ const ShowQuestion = ({
                         <textarea value={questionInfo.question_content} onChange={e => updateQuestionContent(e.target.value)} />
                     </div>
                     <div className="question-page-body-right-middle-column-3">
-                        <div className="material-icons" onClick={e => deleteQuestion(questionIndex)}>
+                        <div className="material-icons" onClick={e => setIsDeleteQuestionConfirmationShowed(true)}>
                             delete_forever
                         </div>
                     </div>
+                    <Dialogs.DeleteQuestionConfirmationDialog
+                        isOpened={isDeleteQuestionConfirmationShowed}
+                        onClose={closeDeleteQuestionConfirmation}
+                        onDeleteClicked={confirmDeleteQuestion}
+                    />
                 </div>
                 <hr></hr>
                 <div className="question-page-body-right-lower">
@@ -323,19 +373,19 @@ const QuestionBottomNavigation = ({
                     &lt; Back
                 </button>
                 <div className="question-page-body-right-bottom-changes-group">
-                    {
-                        hasUnsavedChanges && (
+                    {hasUnsavedChanges && (
+                        <div>
                             <div>
                                 You have unsaved changes
                             </div>
-                        )
+                            <button
+                                disabled={!hasUnsavedChanges}
+                                onClick={() => saveChanges()}
+                            >
+                                Save Changes
+                            </button>
+                        </div>)
                     }
-                    <button
-                        disabled={!hasUnsavedChanges}
-                        onClick={() => saveChanges()}
-                    >
-                        Save Changes
-                    </button>
                 </div>
                 <button
                     className="question-page-body-right-bottom-next"

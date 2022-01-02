@@ -173,6 +173,7 @@
   cursor: pointer;
 }
 
+
 .question-page-body-right-bottom {
   margin-top: 0;
 
@@ -212,7 +213,7 @@
   flex-direction: column;
 }
 
-.question-page-body-right-bottom-changes-group > button {
+.question-page-body-right-bottom-changes-group button {
   background-color: var(--question-page-main-color);
   color: white;
 
@@ -478,4 +479,28 @@
 
 .question-page-body-answer-marked.material-icons {
   color: rgb(79, 233, 104);
+}
+
+
+.question-page-dialog-button-group {
+  display: flex;
+  flex-direction: row;
+
+  justify-content: space-around;
+  
+
+  margin-top: 1em;
+}
+
+.question-page-dialog-button {
+  border: none;
+  background-color: #334257;
+  color: white;
+  height: 40px;
+  width: 150px;
+  border-radius: 10px;
+  font-size: 15px;
+  cursor: pointer;
+
+  flex: 0 0 1;
 }
