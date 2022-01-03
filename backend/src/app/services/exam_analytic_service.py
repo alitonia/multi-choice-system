@@ -8,6 +8,7 @@ from sqlalchemy.future import select
 from sqlalchemy import update, delete, text
 from app.utils.unique_list import unique
 
+from itertools import groupby
 
 class ExamAnalyticService:
     def __init__(self, session):
@@ -213,3 +214,49 @@ class ExamAnalyticService:
             "max_score": max_s,
             "distribution": bins
         }
+
+
+    async def get_all_progress_by_question_detailed(self, exam_id, account_id):
+        answers_by_question_q = text(f"""
+            SELECT 
+            Question.question_id,
+            Question.question_content,
+            Answer.answer_id,
+            Answer.content,
+            Answer.is_correct,
+            count(DISTINCT Choice.examinee_account_id)
+            FROM Exam
+            inner join Question     on Exam.exam_id = Question.exam_id
+            inner join Answer       on Question.question_id = Answer.question_id
+            left outer join Choice  on Choice.answer_id = Answer.answer_id   
+            where Exam.exam_id = {exam_id} 
+                and Exam.creator = {account_id}
+            
+            group by (
+                Question.question_id,
+                Answer.answer_id
+            )
+            order by Question.question_id, Answer.answer_id
+            """
+                    )
+        result_iter = await self.session.execute(answers_by_question_q)
+
+        processed_dict = []
+        for (key, group_iter) in groupby(result_iter, lambda row: row.question_id):
+            group = list(group_iter)
+            question_content = group[0][1]
+
+            answers = [{
+                "answer_id": answer_id,
+                "content": answer_content,
+                "is_correct": is_correct,
+                "choice_count": choice_count
+            } for (_, _, answer_id, answer_content, is_correct, choice_count) in group]
+
+            processed_dict.append({
+                "question_id": key,
+                "question_content": question_content,
+                "answers": answers
+            })
+
+        return processed_dict

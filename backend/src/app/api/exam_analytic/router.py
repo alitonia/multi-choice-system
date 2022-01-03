@@ -37,6 +37,16 @@ async def get_all_status(
     account_id = principal.account_id
     return await qs.get_all_progress_by_question(exam_id, account_id)
 
+@router.get("/exam_analytic/question_detailed/{exam_id}")
+async def get_all_status(
+        exam_id: int,
+        s: Session = Depends(get_session),
+        principal: Principal = Depends(security.get_current_user)
+):
+    qs = ExamAnalyticService(s)
+    account_id = principal.account_id
+    return await qs.get_all_progress_by_question_detailed(exam_id, account_id)
+
 
 @router.get("/exam_analytic/complete_percent/{exam_id}")
 async def get_all_status(
@@ -48,6 +58,7 @@ async def get_all_status(
     account_id = principal.account_id
     return await qs.get_complete_percent(exam_id, account_id)
 
+
 @router.get("/exam_analytic/score/{exam_id}")
 async def get_all_status(
         exam_id: int,
@@ -58,6 +69,7 @@ async def get_all_status(
     account_id = principal.account_id
     return await qs.get_scores(exam_id, account_id)
 
+
 @router.get("/exam_analytic/score_overview/{exam_id}")
 async def get_all_status(
         exam_id: int,
@@ -67,6 +79,7 @@ async def get_all_status(
     qs = ExamAnalyticService(s)
     account_id = principal.account_id
     return await qs.get_score_overview(exam_id, account_id)
+
 
 @router.get("/exam_analytic/score_overview_bin/{exam_id}")
 async def get_all_status(
