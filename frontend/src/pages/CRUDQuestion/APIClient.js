@@ -38,7 +38,8 @@ const getQuestionInfos = async (examID) => {
 
 const createOrUpdateQuestion = async (questionInfo) => {
     const headers = {
-        Authorization: "Bearer " + localStorage.getItem("access_token")
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+        mode: "no-cors"
     }
 
     try {

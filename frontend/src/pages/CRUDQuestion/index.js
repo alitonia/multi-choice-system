@@ -157,9 +157,6 @@ const CRUDQuestionPage = ({ }) => {
     return (
         <div className="question-page-root-container">
             <Header />
-            {questionInfos.length === 0 ? (
-                <div>Loading Screen Plz</div>
-            ) : (
                 <div className="question-page-body">
                     <LeftPanel
                         examInfo={examInfo}
@@ -168,12 +165,12 @@ const CRUDQuestionPage = ({ }) => {
                         changeQuestionIndex={changeQuestionIndex}
                         addQuestion={addQuestion}
                     />
-                    <Dialogs.UnsavedChangesConfirmationDialog
-                        isOpened={isUnsavedChangesConfirmationShowed}
-                        onClose={e => { toggleUnsavedChangesDialog(false); }}
-                        onSaveClicked={unsavedChangesDialogActions?.saveAction}
-                        onDiscardClicked={unsavedChangesDialogActions?.discardAction}
-                    />
+                    {/*<Dialogs.UnsavedChangesConfirmationDialog*/}
+                    {/*    isOpened={isUnsavedChangesConfirmationShowed}*/}
+                    {/*    onClose={e => { toggleUnsavedChangesDialog(false); }}*/}
+                    {/*    onSaveClicked={unsavedChangesDialogActions?.saveAction}*/}
+                    {/*    onDiscardClicked={unsavedChangesDialogActions?.discardAction}*/}
+                    {/*/>*/}
                     <div className="question-page-body-right">
                         <ShowQuestion
                             questionIndex={currentQuestionIndex}
@@ -190,7 +187,6 @@ const CRUDQuestionPage = ({ }) => {
                         />
                     </div>
                 </div>
-            )}
         </div>
     );
 };
@@ -202,6 +198,10 @@ const ShowQuestion = ({
     notifyQuestionDirty
 }) => {
     const [isDeleteQuestionConfirmationShowed, setIsDeleteQuestionConfirmationShowed] = useState(false);
+
+    if (!questionInfo){
+        return null
+    }
 
     const closeDeleteQuestionConfirmation = () => {
         setIsDeleteQuestionConfirmationShowed(false);
@@ -463,7 +463,6 @@ const QuestionLeftNavigation = ({
                             </div>
                         )
                     })}
-                {(currentPage === pageIndices.length - 1) && (
                     <div className="question-page-button-content-wrapper">
                         <button
                             onClick={() => addQuestion()}
@@ -474,7 +473,6 @@ const QuestionLeftNavigation = ({
                             +
                         </button>
                     </div>
-                )}
             </div>
             <div className="question-page-body-left-page-number">
                 <span>Pages:</span>

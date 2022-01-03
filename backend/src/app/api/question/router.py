@@ -71,15 +71,15 @@ async def show_questions(
 
 @router.post("/question/")
 async def create_question(
-        item: Question_Schema_POST_Params, 
+        item: Question_Schema_POST_Params,
         s: Session = Depends(get_session),
         principal: Principal = Depends(security.get_current_user)
 ):
     account_id = principal.account_id
-    
+
     qs = Account_Service(s)
     account = await qs.get_one_account_no_pass(account_id)
-    
+
     qs1 = Exam_Service(s)
     role_name = account["role"]["name"]
     if role_name != "admin":
@@ -100,12 +100,12 @@ async def create_question(
 
 @router.put("/question/")
 async def update_question(
-        item: Question_Schema_PUT_Params, 
+        item: Question_Schema_PUT_Params,
         s: Session = Depends(get_session),
         principal: Principal = Depends(security.get_current_user)
 ):
     account_id = principal.account_id
-    
+
     qs = Account_Service(s)
     account = await qs.get_one_account_no_pass(account_id)
 
@@ -128,12 +128,12 @@ async def update_question(
 
 @router.delete("/question/")
 async def update_question(
-        item: Question_Schema_DEL_Params, 
+        item: Question_Schema_DEL_Params,
         s: Session = Depends(get_session),
         principal: Principal = Depends(security.get_current_user)
 ):
     account_id = principal.account_id
-    
+
     qs = Account_Service(s)
     account = await qs.get_one_account_no_pass(account_id)
 

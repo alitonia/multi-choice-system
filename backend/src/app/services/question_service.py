@@ -25,7 +25,7 @@ class Question_Service:
             select(Question, Question_Group, Question_Type, Answer)
             .join(Question_Group, Question.question_group_id == Question_Group.question_group_id)
             .join(Question_Type, Question.question_type_id == Question_Type.question_type_id)
-            .join(Answer, Answer.question_id == Question.question_id, isouter=True)
+            .join(Answer, Answer.question_id == Question.question_id)
         )
 
     # GET
@@ -75,12 +75,13 @@ class Question_Service:
         for (q, question_group, question_type, answer) in resultList:
             question_group_dict.add(q.question_id, question_group)
             question_type_dict.add(q.question_id, question_type)
-            answer_dict.add(q.question_id, {
-                "answer_id": answer.answer_id,
-                "question_id": answer.question_id,
-                "content": answer.content,
-                "is_correct": answer.is_correct
-            })
+            if answer is not None:
+                answer_dict.add(q.question_id, {
+                    "answer_id": answer.answer_id,
+                    "question_id": answer.question_id,
+                    "content": answer.content,
+                    "is_correct": answer.is_correct
+                })
 
         for q in uniq_questions:
             q.question_group = question_group_dict.get(q.question_id)
@@ -104,6 +105,7 @@ class Question_Service:
         await self.session.commit()
 
         if answers:
+            print(answers)
             new_q_answers = [Answer(content=answer.content,
                                     is_correct=answer.is_correct,
                                     question_id=new_q.question_id) for answer in answers]
@@ -111,7 +113,7 @@ class Question_Service:
             self.session.add_all(new_q_answers)
             await self.session.commit()
 
-        return new_q.id
+        return new_q.question_id
 
     # PUT
     async def edit_question(self, question_id, question_content, question_group_id, question_type_id, answers):
