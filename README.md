@@ -27,7 +27,7 @@ A multiple choice exam system on browser.
   ```
 * or just use `docker-compose`:
   * from root of repo: docker-compose up
-  * then check port 0.0.0.0:8088/api/v1/pings ;/
+  * then check port 0.0.0.0:8080/api/v1/pings ;/
 
 * note: api is served in /api/v1
 
