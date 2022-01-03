@@ -3,13 +3,14 @@ import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
 import ManageExaminees from "./ManageExaminees/index.js";
-import QuestionPage from "./QuestionPage";
 import EditExam from "./CRUDExam/EditExam.js";
 import CreateExam from "./CRUDExam/CreateExam.js";
 import AdminDashboard from "./admin/Dashboard";
 import CreateAccount from "./admin/CreateAccount";
 import EditAccount from "./account/EditAccount";
 import ExamStatistic from "./ExamStatistic/index.js";
+import QuestionPage from "./QuestionPage/index.js";
+import CRUDQuestionPage from "./CRUDQuestion/index.js";
 import { Page404 } from "./404/404";
 // import { Placeholder } from "./Placeholder";
 import { HomeRoot } from "./Home/HomeRoot";
@@ -55,6 +56,11 @@ export const routes = [
         path: "/questionPage/:id",
         others: {},
         component: QuestionPage
+    },
+    {
+        path: "/examiner/editExam/:examID/question",
+        others: {},
+        component: CRUDQuestionPage
     },
     {
         path: "/admin/dashboard",

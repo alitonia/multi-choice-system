@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 import Header from "../../components/header/Header";
 import styles from "./EditExam.module.scss";
 import axios from "axios";
 import CRUDHeader from "./CRUDHeader";
 import CRUDTable from "./CRUDTable";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import Footer from "../../components/footer/Footer";
 
 const CreateExam = () => {
@@ -36,18 +36,18 @@ const CreateExam = () => {
         fetch("http://localhost:8080/api/v1/exam/new", requestOptions)
             .then(response => response.text())
             .then(result => console.log(result))
+            .then(() => history.push("/dashboard"))
             .catch(error => console.log("error", error));
 
-        history.push("/dashboard");
     };
     return (
         <div>
-            <Header />
+            <Header/>
             <div className={styles.wrapper}>
-                <CRUDHeader headerType="CREATE" />
-                <CRUDTable handleSubmit={handleSubmit} />
+                <CRUDHeader headerType="CREATE"/>
+                <CRUDTable handleSubmit={handleSubmit}/>
             </div>
-            <Footer />
+            <Footer/>
         </div>
     );
 };
