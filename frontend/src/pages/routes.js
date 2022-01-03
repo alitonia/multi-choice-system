@@ -1,4 +1,4 @@
-import {Placeholder} from "./Placeholder.js";
+import { Placeholder } from "./Placeholder.js";
 import LoginPage from "./LoginPage";
 import Dashboard from "./Dashboard";
 import ExamPage from "./ExamPage";
@@ -37,7 +37,6 @@ export const routes = [
         component: ExamPage
     },
     {
-
         path: "/editExam/:id",
         others: {},
         component: EditExam

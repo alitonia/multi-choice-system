@@ -6,12 +6,20 @@ import { useParams } from "react-router-dom";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 
-import { Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Sector } from "recharts";
+import {
+    Cell,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer,
+    Sector
+} from "recharts";
 import { BarChart, Bar } from "recharts";
 import { PieChart, Pie } from "recharts";
 
 import "./ExamStatistic.css";
-
 
 const ExamStatistic = () => {
     const jwtToken = "Bearer " + localStorage.getItem("access_token");
@@ -47,7 +55,6 @@ const ExamStatistic = () => {
             .catch(error => console.log("error", error));
     }, []);
 
-
     return (
         <div className="exam-statistic-page-container">
             <Header />
@@ -55,7 +62,7 @@ const ExamStatistic = () => {
                 {scoreOverviewData && (
                     <ScoreDistributionSection scoreOverview={scoreOverviewData} />
                 )}
-                <hr/>
+                <hr />
                 {choiceDistributionData?.map((questionItem, questionIndex) => (
                     <ChoiceDistributionSection
                         key={questionIndex}
@@ -66,11 +73,12 @@ const ExamStatistic = () => {
                 ))}
             </div>
             <Footer />
-        </div>)
+        </div>
+    );
 };
 
 const ScoreDistributionSection = ({ scoreOverview }) => {
-    const toChartData = (distributionData) => {
+    const toChartData = distributionData => {
         if (!distributionData) {
             return;
         }
@@ -87,15 +95,9 @@ const ScoreDistributionSection = ({ scoreOverview }) => {
         }
 
         return result;
-    }
+    };
 
-
-    const {
-        distribution,
-        avg_score,
-        min_score,
-        max_score
-    } = scoreOverview;
+    const { distribution, avg_score, min_score, max_score } = scoreOverview;
 
     return (
         <div className="exam-statistic-page-row">
@@ -108,19 +110,17 @@ const ScoreDistributionSection = ({ scoreOverview }) => {
                             top: 5,
                             right: 30,
                             left: 20,
-                            bottom: 5,
+                            bottom: 5
                         }}
                     >
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="name" />
-                        <YAxis label="Count" type="number" domain={[0, 'dataMax']} tickCount={1} />
+                        <YAxis label="Count" type="number" domain={[0, "dataMax"]} tickCount={1} />
                         <Tooltip />
                         <Bar dataKey="scoreCount" name="Count" fill="#8884d8" />
                     </BarChart>
                 </ResponsiveContainer>
-                <h3 className="chart-title">
-                    Score Distribution
-                </h3>
+                <h3 className="chart-title">Score Distribution</h3>
             </div>
             <div>
                 Average score: {avg_score.toFixed(2)} <br />
@@ -131,9 +131,7 @@ const ScoreDistributionSection = ({ scoreOverview }) => {
     );
 };
 
-
-
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 const RADIAN = Math.PI / 180;
 
 const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent, index }) => {
@@ -148,34 +146,25 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
     );
 };
 
-const renderLegend = ({
-    payload
-}) => {
+const renderLegend = ({ payload }) => {
     console.log(payload);
 
     return (
         <div className="answer-choice-table-container">
             <table cellSpacing={0} cellPadding={0}>
-                {
-                    payload.map((entry, index) => (
-                        <tr key={`item-${index}`}>
-                            <td>{String.fromCharCode(65 + index)}.</td>
-                            <td>{entry.payload.content}</td>
-                            <td>{entry.payload.choiceCount}</td>
-                        </tr>
-                    ))
-                }
+                {payload.map((entry, index) => (
+                    <tr key={`item-${index}`}>
+                        <td>{String.fromCharCode(65 + index)}.</td>
+                        <td>{entry.payload.content}</td>
+                        <td>{entry.payload.choiceCount}</td>
+                    </tr>
+                ))}
             </table>
-
         </div>
     );
 };
 
-const ChoiceDistributionSection = ({
-    questionIndex,
-    questionContent,
-    answers
-}) => {
+const ChoiceDistributionSection = ({ questionIndex, questionContent, answers }) => {
     const chartData = useMemo(() => {
         return answers.map(answer => ({
             content: answer.content,
@@ -186,9 +175,7 @@ const ChoiceDistributionSection = ({
     return (
         <div className="exam-statistic-page-row">
             <div className="chart-container chart-container-pie">
-                <h4>
-                    {`${questionIndex + 1}. ${questionContent}`}
-                </h4>
+                <h4>{`${questionIndex + 1}. ${questionContent}`}</h4>
                 <ResponsiveContainer height="100%">
                     <PieChart>
                         <Pie
@@ -206,13 +193,17 @@ const ChoiceDistributionSection = ({
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                             ))}
                         </Pie>
-                        <Legend layout="vertical" verticalAlign="middle" align="left" content={renderLegend} />
+                        <Legend
+                            layout="vertical"
+                            verticalAlign="middle"
+                            align="left"
+                            content={renderLegend}
+                        />
                     </PieChart>
                 </ResponsiveContainer>
             </div>
         </div>
     );
 };
-
 
 export default ExamStatistic;

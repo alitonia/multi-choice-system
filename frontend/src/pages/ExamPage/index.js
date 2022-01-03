@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import styles from "./ExamPage.module.css";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const ExamPage = () => {
     const [info, setInfo] = useState({});
     let jwtToken = "Bearer " + localStorage.getItem("access_token");
     const { id } = useParams();
     useEffect(() => {
-        setLoading(true)
+        setLoading(true);
         let newHeader = new Headers();
         newHeader.append("Authorization", jwtToken);
         fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/get/" + id, {
@@ -18,18 +18,21 @@ const ExamPage = () => {
         })
             .then(response => response.json())
             .then(result => {
-                setLoading(false)
+                setLoading(false);
                 setInfo(result);
             })
-            .catch(error => {console.log("error", error); setLoading(false)});
+            .catch(error => {
+                console.log("error", error);
+                setLoading(false);
+            });
     }, []);
-    const hhmmyyToMin = (duration) => {
-        if(typeof duration==="undefined" || duration ===null) return 0;
+    const hhmmyyToMin = duration => {
+        if (typeof duration === "undefined" || duration === null) return 0;
         let hms = duration;
-        let a = hms.split(':');
-        let min = (+a[0]) * 60 + (+a[1]) + (+a[2])/60;
+        let a = hms.split(":");
+        let min = +a[0] * 60 + +a[1] + +a[2] / 60;
         return min;
-    }
+    };
     const startTimeString = startTime => {
         let date = new Date(startTime);
         let year = date.getFullYear();
@@ -64,7 +67,7 @@ const ExamPage = () => {
             day.toString() +
             "/" +
             (month < 9 ? "0" : "") +
-            (month+1).toString() +
+            (month + 1).toString() +
             "/" +
             year.toString()
         );
@@ -76,7 +79,7 @@ const ExamPage = () => {
         newHeader.append("Authorization", jwtToken);
         newHeader.append("Content-Type", "application/json");
         var raw = JSON.stringify({
-            "exam_id": parseInt(id)
+            exam_id: parseInt(id)
         });
         fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/start", {
             method: "POST",
@@ -86,65 +89,90 @@ const ExamPage = () => {
         })
             .then(response => response.json())
             .then(result => {
-                if(typeof result.message === "undefined")
-                    alert(result.detail.message)
-                else
-                    window.location.href="../questionPage/"+id.toString()
+                if (typeof result.message === "undefined") alert(result.detail.message);
+                else window.location.href = "../questionPage/" + id.toString();
             })
-            .catch(error => {console.log("error", error)});
+            .catch(error => {
+                console.log("error", error);
+            });
     }
 
-    const timeToUnix = (time) => {
-        if(typeof time==="undefined" || time ===null) return 0;
-        return typeof (new Date(time)).getTime()
-    }
+    const timeToUnix = time => {
+        if (typeof time === "undefined" || time === null) return 0;
+        return typeof new Date(time).getTime();
+    };
 
     const [loading, setLoading] = useState(false);
 
     return (
         <div>
             <Header />
-            {(!loading&&info!==null)?
+            {!loading && info !== null ? (
                 <div>
                     <div className={styles.content}>
                         <div>
-                            <img src="https://yt3.ggpht.com/ytc/AKedOLRKkvGBaNzKlDVVL7RGRQtDyNJr6GAP8Oh8Uggi=s900-c-k-c0x00ffffff-no-rj" alt="placeholder" />
+                            <img
+                                src="https://yt3.ggpht.com/ytc/AKedOLRKkvGBaNzKlDVVL7RGRQtDyNJr6GAP8Oh8Uggi=s900-c-k-c0x00ffffff-no-rj"
+                                alt="placeholder"
+                            />
                             <h1>{info.exam_name}</h1>
                             <p>Subject: {info.subject}</p>
-                            <p>Class of: {typeof info.creator === "undefined"?"":info.creator.name}</p>
+                            <p>
+                                Class of:{" "}
+                                {typeof info.creator === "undefined" ? "" : info.creator.name}
+                            </p>
                             <p>Starts on: {startTimeString(info.start_time)}</p>
-                            <p>You will have {typeof info.duration === "undefined"? "":hhmmyyToMin(info.duration).toString()} minutes to finish the exam.</p>
+                            <p>
+                                You will have{" "}
+                                {typeof info.duration === "undefined"
+                                    ? ""
+                                    : hhmmyyToMin(info.duration).toString()}{" "}
+                                minutes to finish the exam.
+                            </p>
                             <p>Once you begin, you cannot restart the exam. Ready?</p>
                         </div>
                         <button
                             className={styles.beginButton}
-                            disabled={(new Date(info.start_time)).getTime() + hhmmyyToMin(info.duration)*60*1000<Date.now()||(new Date(info.start_time)).getTime()>Date.now()}
+                            disabled={
+                                new Date(info.start_time).getTime() +
+                                    hhmmyyToMin(info.duration) * 60 * 1000 <
+                                    Date.now() || new Date(info.start_time).getTime() > Date.now()
+                            }
                             // disabled={false}
                             onClick={moveToExam}
                         >
-                            {(new Date(info.start_time)).getTime() + hhmmyyToMin(info.duration)*60*1000 < Date.now()
+                            {new Date(info.start_time).getTime() +
+                                hhmmyyToMin(info.duration) * 60 * 1000 <
+                            Date.now()
                                 ? "The exam has been expired"
-                                : (new Date(info.start_time)).getTime() > Date.now()
+                                : new Date(info.start_time).getTime() > Date.now()
                                 ? "Not the time yet"
                                 : "Begin the exam"}
                         </button>
                         {/*{timeToUnix(info.start_time) + hhmmyyToMin(info.duration)*60*1000 }*/}
                     </div>
                     <div className={styles.backButton}>
-                        <a href={"/dashboard"}><button>&lt; Back</button></a>
+                        <a href={"/dashboard"}>
+                            <button>&lt; Back</button>
+                        </a>
                     </div>
                 </div>
-                :(info!==null?
-                    <div>
-                        <h1 style={{display: "flex", justifyContent: "center"}}>Loading</h1>
-                    </div>:
-                    <div>
-                        <h1 style={{paddingLeft: "1.5rem"}}>You don&#39;t have the permission to view this exam</h1>
-                        <div className={styles.backButton}>
-                            <a href={"/dashboard"}><button>&lt; Back</button></a>
-                        </div>
-                    </div>)
-            }
+            ) : info !== null ? (
+                <div>
+                    <h1 style={{ display: "flex", justifyContent: "center" }}>Loading</h1>
+                </div>
+            ) : (
+                <div>
+                    <h1 style={{ paddingLeft: "1.5rem" }}>
+                        You don&#39;t have the permission to view this exam
+                    </h1>
+                    <div className={styles.backButton}>
+                        <a href={"/dashboard"}>
+                            <button>&lt; Back</button>
+                        </a>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

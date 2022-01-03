@@ -5,28 +5,27 @@ import "./CRUDQuestionPage.css";
 import { useState, useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Header from "../../components/header/Header";
-import Dialogs from "./dialogs"
+import Dialogs from "./dialogs";
 
 import APIClient from "./APIClient";
 
 const questionsPerPage = 30;
 const questionsPerRow = 5;
 
-
-const CRUDQuestionPage = ({ }) => {
-    const cloneQuestionInfo = (originalQuestionInfo) => {
+const CRUDQuestionPage = ({}) => {
+    const cloneQuestionInfo = originalQuestionInfo => {
         return JSON.parse(JSON.stringify(originalQuestionInfo));
     };
 
     const { examID } = useParams();
 
     const [examInfo, setExamInfo] = useState({
-        exam_id: '',
-        exam_name: '',
-        subject: '',
+        exam_id: "",
+        exam_name: "",
+        subject: "",
         creator: { name: "" },
         start_time: Date.now(),
-        duration: 0,
+        duration: 0
     });
 
     const [questionInfos, setQuestionInfos] = useState([]);
@@ -35,7 +34,8 @@ const CRUDQuestionPage = ({ }) => {
 
     const [editingQuestionInfo, setEditingQuestionInfo] = useState(null);
 
-    const [isUnsavedChangesConfirmationShowed, setIsUnsavedChangesConfirmationShowed] = useState(false);
+    const [isUnsavedChangesConfirmationShowed, setIsUnsavedChangesConfirmationShowed] =
+        useState(false);
     const [unsavedChangesDialogActions, setUnsavedChangesDialogActions] = useState(null);
 
     useMemo(() => {
@@ -52,7 +52,6 @@ const CRUDQuestionPage = ({ }) => {
         });
 
         fetchQuestions();
-
     }, []);
 
     const fetchQuestions = async () => {
@@ -64,9 +63,9 @@ const CRUDQuestionPage = ({ }) => {
         }
 
         return false;
-    }
+    };
 
-    const changeQuestionIndex = (index) => {
+    const changeQuestionIndex = index => {
         if (index < 0 || index > questionInfos.length - 1) {
             return;
         }
@@ -87,8 +86,7 @@ const CRUDQuestionPage = ({ }) => {
             });
 
             toggleUnsavedChangesDialog(true);
-        }
-        else {
+        } else {
             setCurrentQuestionIndex(index);
         }
     };
@@ -115,12 +113,11 @@ const CRUDQuestionPage = ({ }) => {
         changeQuestionIndex(questionInfos.length - 1);
     };
 
-    const deleteQuestion = (questionIndex) => {
+    const deleteQuestion = questionIndex => {
         APIClient.deleteQuestion(questionInfos[questionIndex].question_id).then(deleteResult => {
             if (deleteResult) {
                 fetchQuestions();
-            }
-            else {
+            } else {
                 const message = "Fail to delete question";
                 console.log(message);
                 alert(message);
@@ -128,7 +125,7 @@ const CRUDQuestionPage = ({ }) => {
         });
     };
 
-    const notifyQuestionDirty = (questionIndex) => {
+    const notifyQuestionDirty = questionIndex => {
         setEditingQuestionInfo({ ...editingQuestionInfo });
 
         if (!hasUnsavedChanges) {
@@ -141,8 +138,7 @@ const CRUDQuestionPage = ({ }) => {
             if (success) {
                 fetchQuestions();
                 setHasUnsavedChanges(false);
-            }
-            else {
+            } else {
                 const message = "Fail to save changes";
                 console.log(message);
                 alert(message);
@@ -150,72 +146,67 @@ const CRUDQuestionPage = ({ }) => {
         });
     };
 
-    const toggleUnsavedChangesDialog = (show) => {
+    const toggleUnsavedChangesDialog = show => {
         setIsUnsavedChangesConfirmationShowed(show);
-    }
+    };
 
     return (
         <div className="question-page-root-container">
             <Header />
-                <div className="question-page-body">
-                    <LeftPanel
-                        examInfo={examInfo}
-                        questionInfos={questionInfos}
-                        currentQuestionIndex={currentQuestionIndex}
-                        changeQuestionIndex={changeQuestionIndex}
-                        addQuestion={addQuestion}
+            <div className="question-page-body">
+                <LeftPanel
+                    examInfo={examInfo}
+                    questionInfos={questionInfos}
+                    currentQuestionIndex={currentQuestionIndex}
+                    changeQuestionIndex={changeQuestionIndex}
+                    addQuestion={addQuestion}
+                />
+                {/*<Dialogs.UnsavedChangesConfirmationDialog*/}
+                {/*    isOpened={isUnsavedChangesConfirmationShowed}*/}
+                {/*    onClose={e => { toggleUnsavedChangesDialog(false); }}*/}
+                {/*    onSaveClicked={unsavedChangesDialogActions?.saveAction}*/}
+                {/*    onDiscardClicked={unsavedChangesDialogActions?.discardAction}*/}
+                {/*/>*/}
+                <div className="question-page-body-right">
+                    <ShowQuestion
+                        questionIndex={currentQuestionIndex}
+                        questionInfo={editingQuestionInfo}
+                        deleteQuestion={deleteQuestion}
+                        notifyQuestionDirty={notifyQuestionDirty}
                     />
-                    {/*<Dialogs.UnsavedChangesConfirmationDialog*/}
-                    {/*    isOpened={isUnsavedChangesConfirmationShowed}*/}
-                    {/*    onClose={e => { toggleUnsavedChangesDialog(false); }}*/}
-                    {/*    onSaveClicked={unsavedChangesDialogActions?.saveAction}*/}
-                    {/*    onDiscardClicked={unsavedChangesDialogActions?.discardAction}*/}
-                    {/*/>*/}
-                    <div className="question-page-body-right">
-                        <ShowQuestion
-                            questionIndex={currentQuestionIndex}
-                            questionInfo={editingQuestionInfo}
-                            deleteQuestion={deleteQuestion}
-                            notifyQuestionDirty={notifyQuestionDirty}
-                        />
-                        <QuestionBottomNavigation
-                            currentQuestionIndex={currentQuestionIndex}
-                            questionCount={questionInfos.length}
-                            changeQuestion={changeQuestionIndex}
-                            hasUnsavedChanges={hasUnsavedChanges}
-                            saveChanges={saveChanges}
-                        />
-                    </div>
+                    <QuestionBottomNavigation
+                        currentQuestionIndex={currentQuestionIndex}
+                        questionCount={questionInfos.length}
+                        changeQuestion={changeQuestionIndex}
+                        hasUnsavedChanges={hasUnsavedChanges}
+                        saveChanges={saveChanges}
+                    />
                 </div>
+            </div>
         </div>
     );
 };
 
-const ShowQuestion = ({
-    questionIndex,
-    questionInfo,
-    deleteQuestion,
-    notifyQuestionDirty
-}) => {
-    const [isDeleteQuestionConfirmationShowed, setIsDeleteQuestionConfirmationShowed] = useState(false);
+const ShowQuestion = ({ questionIndex, questionInfo, deleteQuestion, notifyQuestionDirty }) => {
+    const [isDeleteQuestionConfirmationShowed, setIsDeleteQuestionConfirmationShowed] =
+        useState(false);
 
-    if (!questionInfo){
-        return null
+    if (!questionInfo) {
+        return null;
     }
 
     const closeDeleteQuestionConfirmation = () => {
         setIsDeleteQuestionConfirmationShowed(false);
-    }
+    };
 
     const confirmDeleteQuestion = () => {
         deleteQuestion(questionIndex);
         closeDeleteQuestionConfirmation();
-    }
-
+    };
 
     const markThisQuestionAsDirty = () => {
         notifyQuestionDirty(questionIndex);
-    }
+    };
 
     const addAnswer = () => {
         questionInfo.answers.push({
@@ -232,15 +223,15 @@ const ShowQuestion = ({
         questionInfo.answers[answerIndex].content = newContent;
 
         markThisQuestionAsDirty();
-    }
+    };
 
-    const deleteAnswer = (answerIndex) => {
+    const deleteAnswer = answerIndex => {
         questionInfo.answers.splice(answerIndex, 1);
 
         markThisQuestionAsDirty();
     };
 
-    const toggleTrueAnswer = (answerIndex) => {
+    const toggleTrueAnswer = answerIndex => {
         if (questionInfo.question_type[0].question_type_id === 1) {
             for (const answer of questionInfo.answers) {
                 answer.is_correct = false;
@@ -253,13 +244,13 @@ const ShowQuestion = ({
         markThisQuestionAsDirty();
     };
 
-    const changeQuestionType = (questionTypeID) => {
+    const changeQuestionType = questionTypeID => {
         questionInfo.question_type = [
             {
                 question_type_id: questionTypeID,
                 description: questionTypeID === 1 ? "single_answer" : "multiple_answer"
             }
-        ]
+        ];
 
         for (const answer of questionInfo.answers) {
             answer.is_correct = false;
@@ -268,7 +259,7 @@ const ShowQuestion = ({
         markThisQuestionAsDirty();
     };
 
-    const updateQuestionContent = (newQuestionContent) => {
+    const updateQuestionContent = newQuestionContent => {
         questionInfo.question_content = newQuestionContent;
 
         markThisQuestionAsDirty();
@@ -282,7 +273,10 @@ const ShowQuestion = ({
                         <div className="question-page-body-right-top-column-pad-right">
                             Question type:
                         </div>
-                        <select value={questionInfo.question_type[0].question_type_id} onChange={e => changeQuestionType(parseInt(e.target.value))}>
+                        <select
+                            value={questionInfo.question_type[0].question_type_id}
+                            onChange={e => changeQuestionType(parseInt(e.target.value))}
+                        >
                             <option value={1}>Single-choice</option>
                             <option value={2}>Multiple-choice</option>
                         </select>
@@ -307,12 +301,20 @@ const ShowQuestion = ({
                     </div>
                 </div>
                 <div className="question-page-body-right-middle">
-                    <div className="question-page-body-right-middle-column-1">{questionIndex + 1}.</div>
+                    <div className="question-page-body-right-middle-column-1">
+                        {questionIndex + 1}.
+                    </div>
                     <div className="question-page-body-right-middle-column-2">
-                        <textarea value={questionInfo.question_content} onChange={e => updateQuestionContent(e.target.value)} />
+                        <textarea
+                            value={questionInfo.question_content}
+                            onChange={e => updateQuestionContent(e.target.value)}
+                        />
                     </div>
                     <div className="question-page-body-right-middle-column-3">
-                        <div className="material-icons" onClick={e => setIsDeleteQuestionConfirmationShowed(true)}>
+                        <div
+                            className="material-icons"
+                            onClick={e => setIsDeleteQuestionConfirmationShowed(true)}
+                        >
                             delete_forever
                         </div>
                     </div>
@@ -325,35 +327,60 @@ const ShowQuestion = ({
                 <hr></hr>
                 <div className="question-page-body-right-lower">
                     {questionInfo.answers.map((answer, answerIndex) => (
-                        <div key={answerIndex} className="question-page-body-right-lower-choice-section">
+                        <div
+                            key={answerIndex}
+                            className="question-page-body-right-lower-choice-section"
+                        >
                             <div className="question-page-body-right-lower-choice-index-container">
                                 <div
-                                    className={questionInfo.question_type[0].question_type_id === 1 ? "question-page-body-right-lower-choice-index" : "question-page-body-right-lower-choice-index-multi"}>
+                                    className={
+                                        questionInfo.question_type[0].question_type_id === 1
+                                            ? "question-page-body-right-lower-choice-index"
+                                            : "question-page-body-right-lower-choice-index-multi"
+                                    }
+                                >
                                     <div className="question-page-body-right-lower-choice-index-content">
                                         {String.fromCharCode(65 + answerIndex)}
                                     </div>
                                 </div>
                             </div>
                             <div className="question-page-body-right-lower-choice-content">
-                                <textarea value={answer.content} onChange={e => changeAnswerContent(answerIndex, e.target.value)} />
+                                <textarea
+                                    value={answer.content}
+                                    onChange={e => changeAnswerContent(answerIndex, e.target.value)}
+                                />
                             </div>
                             <div className="question-page-body-right-lower-choice-button-group">
-                                <div className="material-icons" onClick={e => deleteAnswer(answerIndex)}>
+                                <div
+                                    className="material-icons"
+                                    onClick={e => deleteAnswer(answerIndex)}
+                                >
                                     delete_forever
                                 </div>
-                                <div className={`material-icons ${answer.is_correct ? "question-page-body-answer-marked" : "question-page-body-answer-unmarked"}`} onClick={e => toggleTrueAnswer(answerIndex)}>
+                                <div
+                                    className={`material-icons ${
+                                        answer.is_correct
+                                            ? "question-page-body-answer-marked"
+                                            : "question-page-body-answer-unmarked"
+                                    }`}
+                                    onClick={e => toggleTrueAnswer(answerIndex)}
+                                >
                                     check
                                 </div>
                             </div>
                         </div>
                     ))}
-                    <div className="question-page-body-lower-choice-add-button" onClick={e => addAnswer()}>
+                    <div
+                        className="question-page-body-lower-choice-add-button"
+                        onClick={e => addAnswer()}
+                    >
                         Add answer
                     </div>
                 </div>
             </div>
-        </div>)
-}
+        </div>
+    );
+};
 
 const QuestionBottomNavigation = ({
     currentQuestionIndex,
@@ -375,17 +402,12 @@ const QuestionBottomNavigation = ({
                 <div className="question-page-body-right-bottom-changes-group">
                     {hasUnsavedChanges && (
                         <div>
-                            <div>
-                                You have unsaved changes
-                            </div>
-                            <button
-                                disabled={!hasUnsavedChanges}
-                                onClick={() => saveChanges()}
-                            >
+                            <div>You have unsaved changes</div>
+                            <button disabled={!hasUnsavedChanges} onClick={() => saveChanges()}>
                                 Save Changes
                             </button>
-                        </div>)
-                    }
+                        </div>
+                    )}
                 </div>
                 <button
                     className="question-page-body-right-bottom-next"
@@ -411,9 +433,7 @@ const LeftPanel = ({
             <div className="question-page-body-left-exam">{examInfo.exam_name}</div>
             <div className="question-page-body-left-subject">Subject: {examInfo.subject}</div>
             <div className="question-page-body-left-teacher">Teacher: {examInfo.creator.name}</div>
-            <div className="question-page-body-left-duration">
-                Total time: {examInfo.duration}
-            </div>
+            <div className="question-page-body-left-duration">Total time: {examInfo.duration}</div>
             <QuestionLeftNavigation
                 questions={questionInfos}
                 currentQuestionIndex={currentQuestionIndex}
@@ -448,31 +468,29 @@ const QuestionLeftNavigation = ({
                         const questionIndex = questionIndexStartInPage + indexInPage;
 
                         return (
-                            <div className="question-page-button-content-wrapper" key={questionIndex}>
+                            <div
+                                className="question-page-button-content-wrapper"
+                                key={questionIndex}
+                            >
                                 <button
                                     key={question.question_id}
                                     onClick={() => changeQuestion(questionIndex)}
                                     className={
-                                        (questionIndex === currentQuestionIndex
+                                        questionIndex === currentQuestionIndex
                                             ? "question-page-button-current"
-                                            : "question-page-button")
+                                            : "question-page-button"
                                     }
                                 >
                                     {questionIndex + 1}
                                 </button>
                             </div>
-                        )
+                        );
                     })}
-                    <div className="question-page-button-content-wrapper">
-                        <button
-                            onClick={() => addQuestion()}
-                            className={
-                                "question-page-button"
-                            }
-                        >
-                            +
-                        </button>
-                    </div>
+                <div className="question-page-button-content-wrapper">
+                    <button onClick={() => addQuestion()} className={"question-page-button"}>
+                        +
+                    </button>
+                </div>
             </div>
             <div className="question-page-body-left-page-number">
                 <span>Pages:</span>
@@ -487,8 +505,7 @@ const QuestionLeftNavigation = ({
                                         ? "question-page-body-left-page-number-current-btn"
                                         : "question-page-body-left-page-number-btn"
                                 }
-                            >
-                            </button>
+                            ></button>
                         );
                     })}
                 </div>

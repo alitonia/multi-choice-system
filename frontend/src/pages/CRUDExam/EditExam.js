@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/header/Header";
 import styles from "./EditExam.module.scss";
 import Grid from "@mui/material/Grid";
@@ -6,19 +6,19 @@ import CRUDHeader from "./CRUDHeader";
 import CRUDTable from "./CRUDTable";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import Footer from "../../components/footer/Footer";
-import {useParams} from "react-router";
+import { useParams } from "react-router";
 import axios from "axios";
-import {styled, Box} from "@mui/system";
+import { styled, Box } from "@mui/system";
 import ModalUnstyled from "@mui/base/ModalUnstyled";
 import Backdrop from "@mui/material/Backdrop";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const EditExam = () => {
-    const {id} = useParams();
+    const { id } = useParams();
     const [examData, setExamData] = useState();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
@@ -34,7 +34,7 @@ const EditExam = () => {
     //
     // const endTime = startDate?new Date(startDate+miliDuration) : null
 
-    const examFinished = examData ? true: false
+    const examFinished = examData ? true : false;
 
     useEffect(() => {
         getData();
@@ -125,15 +125,16 @@ const EditExam = () => {
     };
     return (
         <div>
-            <Header/>
+            <Header />
             <div className={styles.wrapper}>
-                <CRUDHeader headerType="EDIT"/>
-                <CRUDTable data={examData} handleSubmit={handleEditSubmit}/>
+                <CRUDHeader headerType="EDIT" />
+                <CRUDTable data={examData} handleSubmit={handleEditSubmit} />
 
                 {examFinished && (
-                    <h3><a href={`/examiner/examStatistic/${id}`}>Statistic</a></h3>
+                    <h3>
+                        <a href={`/examiner/examStatistic/${id}`}>Statistic</a>
+                    </h3>
                 )}
-
 
                 <Grid container spacing={4}>
                     <Grid item xs={6}>
@@ -147,14 +148,16 @@ const EditExam = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <div className={styles.CRUDHeader}>QUESTION</div>
-                        <button className={styles.editButton}
-                                onClick={() => history.push(`/examiner/editExam/${id}/question`)}>
+                        <button
+                            className={styles.editButton}
+                            onClick={() => history.push(`/examiner/editExam/${id}/question`)}
+                        >
                             Edit Question
                         </button>
                     </Grid>
                 </Grid>
                 <div className={styles.centerText}>
-                    <p style={{color: "red", textDecoration: "underline"}} onClick={handleOpen}>
+                    <p style={{ color: "red", textDecoration: "underline" }} onClick={handleOpen}>
                         Delete this exam
                     </p>
 
@@ -185,7 +188,7 @@ const EditExam = () => {
                     </Modal>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </div>
     );
 };

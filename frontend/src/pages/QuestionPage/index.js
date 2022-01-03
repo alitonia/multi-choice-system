@@ -1,24 +1,25 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import "./QuestionPage.css";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import he from "he";
 import Header from "../../components/header/Header";
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const questionsPerPage = 30;
 const questionsPerRow = 5;
 
-
-const QuestionPage = ({
-                          // questionAPI = "https://opentdb.com/api.php?amount=50",
-                      }) => {
+const QuestionPage = (
+    {
+        // questionAPI = "https://opentdb.com/api.php?amount=50",
+    }
+) => {
     //   const [pageNumber, setPageNumber] = useState(0);
     const [questionInfo, setQuestionInfo] = useState(null);
     let jwtToken = "Bearer " + localStorage.getItem("access_token");
     // const [answers, setAnswers] = useState([]);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const {id} = useParams();
+    const { id } = useParams();
 
     const updateChoice = (question_id, answer_id) => {
         // using current user token as well
@@ -28,19 +29,19 @@ const QuestionPage = ({
         for (let item in questionInfo.questions) {
             if (questionInfo.questions[item].question_id === question_id) {
                 if (questionInfo.questions[item].question_type_id === 1) {
-                    questionInfo.questions[item].choices = [answer_id]
+                    questionInfo.questions[item].choices = [answer_id];
                 } else {
                     if (questionInfo.questions[item].choices === null) {
-                        questionInfo.questions[item].choices = [answer_id]
+                        questionInfo.questions[item].choices = [answer_id];
                     } else {
-                        questionInfo.questions[item].choices.push(answer_id)
+                        questionInfo.questions[item].choices.push(answer_id);
                     }
                 }
             }
         }
-        const newQuestion = Array.from(questionInfo.questions)
-        setQuestionInfo({...questionInfo, questions: newQuestion})
-    }
+        const newQuestion = Array.from(questionInfo.questions);
+        setQuestionInfo({ ...questionInfo, questions: newQuestion });
+    };
 
     const updateUnchoose = (question_id, answer_id) => {
         // using current user token as well
@@ -50,32 +51,37 @@ const QuestionPage = ({
         for (let item in questionInfo.questions) {
             if (questionInfo.questions[item].question_id === question_id) {
                 if (questionInfo.questions[item].question_type_id === 1) {
-                    questionInfo.questions[item].choices = []
+                    questionInfo.questions[item].choices = [];
                 } else {
                     // remove specific item from array
-                    const index = questionInfo.questions[item].choices.indexOf(answer_id)
+                    const index = questionInfo.questions[item].choices.indexOf(answer_id);
                     if (index > -1) {
                         questionInfo.questions[item].choices.splice(index, 1);
                     }
                 }
             }
         }
-        const newQuestion = Array.from(questionInfo.questions)
-        setQuestionInfo({...questionInfo, questions: newQuestion})
-    }
+        const newQuestion = Array.from(questionInfo.questions);
+        setQuestionInfo({ ...questionInfo, questions: newQuestion });
+    };
 
     const updateCurrent = (index, oldIndex) => {
-        if (index === oldIndex) return
+        if (index === oldIndex) return;
         // send old index question to server
-        console.log("send to server question_id " + questionInfo.questions[oldIndex].question_id + " choice " + JSON.stringify(questionInfo.questions[oldIndex].choices))
+        console.log(
+            "send to server question_id " +
+                questionInfo.questions[oldIndex].question_id +
+                " choice " +
+                JSON.stringify(questionInfo.questions[oldIndex].choices)
+        );
         setCurrentQuestion(index);
 
         let newHeader = new Headers();
         newHeader.append("Authorization", jwtToken);
         newHeader.append("Content-Type", "application/json");
         let raw = JSON.stringify({
-            "question_id": questionInfo.questions[oldIndex].question_id,
-            "answers_id": questionInfo.questions[oldIndex].choices
+            question_id: questionInfo.questions[oldIndex].question_id,
+            answers_id: questionInfo.questions[oldIndex].choices
         });
         fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/" + id + "/answers", {
             method: "POST",
@@ -85,23 +91,28 @@ const QuestionPage = ({
         })
             .then(response => response.json())
             .then(result => {
-                console.log(result)
+                console.log(result);
             })
             .catch(error => {
-                console.log("error", error)
+                console.log("error", error);
             });
     };
 
-    const submitExam = (index) => {
+    const submitExam = index => {
         if (window.confirm("Do you want to submit?")) {
-            console.log("send to server question_id " + questionInfo.questions[index].question_id + " choice " + JSON.stringify(questionInfo.questions[index].choices));
+            console.log(
+                "send to server question_id " +
+                    questionInfo.questions[index].question_id +
+                    " choice " +
+                    JSON.stringify(questionInfo.questions[index].choices)
+            );
             // send finish and return to examPage
             let newHeader = new Headers();
             newHeader.append("Authorization", jwtToken);
             newHeader.append("Content-Type", "application/json");
             let raw = JSON.stringify({
-                "question_id": questionInfo.questions[index].question_id,
-                "answers_id": questionInfo.questions[index].choices
+                question_id: questionInfo.questions[index].question_id,
+                answers_id: questionInfo.questions[index].choices
             });
             fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/" + id + "/answers", {
                 method: "POST",
@@ -111,12 +122,12 @@ const QuestionPage = ({
             })
                 .then(response => response.json())
                 .then(result => {
-                    console.log(result)
+                    console.log(result);
                     newHeader = new Headers();
                     newHeader.append("Authorization", jwtToken);
                     newHeader.append("Content-Type", "application/json");
                     var raw = JSON.stringify({
-                        "exam_id": parseInt(id)
+                        exam_id: parseInt(id)
                     });
                     fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/finish", {
                         method: "POST",
@@ -132,7 +143,6 @@ const QuestionPage = ({
                             console.log("error", error);
                             window.location.href = "../examPage/" + id.toString();
                         });
-
                 })
                 .catch(error => {
                     console.log("error", error);
@@ -140,7 +150,7 @@ const QuestionPage = ({
                     newHeader.append("Authorization", jwtToken);
                     newHeader.append("Content-Type", "application/json");
                     var raw = JSON.stringify({
-                        "exam_id": parseInt(id)
+                        exam_id: parseInt(id)
                     });
                     fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/finish", {
                         method: "POST",
@@ -156,20 +166,24 @@ const QuestionPage = ({
                             console.log("error", error);
                             window.location.href = "../examPage/" + id.toString();
                         });
-                    ;
                 });
         }
     };
 
     const forceSubmitExam = () => {
-        console.log("send to server question_id " + questionInfo.questions[currentQuestion].question_id + " choice " + JSON.stringify(questionInfo.questions[currentQuestion].choices));
+        console.log(
+            "send to server question_id " +
+                questionInfo.questions[currentQuestion].question_id +
+                " choice " +
+                JSON.stringify(questionInfo.questions[currentQuestion].choices)
+        );
         console.log("Force Submit");
         let newHeader = new Headers();
         newHeader.append("Authorization", jwtToken);
         newHeader.append("Content-Type", "application/json");
         let raw = JSON.stringify({
-            "question_id": questionInfo.questions[currentQuestion].question_id,
-            "answers_id": questionInfo.questions[currentQuestion].choices
+            question_id: questionInfo.questions[currentQuestion].question_id,
+            answers_id: questionInfo.questions[currentQuestion].choices
         });
         fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/" + id + "/answers", {
             method: "POST",
@@ -179,12 +193,12 @@ const QuestionPage = ({
         })
             .then(response => response.json())
             .then(result => {
-                console.log(result)
+                console.log(result);
                 newHeader = new Headers();
                 newHeader.append("Authorization", jwtToken);
                 newHeader.append("Content-Type", "application/json");
                 var raw = JSON.stringify({
-                    "exam_id": parseInt(id)
+                    exam_id: parseInt(id)
                 });
                 fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/finish", {
                     method: "POST",
@@ -200,7 +214,6 @@ const QuestionPage = ({
                         console.log("error", error);
                         window.location.href = "../examPage/" + id.toString();
                     });
-
             })
             .catch(error => {
                 console.log("error", error);
@@ -208,7 +221,7 @@ const QuestionPage = ({
                 newHeader.append("Authorization", jwtToken);
                 newHeader.append("Content-Type", "application/json");
                 var raw = JSON.stringify({
-                    "exam_id": parseInt(id)
+                    exam_id: parseInt(id)
                 });
                 fetch("http://" + process.env.REACT_APP_BACKEND_URL + "exam/finish", {
                     method: "POST",
@@ -224,7 +237,6 @@ const QuestionPage = ({
                         console.log("error", error);
                         window.location.href = "../examPage/" + id.toString();
                     });
-                ;
             });
         // send finish and return to examPage
     };
@@ -240,39 +252,43 @@ const QuestionPage = ({
         })
             .then(response => response.json())
             .then(result => {
-                setQuestionInfo(result)
+                setQuestionInfo(result);
             })
-            .catch(error => {console.log("error", error);});
+            .catch(error => {
+                console.log("error", error);
+            });
     }, []);
 
-    const hhmmyyToMin = (duration) => {
+    const hhmmyyToMin = duration => {
         if (typeof duration === "undefined" || duration === null) return 0;
         let hms = duration;
-        let a = hms.split(':');
-        let min = (+a[0]) * 60 + (+a[1]) + (+a[2]) / 60;
+        let a = hms.split(":");
+        let min = +a[0] * 60 + +a[1] + +a[2] / 60;
         return min;
-    }
+    };
 
     return (
         <div className="question-page-root-container">
             {/*<div className="question-page-default-header">Default Header</div>*/}
-            <Header/>
+            <Header />
             {questionInfo === null ? (
                 <div>
-                    <h1 style={{display: "flex", justifyContent: "center"}}>Loading</h1>
+                    <h1 style={{ display: "flex", justifyContent: "center" }}>Loading</h1>
                 </div>
             ) : (
                 <div className="question-page-body">
                     <div className="question-page-body-left">
                         <div className="question-page-body-left-exam">{questionInfo.exam_name}</div>
-                        <div className="question-page-body-left-subject">Subject: {questionInfo.subject}</div>
-                        <div className="question-page-body-left-teacher">Teacher: {questionInfo.creator_name}</div>
+                        <div className="question-page-body-left-subject">
+                            Subject: {questionInfo.subject}
+                        </div>
+                        <div className="question-page-body-left-teacher">
+                            Teacher: {questionInfo.creator_name}
+                        </div>
                         <div className="question-page-body-left-duration">
                             <DisplayTime
                                 duration={hhmmyyToMin(questionInfo.duration)}
-                                startTime={
-                                    (new Date(questionInfo.start_time)).getTime()
-                                }
+                                startTime={new Date(questionInfo.start_time).getTime()}
                                 endExamHandler={forceSubmitExam}
                             />
                         </div>
@@ -304,125 +320,159 @@ const QuestionPage = ({
 };
 
 const ShowQuestion = ({
-                          currentQuestionIndex,
-                          currentQuestionInfo,
-                          updateChoose,
-                          updateUnchoose,
-                          changeCurrent,
-                          questionListLength,
-                          submitExam,
-                      }) => {
-    const checked = (index) => {
+    currentQuestionIndex,
+    currentQuestionInfo,
+    updateChoose,
+    updateUnchoose,
+    changeCurrent,
+    questionListLength,
+    submitExam
+}) => {
+    const checked = index => {
         if (currentQuestionInfo.question_type_id === 1) {
-            if (currentQuestionInfo.choices.length === 0) return false
+            if (currentQuestionInfo.choices.length === 0) return false;
             else if (currentQuestionInfo.choices[0] === index) {
-                return true
-            } else return false
+                return true;
+            } else return false;
         } else {
             if (currentQuestionInfo.choices.length === 0) {
-                return false
+                return false;
                 // } else if (currentQuestionInfo.choices.length === 0) {
                 //     return false
             } else if (currentQuestionInfo.choices.includes(index)) {
-                return true
-            } else return false
+                return true;
+            } else return false;
         }
-    }
+    };
 
     const updateAnswer = (answer_id, checked) => {
         // console.log("update answer", answer_id, checked)
         if (currentQuestionInfo.question_type_id === 1) {
             if (currentQuestionInfo.choices[0] === answer_id) {
-                updateUnchoose(currentQuestionInfo.question_id, answer_id)
+                updateUnchoose(currentQuestionInfo.question_id, answer_id);
                 return;
             }
-            updateChoose(currentQuestionInfo.question_id, answer_id)
+            updateChoose(currentQuestionInfo.question_id, answer_id);
             return;
         }
         if (!checked) {
-            updateUnchoose(currentQuestionInfo.question_id, answer_id)
+            updateUnchoose(currentQuestionInfo.question_id, answer_id);
             return;
         } else {
-            updateChoose(currentQuestionInfo.question_id, answer_id)
+            updateChoose(currentQuestionInfo.question_id, answer_id);
             return;
         }
-    }
-    return (<div className="question-page-body-right-wrapper">
-        <div className="question-page-body-right-upper">
-            <div className="question-page-body-right-upper-left">{currentQuestionIndex + 1}.</div>
-            <div className="question-page-body-right-upper-right">
-                {he.decode(currentQuestionInfo.question_content)}
+    };
+    return (
+        <div className="question-page-body-right-wrapper">
+            <div className="question-page-body-right-upper">
+                <div className="question-page-body-right-upper-left">
+                    {currentQuestionIndex + 1}.
+                </div>
+                <div className="question-page-body-right-upper-right">
+                    {he.decode(currentQuestionInfo.question_content)}
+                </div>
             </div>
-        </div>
-        <hr></hr>
+            <hr></hr>
 
-        <div className={"question-page-body-right-lower"}>
-            {currentQuestionInfo.answers.map((item, index) => (
-                <div key={"question-" + currentQuestionIndex.toString() + "-answer-" + index.toString()}>
-                    <input type={"checkbox"}
-                           name={"question-" + currentQuestionIndex.toString() + "-answer-" + index.toString()}
-                           id={"question-" + currentQuestionIndex.toString() + "-answer-" + index.toString()}
-                           defaultChecked={checked(item.answer_id)}
-                           onChange={e => {
-                               updateAnswer(item.answer_id, e.target.checked)
-                           }}
-                    />
-                    <label
-                        htmlFor={
-                            "question-" + currentQuestionIndex.toString() + "-answer-" + index.toString()
-                        }
-                        className={
-                            checked(item.answer_id) ? "question-page-body-right-lower-checked"
-                                : "question-page-body-right-lower-unchecked"
+            <div className={"question-page-body-right-lower"}>
+                {currentQuestionInfo.answers.map((item, index) => (
+                    <div
+                        key={
+                            "question-" +
+                            currentQuestionIndex.toString() +
+                            "-answer-" +
+                            index.toString()
                         }
                     >
-                        <div className="question-page-body-right-lower-choice-section">
-                            <div
-                                className={currentQuestionInfo.question_type_id === 1 ? "question-page-body-right-lower-choice-index" : "question-page-body-right-lower-choice-index-multi"}>
-                                <div className="question-page-body-right-lower-choice-index-content">
-                                    {String.fromCharCode(index + 65)}
+                        <input
+                            type={"checkbox"}
+                            name={
+                                "question-" +
+                                currentQuestionIndex.toString() +
+                                "-answer-" +
+                                index.toString()
+                            }
+                            id={
+                                "question-" +
+                                currentQuestionIndex.toString() +
+                                "-answer-" +
+                                index.toString()
+                            }
+                            defaultChecked={checked(item.answer_id)}
+                            onChange={e => {
+                                updateAnswer(item.answer_id, e.target.checked);
+                            }}
+                        />
+                        <label
+                            htmlFor={
+                                "question-" +
+                                currentQuestionIndex.toString() +
+                                "-answer-" +
+                                index.toString()
+                            }
+                            className={
+                                checked(item.answer_id)
+                                    ? "question-page-body-right-lower-checked"
+                                    : "question-page-body-right-lower-unchecked"
+                            }
+                        >
+                            <div className="question-page-body-right-lower-choice-section">
+                                <div
+                                    className={
+                                        currentQuestionInfo.question_type_id === 1
+                                            ? "question-page-body-right-lower-choice-index"
+                                            : "question-page-body-right-lower-choice-index-multi"
+                                    }
+                                >
+                                    <div className="question-page-body-right-lower-choice-index-content">
+                                        {String.fromCharCode(index + 65)}
+                                    </div>
+                                </div>
+                                <div className="question-page-body-right-lower-choice-content">
+                                    {he.decode(item.content)}
                                 </div>
                             </div>
-                            <div className="question-page-body-right-lower-choice-content">
-                                {he.decode(item.content)}
-                            </div>
-                        </div>
-                    </label>
-                </div>
-            ))}
-        </div>
+                        </label>
+                    </div>
+                ))}
+            </div>
 
-        <div className="question-page-body-right-bottom">
-            <div className="question-page-body-right-bottom-wrapper">
-                <button
-                    className="question-page-body-right-bottom-back"
-                    disabled={currentQuestionIndex === 0}
-                    onClick={() => changeCurrent(currentQuestionIndex - 1, currentQuestionIndex)}
-                >
-                    &lt; Back
-                </button>
-                {currentQuestionIndex === questionListLength - 1 ? (
+            <div className="question-page-body-right-bottom">
+                <div className="question-page-body-right-bottom-wrapper">
                     <button
-                        className="question-page-body-right-bottom-next"
-                        onClick={() => submitExam(currentQuestionIndex)}
+                        className="question-page-body-right-bottom-back"
+                        disabled={currentQuestionIndex === 0}
+                        onClick={() =>
+                            changeCurrent(currentQuestionIndex - 1, currentQuestionIndex)
+                        }
                     >
-                        Submit &gt;
+                        &lt; Back
                     </button>
-                ) : (
-                    <button
-                        className="question-page-body-right-bottom-next"
-                        onClick={() => changeCurrent(currentQuestionIndex + 1, currentQuestionIndex)}
-                    >
-                        Next &gt;
-                    </button>
-                )}
+                    {currentQuestionIndex === questionListLength - 1 ? (
+                        <button
+                            className="question-page-body-right-bottom-next"
+                            onClick={() => submitExam(currentQuestionIndex)}
+                        >
+                            Submit &gt;
+                        </button>
+                    ) : (
+                        <button
+                            className="question-page-body-right-bottom-next"
+                            onClick={() =>
+                                changeCurrent(currentQuestionIndex + 1, currentQuestionIndex)
+                            }
+                        >
+                            Next &gt;
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
-    </div>)
-}
+    );
+};
 
-
-const DisplayTime = ({duration, startTime, endExamHandler}) => {
+const DisplayTime = ({ duration, startTime, endExamHandler }) => {
     const formatNumber2Digits = number => {
         if (typeof number !== "number") return number;
         return (number < 10 ? "0" : "") + number.toString();
@@ -471,7 +521,7 @@ const DisplayTime = ({duration, startTime, endExamHandler}) => {
     );
 };
 
-const DisplayPage = ({answers, changeCurrent, currentQuestion}) => {
+const DisplayPage = ({ answers, changeCurrent, currentQuestion }) => {
     const [currentPage, setCurrentPage] = useState(1);
     useEffect(() => {
         setCurrentPage(Math.floor(currentQuestion / questionsPerPage) + 1);
@@ -492,7 +542,7 @@ const DisplayPage = ({answers, changeCurrent, currentQuestion}) => {
                                         ? "question-page-button-current"
                                         : "question-page-button") +
                                     " " +
-                                    ((item.choices === null || item.choices.length === 0)
+                                    (item.choices === null || item.choices.length === 0
                                         ? "question-page-button-incomplete"
                                         : "question-page-button-complete")
                                 }
