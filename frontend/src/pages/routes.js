@@ -9,6 +9,7 @@ import CreateExam from "./CRUDExam/CreateExam.js";
 import AdminDashboard from "./admin/Dashboard";
 import CreateAccount from "./admin/CreateAccount";
 import EditAccount from "./account/EditAccount";
+import ExamStatistic from "./ExamStatistic/index.js";
 import { Page404 } from "./404/404";
 // import { Placeholder } from "./Placeholder";
 import { HomeRoot } from "./Home/HomeRoot";
@@ -69,6 +70,11 @@ export const routes = [
         path: "/account/edit/:id",
         others: {},
         component: EditAccount
+    },
+    {
+        path: "/examiner/examStatistic/:id",
+        others: {},
+        component: ExamStatistic
     },
     {
         path: "/",

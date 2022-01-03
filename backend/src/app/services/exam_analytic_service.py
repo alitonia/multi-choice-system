@@ -190,3 +190,26 @@ class ExamAnalyticService:
             "max_score": max_s,
             "distribution": count_dict
         }
+
+    async def get_score_overview_by_bin(self, exam_id, account_id):
+        score_dicts = await self.get_scores(exam_id, account_id)
+        scores = [x["score"] for x in score_dicts]
+
+        avg_s = sum(scores) / len(scores)
+        min_s = min(scores)
+        max_s = max(scores)
+
+        bins = [0] * 10
+        for score in scores:
+            bin_number = int(score // 1)
+            if bin_number != 0:
+                bin_number -= 1
+
+            bins[bin_number] += 1
+        print(bins)
+        return {
+            "avg_score": avg_s,
+            "min_score": min_s,
+            "max_score": max_s,
+            "distribution": bins
+        }

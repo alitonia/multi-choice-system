@@ -25,6 +25,17 @@ const EditExam = () => {
     const handleClose = () => setOpen(false);
     const history = useHistory();
 
+    // const startDate = examData? (new Date(Date.parse(examData.start_time))):null
+    // const sepDuration = examData
+    //     ?examData.duration.split(':')
+    //     :Array(3).map(()=>0)
+    //
+    // const miliDuration = (( sepDuration[0]*60+ sepDuration[1])*60 +sepDuration[2])*1000
+    //
+    // const endTime = startDate?new Date(startDate+miliDuration) : null
+
+    const examFinished = examData ? true: false
+
     useEffect(() => {
         getData();
     }, []);
@@ -118,6 +129,11 @@ const EditExam = () => {
             <div className={styles.wrapper}>
                 <CRUDHeader headerType="EDIT" />
                 <CRUDTable data={examData} handleSubmit={handleEditSubmit} />
+
+                {examFinished && (
+                    <h3><a href={`/examiner/examStatistic/${id}`}>Statistic</a></h3>
+                )}
+
 
                 <Grid container spacing={4}>
                     <Grid item xs={6}>
