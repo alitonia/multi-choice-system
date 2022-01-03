@@ -55,40 +55,27 @@ const CRUDQuestionPage = ({}) => {
     }, []);
 
     const fetchQuestions = async () => {
-        const questionInfos = await APIClient.getQuestionInfos(examID);
-        if (questionInfos) {
-            setQuestionInfos(questionInfos);
-            changeQuestionIndex(Math.min(currentQuestionIndex, questionInfos.length - 1));
-            return true;
+        try {
+            const questionInfos = await APIClient.getQuestionInfos(examID);
+            if (questionInfos) {
+                setQuestionInfos(questionInfos);
+                changeQuestionIndex(Math.min(currentQuestionIndex, questionInfos.length - 1));
+                return true;
+            }
+        } catch (e) {
+            console.warn(e);
         }
 
         return false;
     };
 
     const changeQuestionIndex = index => {
+        console.log(1);
         if (index < 0 || index > questionInfos.length - 1) {
             return;
         }
 
-        if (hasUnsavedChanges) {
-            setUnsavedChangesDialogActions({
-                saveAction: () => {
-                    saveChanges();
-
-                    toggleUnsavedChangesDialog(false);
-                },
-                discardAction: () => {
-                    setHasUnsavedChanges(false);
-                    setCurrentQuestionIndex(index);
-
-                    toggleUnsavedChangesDialog(false);
-                }
-            });
-
-            toggleUnsavedChangesDialog(true);
-        } else {
-            setCurrentQuestionIndex(index);
-        }
+        setCurrentQuestionIndex(index);
     };
 
     const addQuestion = () => {

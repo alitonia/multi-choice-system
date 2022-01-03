@@ -127,8 +127,8 @@ export default function MainView() {
             if (res.status >= 400) {
                 console.log(data.detail.message);
             } else {
-                setAllExamList(data?data.exams:[]);
-                setTotal(data?data.total:0);
+                setAllExamList(data ? data.exams : []);
+                setTotal(data ? data.total : 0);
             }
         };
 
