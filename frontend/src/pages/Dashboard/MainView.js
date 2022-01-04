@@ -105,7 +105,7 @@ export default function MainView() {
     const onExamSearch = async examName => {
         console.log(examName);
         const res = await fetch(
-            `http://${process.env.REACT_APP_BACKEND_URL}exams?search=${examName}`,
+            `http://${process.env.REACT_APP_BACKEND_URL}exams/get?search=${examName}`,
             {
                 method: "GET",
                 headers: {
