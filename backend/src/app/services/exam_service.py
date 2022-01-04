@@ -94,7 +94,7 @@ class Exam_Service:
         result = await self.session.execute(select(Participant).where(Participant.exam_id == exam_id, Participant.examinee_account_id == examinee_id))
         return result.scalars().first()
 
-      
+
     async def get_exams_count(
             self,
             account,
@@ -234,8 +234,8 @@ class Exam_Service:
                         .where(Participant.examinee_account_id == account["account_id"])
             )
 
-        if(exam_id > 0):
-            q = q.where(Exam.exam_id == exam_id)
+        if(int(exam_id) > 0):
+            q = q.where(Exam.exam_id == int(exam_id))
 
         result_iter = await self.session.execute(q)
         result_list = [tup for tup in result_iter]
