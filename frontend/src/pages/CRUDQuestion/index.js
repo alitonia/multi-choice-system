@@ -12,7 +12,7 @@ import APIClient from "./APIClient";
 const questionsPerPage = 30;
 const questionsPerRow = 5;
 
-const CRUDQuestionPage = ({}) => {
+const CRUDQuestionPage = ({ }) => {
     const cloneQuestionInfo = originalQuestionInfo => {
         return JSON.parse(JSON.stringify(originalQuestionInfo));
     };
@@ -70,12 +70,16 @@ const CRUDQuestionPage = ({}) => {
     };
 
     const changeQuestionIndex = index => {
-        console.log(1);
         if (index < 0 || index > questionInfos.length - 1) {
             return;
         }
 
-        setCurrentQuestionIndex(index);
+        if (hasUnsavedChanges) {
+            alert("You have unsaved changes");
+        }
+        else {
+            setCurrentQuestionIndex(index);
+        }
     };
 
     const addQuestion = () => {
@@ -120,21 +124,27 @@ const CRUDQuestionPage = ({}) => {
         }
     };
 
-    const saveChanges = () => {
-        if (!editingQuestionInfo.answers|| editingQuestionInfo.answers.length ===0){
+    const saveChanges = async () => {
+        if (!editingQuestionInfo.answers || editingQuestionInfo.answers.length === 0) {
             alert('Question must have an answer')
-            return null
+            return false;
         }
-        APIClient.createOrUpdateQuestion(editingQuestionInfo).then(success => {
-            if (success) {
-                fetchQuestions();
-                setHasUnsavedChanges(false);
-            } else {
-                const message = "Fail to save changes";
-                console.log(message);
-                alert(message);
-            }
-        });
+        const success = await APIClient.createOrUpdateQuestion(editingQuestionInfo);
+        if (success) {
+            fetchQuestions();
+            setHasUnsavedChanges(false);
+        } else {
+            const message = "Fail to save changes";
+            console.log(message);
+            alert(message);
+        }
+
+        return success;
+    };
+
+    const discardChanges = () => {
+        setEditingQuestionInfo(cloneQuestionInfo(questionInfos[currentQuestionIndex]));
+        setHasUnsavedChanges(false);
     };
 
     const toggleUnsavedChangesDialog = show => {
@@ -158,7 +168,7 @@ const CRUDQuestionPage = ({}) => {
                     onSaveClicked={unsavedChangesDialogActions?.saveAction}
                     onDiscardClicked={unsavedChangesDialogActions?.discardAction}
                 />
-                {hasUnsavedChanges?1:0}
+                {hasUnsavedChanges ? 1 : 0}
                 <div className="question-page-body-right">
                     <ShowQuestion
                         questionIndex={currentQuestionIndex}
@@ -172,6 +182,7 @@ const CRUDQuestionPage = ({}) => {
                         changeQuestion={changeQuestionIndex}
                         hasUnsavedChanges={hasUnsavedChanges}
                         saveChanges={saveChanges}
+                        discardChanges={discardChanges}
                     />
                 </div>
             </div>
@@ -350,11 +361,10 @@ const ShowQuestion = ({ questionIndex, questionInfo, deleteQuestion, notifyQuest
                                     delete_forever
                                 </div>
                                 <div
-                                    className={`material-icons ${
-                                        answer.is_correct
-                                            ? "question-page-body-answer-marked"
-                                            : "question-page-body-answer-unmarked"
-                                    }`}
+                                    className={`material-icons ${answer.is_correct
+                                        ? "question-page-body-answer-marked"
+                                        : "question-page-body-answer-unmarked"
+                                        }`}
                                     onClick={e => toggleTrueAnswer(answerIndex)}
                                 >
                                     check
@@ -379,7 +389,8 @@ const QuestionBottomNavigation = ({
     questionCount,
     changeQuestion,
     hasUnsavedChanges,
-    saveChanges
+    saveChanges,
+    discardChanges
 }) => {
     return (
         <div className="question-page-body-right-bottom">
@@ -391,16 +402,19 @@ const QuestionBottomNavigation = ({
                 >
                     &lt; Back
                 </button>
-                <div className="question-page-body-right-bottom-changes-group">
-                    {hasUnsavedChanges && (
-                        <div>
-                            <div>You have unsaved changes</div>
-                            <button disabled={!hasUnsavedChanges} onClick={() => saveChanges()}>
+                {hasUnsavedChanges && (
+                    <div className="question-page-body-right-bottom-changes-container">
+                        <div>You have unsaved changes</div>
+                        <div className="question-page-body-right-bottom-changes-button-group">
+                            <button onClick={saveChanges}>
                                 Save Changes
                             </button>
+                            <button onClick={discardChanges}>
+                                Discard
+                            </button>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
                 <button
                     className="question-page-body-right-bottom-next"
                     disabled={currentQuestionIndex === questionCount - 1}

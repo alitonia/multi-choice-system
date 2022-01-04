@@ -147,18 +147,18 @@ const renderCustomizedLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, per
 };
 
 const renderLegend = ({ payload }) => {
-    console.log(payload);
-
     return (
         <div className="answer-choice-table-container">
             <table cellSpacing={0} cellPadding={0}>
-                {payload.map((entry, index) => (
-                    <tr key={`item-${index}`}>
-                        <td>{String.fromCharCode(65 + index)}.</td>
-                        <td>{entry.payload.content}</td>
-                        <td>{entry.payload.choiceCount}</td>
-                    </tr>
-                ))}
+                <tbody>
+                    {payload.map((entry, index) => (
+                        <tr key={`item-${index}`}>
+                            <td>{String.fromCharCode(65 + index)}.</td>
+                            <td>{entry.payload.content}</td>
+                            <td>{entry.payload.choiceCount}</td>
+                        </tr>
+                    ))}
+                </tbody>
             </table>
         </div>
     );

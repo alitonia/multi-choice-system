@@ -207,14 +207,36 @@
   align-items: center;
 }
 
-.question-page-body-right-bottom-changes-group {
+.question-page-body-right-bottom-changes-container {
   display: flex;
-
   flex-direction: column;
+
+  align-items: center;
 }
 
-.question-page-body-right-bottom-changes-group button {
+.question-page-body-right-bottom-changes-button-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  margin-top: 0.5em;
+}
+
+.question-page-body-right-bottom-changes-button-group button:nth-child(1) {
   background-color: var(--question-page-main-color);
+  color: white;
+
+  font-size: 1.5em;
+
+  border-radius: 10px;
+
+  width: 200px;
+
+  margin-right: 0.5em;
+}
+
+.question-page-body-right-bottom-changes-button-group button:nth-child(2) {
+  background-color: rgb(188, 60, 60);
   color: white;
 
   font-size: 1.5em;
