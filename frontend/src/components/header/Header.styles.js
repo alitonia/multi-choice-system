@@ -10,6 +10,9 @@ export const HeaderContent = styled.div`
     display: flex;
     justify-content: space-between;
 
+    .logo {
+        cursor: pointer;
+    }
     .auth-user {
         align-self: flex-end;
     }

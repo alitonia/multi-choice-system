@@ -28,7 +28,7 @@ export default function Header() {
         <HeaderWrapper>
             <HeaderContent>
                 <div className="logo text-2xl" onClick={onLogoClick}>
-                    logo
+                    MEOW
                 </div>
                 <div className="auth-user">
                     <div className="login-user text-large">
