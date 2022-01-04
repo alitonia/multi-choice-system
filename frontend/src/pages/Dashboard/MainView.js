@@ -12,7 +12,7 @@ import ExamCard from "./ExamCard";
 import { useSelector } from "react-redux";
 import Pagination from "../../components/pagination";
 import { useHistory } from "react-router-dom";
-import styles from "./styles.module.css";
+import "./styles.module.css";
 
 ExamSearch.propTypes = {
     onExamSearch: PropTypes.func
@@ -22,7 +22,7 @@ function ExamSearch(props) {
     const [exam, setExam] = useState("");
 
     const handleExamChange = e => setExam(e.target.value);
-    const handleClickSearch = e => {
+    const handleSearch = e => {
         e.preventDefault();
         props.onExamSearch(exam);
     };
@@ -30,17 +30,18 @@ function ExamSearch(props) {
     return (
         <StyledExamSearch>
             <div className="title text-heading">YOUR EXAMS</div>
-            <div className="input-wrapper">
+            <form className="input-wrapper" onSubmit={handleSearch}>
                 <input
                     className="text-base"
                     type="text"
+                    name="search"
                     placeholder="Search for an exam..."
                     onChange={handleExamChange}
                 />
-                <button className="text-base" onClick={handleClickSearch}>
+                <button className="text-base" type="submit">
                     Search
                 </button>
-            </div>
+            </form>
         </StyledExamSearch>
     );
 }
@@ -93,6 +94,7 @@ function ExamList({ examList, title, pagination, currentPage, pageSize, total, o
 export default function MainView() {
     const history = useHistory();
     const { user, token } = useSelector(state => state.common);
+    const [searchExamList, setSearchExamList] = useState([]);
     const [recentExamList, setRecentExamList] = useState([]);
     const [allExamList, setAllExamList] = useState([]);
 
@@ -100,12 +102,28 @@ export default function MainView() {
     const [currentPage, setCurrentPage] = useState(0);
     const [total, setTotal] = useState(0);
 
-    const onExamSearch = exam => {
-        console.log(exam);
+    const onExamSearch = async examName => {
+        console.log(examName);
+        const res = await fetch(
+            `http://${process.env.REACT_APP_BACKEND_URL}exams?search=${examName}`,
+            {
+                method: "GET",
+                headers: {
+                    "content-type": "application/json; charset=utf-8",
+                    "Access-Control-Allow-Origin": true,
+                    authorization: `bearer ${token}`
+                }
+            }
+        );
+        const data = await res.json();
+        if (res.status >= 400) {
+            console.log(data.detail.message);
+        } else {
+            setSearchExamList(data ? data.exams : []);
+        }
     };
 
     const onPageChange = page => {
-        console.log(page);
         setCurrentPage(page);
     };
 
@@ -132,8 +150,13 @@ export default function MainView() {
             }
         };
 
+        const fetchRecentExam = async () => {
+            setRecentExamList([]);
+        };
+
         if (token) {
             fetchAllExam();
+            fetchRecentExam();
         }
     }, [currentPage, token]);
 
@@ -156,6 +179,7 @@ export default function MainView() {
                 </div>
             </MainViewHeader>
             <MainViewBody>
+                <ExamList title="search result" examList={searchExamList} />
                 <ExamList title="recent" examList={recentExamList} />
                 <ExamList
                     title="all"
