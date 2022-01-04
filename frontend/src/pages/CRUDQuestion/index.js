@@ -121,6 +121,10 @@ const CRUDQuestionPage = ({}) => {
     };
 
     const saveChanges = () => {
+        if (!editingQuestionInfo.answers|| editingQuestionInfo.answers.length ===0){
+            alert('Question must have an answer')
+            return null
+        }
         APIClient.createOrUpdateQuestion(editingQuestionInfo).then(success => {
             if (success) {
                 fetchQuestions();
@@ -148,12 +152,13 @@ const CRUDQuestionPage = ({}) => {
                     changeQuestionIndex={changeQuestionIndex}
                     addQuestion={addQuestion}
                 />
-                {/*<Dialogs.UnsavedChangesConfirmationDialog*/}
-                {/*    isOpened={isUnsavedChangesConfirmationShowed}*/}
-                {/*    onClose={e => { toggleUnsavedChangesDialog(false); }}*/}
-                {/*    onSaveClicked={unsavedChangesDialogActions?.saveAction}*/}
-                {/*    onDiscardClicked={unsavedChangesDialogActions?.discardAction}*/}
-                {/*/>*/}
+                <Dialogs.UnsavedChangesConfirmationDialog
+                    isOpened={isUnsavedChangesConfirmationShowed}
+                    onClose={e => { toggleUnsavedChangesDialog(false); }}
+                    onSaveClicked={unsavedChangesDialogActions?.saveAction}
+                    onDiscardClicked={unsavedChangesDialogActions?.discardAction}
+                />
+                {hasUnsavedChanges?1:0}
                 <div className="question-page-body-right">
                     <ShowQuestion
                         questionIndex={currentQuestionIndex}
