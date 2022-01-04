@@ -12,7 +12,7 @@ import APIClient from "./APIClient";
 const questionsPerPage = 30;
 const questionsPerRow = 5;
 
-const CRUDQuestionPage = ({ }) => {
+const CRUDQuestionPage = ({}) => {
     const cloneQuestionInfo = originalQuestionInfo => {
         return JSON.parse(JSON.stringify(originalQuestionInfo));
     };
@@ -76,8 +76,7 @@ const CRUDQuestionPage = ({ }) => {
 
         if (hasUnsavedChanges) {
             alert("You have unsaved changes");
-        }
-        else {
+        } else {
             setCurrentQuestionIndex(index);
         }
     };
@@ -126,7 +125,7 @@ const CRUDQuestionPage = ({ }) => {
 
     const saveChanges = async () => {
         if (!editingQuestionInfo.answers || editingQuestionInfo.answers.length === 0) {
-            alert('Question must have an answer')
+            alert("Question must have an answer");
             return false;
         }
         const success = await APIClient.createOrUpdateQuestion(editingQuestionInfo);
@@ -164,7 +163,9 @@ const CRUDQuestionPage = ({ }) => {
                 />
                 <Dialogs.UnsavedChangesConfirmationDialog
                     isOpened={isUnsavedChangesConfirmationShowed}
-                    onClose={e => { toggleUnsavedChangesDialog(false); }}
+                    onClose={e => {
+                        toggleUnsavedChangesDialog(false);
+                    }}
                     onSaveClicked={unsavedChangesDialogActions?.saveAction}
                     onDiscardClicked={unsavedChangesDialogActions?.discardAction}
                 />
@@ -361,10 +362,11 @@ const ShowQuestion = ({ questionIndex, questionInfo, deleteQuestion, notifyQuest
                                     delete_forever
                                 </div>
                                 <div
-                                    className={`material-icons ${answer.is_correct
-                                        ? "question-page-body-answer-marked"
-                                        : "question-page-body-answer-unmarked"
-                                        }`}
+                                    className={`material-icons ${
+                                        answer.is_correct
+                                            ? "question-page-body-answer-marked"
+                                            : "question-page-body-answer-unmarked"
+                                    }`}
                                     onClick={e => toggleTrueAnswer(answerIndex)}
                                 >
                                     check
@@ -406,12 +408,8 @@ const QuestionBottomNavigation = ({
                     <div className="question-page-body-right-bottom-changes-container">
                         <div>You have unsaved changes</div>
                         <div className="question-page-body-right-bottom-changes-button-group">
-                            <button onClick={saveChanges}>
-                                Save Changes
-                            </button>
-                            <button onClick={discardChanges}>
-                                Discard
-                            </button>
+                            <button onClick={saveChanges}>Save Changes</button>
+                            <button onClick={discardChanges}>Discard</button>
                         </div>
                     </div>
                 )}

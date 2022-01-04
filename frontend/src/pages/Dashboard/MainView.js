@@ -21,12 +21,12 @@ ExamSearch.propTypes = {
 };
 
 function ExamSearch(props) {
-    const {setSearchStatus} = props
+    const { setSearchStatus } = props;
     const [exam, setExam] = useState("");
 
     const handleExamChange = e => {
-        setSearchStatus("")
-        setExam(e.target.value)
+        setSearchStatus("");
+        setExam(e.target.value);
     };
 
     const handleSearch = e => {
@@ -173,9 +173,10 @@ export default function MainView() {
     return (
         <MainViewWrapper>
             <MainViewHeader>
-                <ExamSearch onExamSearch={onExamSearch}
-                            searchStatus={searchStatus}
-                            setSearchStatus={setSearchStatus}
+                <ExamSearch
+                    onExamSearch={onExamSearch}
+                    searchStatus={searchStatus}
+                    setSearchStatus={setSearchStatus}
                 />
                 <div className="user-welcome text-large">
                     <span>Welcome back, {user?.name}</span>
