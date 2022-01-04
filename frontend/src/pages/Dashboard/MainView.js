@@ -16,13 +16,19 @@ import "./styles.module.css";
 
 ExamSearch.propTypes = {
     onExamSearch: PropTypes.func,
-    searchStatus: PropTypes.string
+    searchStatus: PropTypes.string,
+    setSearchStatus: PropTypes.func
 };
 
 function ExamSearch(props) {
+    const {setSearchStatus} = props
     const [exam, setExam] = useState("");
 
-    const handleExamChange = e => setExam(e.target.value);
+    const handleExamChange = e => {
+        setSearchStatus("")
+        setExam(e.target.value)
+    };
+
     const handleSearch = e => {
         e.preventDefault();
         props.onExamSearch(exam);
@@ -167,7 +173,10 @@ export default function MainView() {
     return (
         <MainViewWrapper>
             <MainViewHeader>
-                <ExamSearch onExamSearch={onExamSearch} searchStatus={searchStatus} />
+                <ExamSearch onExamSearch={onExamSearch}
+                            searchStatus={searchStatus}
+                            setSearchStatus={setSearchStatus}
+                />
                 <div className="user-welcome text-large">
                     <span>Welcome back, {user?.name}</span>
                     <div className="toolbox">
