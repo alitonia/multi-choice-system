@@ -60,8 +60,10 @@ async def show_exams(
         limit: int = 15,
         s: Session = Depends(get_session),
         sort: str = None,
+        search: str = None,
         principal: Principal = Depends(security.get_current_user)
 ):
+    print('-----------------------------',search, sort)
     qs = Exam_Service(s)
     account_id = principal.account_id
 
@@ -74,8 +76,8 @@ async def show_exams(
         if is_viewer is False:
             return None
 
-    exams = await qs.get_exams(account, skip, limit, sort)
-    count = await qs.get_exams_count(account)
+    exams = await qs.get_exams(account, skip, limit, sort, search)
+    count = await qs.get_exams_count(account, search)
 
     result = dict()
     result["exams"] = exams

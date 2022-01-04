@@ -68,7 +68,8 @@ class Exam_Service:
             account,
             skip: int = 0,
             limit: int = 15,
-            sort: str = None
+            sort: str = None,
+            search: str=None
     ):
         # Will need to check jwt to differentiate users
         q = select(Exam).limit(limit).offset(skip)
@@ -81,6 +82,9 @@ class Exam_Service:
                 q.join(Participant, Participant.exam_id == Exam.exam_id)
                     .where(Participant.examinee_account_id == account["account_id"])
             )
+        if search is not None:
+            q= q.filter(Exam.exam_name.ilike(f"%{search}%"))
+
         if sort == 'name':
             q = q.order_by(asc(Exam.exam_name))
         elif sort == 'recent':
@@ -98,6 +102,7 @@ class Exam_Service:
     async def get_exams_count(
             self,
             account,
+            search=None
     ):
         # Will need to check jwt to differentiate users
         q = select(func.count(Exam.exam_id))
@@ -110,6 +115,8 @@ class Exam_Service:
                 q.join(Participant, Participant.exam_id == Exam.exam_id)
                     .where(Participant.examinee_account_id == account["account_id"])
             )
+        if search is not None:
+            q= q.filter(Exam.exam_name.ilike(f"%{search}%"))
 
         result = await self.session.execute(q)
         print(result)
