@@ -15,7 +15,8 @@ import { useHistory } from "react-router-dom";
 import "./styles.module.css";
 
 ExamSearch.propTypes = {
-    onExamSearch: PropTypes.func
+    onExamSearch: PropTypes.func,
+    searchStatus: PropTypes.string
 };
 
 function ExamSearch(props) {
@@ -42,6 +43,7 @@ function ExamSearch(props) {
                     Search
                 </button>
             </form>
+            <span className="search-status">{props.searchStatus}</span>
         </StyledExamSearch>
     );
 }
@@ -101,9 +103,10 @@ export default function MainView() {
     const pageSize = 30;
     const [currentPage, setCurrentPage] = useState(0);
     const [total, setTotal] = useState(0);
+    const [searchStatus, setSearchStatus] = useState("");
 
     const onExamSearch = async examName => {
-        console.log(examName);
+        setSearchStatus("");
         const res = await fetch(
             `http://${process.env.REACT_APP_BACKEND_URL}exams/get?search=${examName}`,
             {
@@ -120,6 +123,7 @@ export default function MainView() {
             console.log(data.detail.message);
         } else {
             setSearchExamList(data ? data.exams : []);
+            setSearchStatus(data && data.exams && data.exams.length > 0 ? "" : "No results found.");
         }
     };
 
@@ -163,7 +167,7 @@ export default function MainView() {
     return (
         <MainViewWrapper>
             <MainViewHeader>
-                <ExamSearch onExamSearch={onExamSearch} />
+                <ExamSearch onExamSearch={onExamSearch} searchStatus={searchStatus} />
                 <div className="user-welcome text-large">
                     <span>Welcome back, {user?.name}</span>
                     <div className="toolbox">
