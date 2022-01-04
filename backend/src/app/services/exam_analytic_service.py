@@ -10,6 +10,7 @@ from app.utils.unique_list import unique
 
 from itertools import groupby
 
+
 class ExamAnalyticService:
     def __init__(self, session):
         self.session = session
@@ -174,9 +175,9 @@ class ExamAnalyticService:
         score_dicts = await self.get_scores(exam_id, account_id)
         scores = [x["score"] for x in score_dicts]
 
-        avg_s = sum(scores) / len(scores)
-        min_s = min(scores)
-        max_s = max(scores)
+        avg_s = sum(scores) / len(scores) if len(scores) > 0 else 0
+        min_s = min(scores) if len(scores) > 0 else 0
+        max_s = max(scores) if len(scores) > 0 else 0
 
         unq_scores = unique(scores)
         unq_scores.sort()
@@ -196,9 +197,9 @@ class ExamAnalyticService:
         score_dicts = await self.get_scores(exam_id, account_id)
         scores = [x["score"] for x in score_dicts]
 
-        avg_s = sum(scores) / len(scores)
-        min_s = min(scores)
-        max_s = max(scores)
+        avg_s = sum(scores) / len(scores) if len(scores) > 0 else 0
+        min_s = min(scores) if len(scores) > 0 else 0
+        max_s = max(scores) if len(scores) > 0 else 0
 
         bins = [0] * 10
         for score in scores:
@@ -214,7 +215,6 @@ class ExamAnalyticService:
             "max_score": max_s,
             "distribution": bins
         }
-
 
     async def get_all_progress_by_question_detailed(self, exam_id, account_id):
         answers_by_question_q = text(f"""
@@ -238,7 +238,7 @@ class ExamAnalyticService:
             )
             order by Question.question_id, Answer.answer_id
             """
-                    )
+                                     )
         result_iter = await self.session.execute(answers_by_question_q)
 
         processed_dict = []
